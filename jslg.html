@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name='keywords' content='programming,computer graphics,physical computing' />
+	<meta name='description' content='This website provides some contents like computer programming, webservice, web design, 3DCG, Arduino, and any others.' />
+<title>
+		MYARCHIVES:
+		Games</title>
+
+	<link href="./favicon.ico" type="image/x-icon" rel="icon" />
+	<link href="./favicon.ico" type="image/x-icon" rel="shortcut icon" />
+	<link rel="stylesheet" type="text/css" href="./css/cake.generic.css" />
+	<link rel="stylesheet" type="text/css" href="./css/qunit.css" />
+
+	<script type="text/javascript" src="./src/JSlgEngine.js"></script>
+	<script type="text/javascript">
+		jslgEngine.workSpace = './src/';
+		jslgEngine.loadJs([
+			"controller/MainController.js",
+			"controller/IconController.js",
+			"controller/file/ImageFileController.js",
+			"model/factory/JSlgIconFactory.js",
+			"controller/Ticker.js",
+		]);
+	</script>
+  
+	<script type="text/javascript" src="./jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="./jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="./easeljs-0.6.1.min.js"></script>
+	
+</head>
+
+<body style="background-color: gray">
+  <!-- <canvas id="stage" width="400" height="280" style="width:400;height:280;background-color: white"></canvas> -->
+  <canvas id="stage" width="600" height="480" style="width:600;height:480;background-color: white;"></canvas>
+    <!-- <canvas id="stage" width="800" height="600" style="width:800;height:600;background-color: white"></canvas> -->
+
+  <input id="file" name="file" type="file" />
+  <div id="result"></div>
+  <div>
+  	<video id="video" width="400" height="300"></video>
+  </div>
+  <script type="text/javascript" src="./src/Boot.js"></script>
+  <script type="text/javascript">
+	  window.addEventListener('DOMContentLoaded', function() {
+	  document.querySelector("#file").addEventListener('change', function(e) {
+	      if (window.File) {
+	        var input = document.querySelector('#file').files[0];
+	        if(input) {
+	        	var reader = new FileReader();
+		        reader.addEventListener('load', function(e) {
+		          jslgEngine.boot({
+		          	xml : reader.result
+		          });
+		        }, true);
+		        reader.readAsText(input, 'UTF-8');
+	        }
+	      }
+	    }, true);
+	  
+	  	  var element = document.querySelector("#file");
+	  	  //element.dispatchEvent(element.onclick);
+  
+		var evt = document.createEvent( "MouseEvents" ); // マウスイベント作成
+		evt.initEvent( "change", false, true ); // イベントの設定
+		element.dispatchEvent( evt ); // イベントを強制的に発生
+	  });
+	  
+	  $(function() {
+	  	//サンプルデータの取得
+	  	$(document).on('click','#download',function() {
+	  		var result = [];
+	  		//サンプルデータの取得
+	  		$.ajax({},
+  			function() {
+  				var result;
+				//リスト列挙
+				$('#tmpl_download_list').tmpl({
+					list : result
+				}).appendTo($('#download_list'));
+  			});
+	  	});
+	  	//サンプルリストのクリック
+	  	$(document).on('click','#download_list',function() {
+	  		//非同期取得
+	  		$.ajax({},
+  			function() {
+  				var result;
+  				
+  				//ブート
+				jslgEngine.boot({
+					xml : reader.result
+				});
+  			});
+	  	});
+	  });
+  </script>
+  <script type="text/javascript" src="./js/test/stub/Ajax.js"></script>
+  
+<script id="tmpl_download_list" type="text/x-jquery-tmpl">
+	<ul>
+	{{each list}}
+		<li></li>
+	{{/each}}
+	</ul>
+</script>
+
+</body>
+</html>
