@@ -106,6 +106,8 @@
 			return;
 		}
 		
+        pendingCommand.removeResolvedIssues();
+        
 		if(data.resolveFunc) {
 			//即時に要求要素を解決するメソッドが用意されている場合。
 			var issues;
@@ -128,16 +130,15 @@
 					if(self.issueSetStack.length > 0) self._wasMadePendingStack = true;
 					connector_s.resolve();
 				});
-				
-				if(!data.isTest) {
-					connector.pipe(function(connector_s) {
-						//適用するごとに画面を更新
-						self._updateDisplay(connector_s, pendingCommand, {
-							wasSolved : false,
-							stopAnimation : false
-						}, options);
-					});
-				}
+                
+                if(!data.isTest) {
+                    // 解決されたとしても、問題は何だったのか描画する。
+                    connector.pipe(function(connector_s) {
+                        self._updateDisplay(connector_s, pendingCommand, {
+                            wasSolved : false
+                        }, options);
+                    });
+                }
 			} else {
 				//パターン生成後の場合
 				if(data.isTest) {
@@ -175,17 +176,15 @@
 					connector_s.resolve();
 				});
 			}
-		} else {
-			connector.pipe(function(connector_s) {
-				self._updateDisplay(connector_s, pendingCommand, {
-				}, options);
-			});
 		}
-		connector.pipe(function(connector_s) {
-			connector_s.resolve();
-			//入力待機状態にする。
-			self._requireInputAgain(connector_s, pendingCommand, options);
-		});
+        
+        if(!data.isTest) {
+            connector.pipe(function(connector_s) {
+                connector_s.resolve();
+                //入力待機状態にする。
+                self._requireInputAgain(connector_s, pendingCommand, options);
+            });
+        }
 
 		return false;
 	};
@@ -208,14 +207,19 @@
 		var self = this;
 		var pendingCommand = pending;
 
-		if(!pendingCommand.wasResolved()) {
+        connector.pipe(function(connector_s) {
+            self._updateDisplay(connector_s, pendingCommand, {
+            }, options);
+        });
+		
+        if(!pendingCommand.wasResolved()) {
 			connector.pipe(function(connector_s) {
 				//入力待機
 				jslgEngine.log('Waiting for PendingCommand...');
 				pendingCommand.connector = connector_s;
-					options.mainController.pendingCommand = pendingCommand;
+				options.mainController.pendingCommand = pendingCommand;
 			}).connects(function(connector_s) {
-				self._requireInputAgain(connector_s, pendingCommand);
+				self._requireInputAgain(connector_s, pendingCommand, options);
 			}).pipe(function(connector_s) {
 				jslgEngine.log('resolved PendingCommand'+connector_s._index);
 				connector_s.resolve();

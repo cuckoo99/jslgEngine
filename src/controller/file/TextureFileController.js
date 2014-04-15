@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>画像・管理クラス</h4>
+	 * <h4>TextureFileController</h4>
 	 * <p>
-	 * 描画画像を管理する。<br />
+	 * This is file manager to handle Texture file.<br />
+     * has dependency on Three.js<br />
 	 * </p>
 	 * @class
 	 * @name TextureFileController
@@ -32,7 +33,7 @@
 	var p = TextureFileController.prototype;
 
 	/**
-	 * 識別キー
+	 * Access key.
 	 * 
 	 * @name _key
 	 * @property
@@ -42,7 +43,7 @@
 	p._key = 'Texture';
 
 	/**
-	 * ローダ
+	 * Texture loader
 	 *
 	 * @name _loader
 	 * @property
@@ -52,18 +53,15 @@
 	p._loader = null;
 
 	/**
-	 * 画像をロードする
+	 * Load texture
 	 *
 	 * @name load
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.TextureFileController#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadImages 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options
 	 **/
 	p.load = function(connector, data, options) {
 		var self = this;
@@ -92,24 +90,6 @@
 				});
 			}
 		}
-	};
-
-	/**
-	 * 画像をロードする
-	 *
-	 * @name loaded
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.controller.TextureFileController#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadImages 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
-	 **/
-	p.loaded = function(command) {
-		
 	};
 	
 	o.TextureFileController = TextureFileController;

@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>実オブジェクト・管理クラス</h4>
+	 * <h4>BackGroundWorker</h4>
 	 * <p>
-	 * 循環参照を回避するために、作成される要素管理コントローラ<br />
+	 * This manages web workers,<br />
+     * loads something to take high cost the method as other js files.<br />
 	 * </p>
 	 * @class
 	 * @name BackGroundWorker
@@ -26,37 +27,27 @@
 	var p = BackGroundWorker.prototype;
 
 	/**
-	 * マッピングされた情報<br />
-	 * <br />
+	 * Web workers.
+     *
 	 * @name _worker
 	 * @property
-	 * @type String[]
+	 * @type Object[]
 	 * @memberOf jslgEngine.controller.BackGroundWorker#
 	 **/
 	p._worker = null;
 
 	/**
-	 * 絶対パス<br />
-	 * <br />
+	 * File path as default.
+     * 
 	 * @name _absolutePath
 	 * @property
-	 * @type String[]
+	 * @type String
 	 * @memberOf jslgEngine.controller.BackGroundWorker#
 	 **/
 	p._absolutePath = null;
 
 	/**
-	 * マッピングされた情報<br />
-	 * <br />
-	 * @name _contents
-	 * @property
-	 * @type String[]
-	 * @memberOf jslgEngine.controller.BackGroundWorker#
-	 **/
-	p._contents = null;
-
-	/**
-	 * 初期化
+	 * Set up
 	 *
 	 * @name initialize
 	 * @method
@@ -72,7 +63,7 @@
 	};
 
 	/**
-	 * ロードする画像の追加
+	 * Add web workers.
 	 *
 	 * @name add
 	 * @method

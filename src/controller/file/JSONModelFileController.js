@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>画像・管理クラス</h4>
+	 * <h4>JSONModelFileController</h4>
 	 * <p>
-	 * 描画画像を管理する。<br />
+	 * This is file manager to handle Three.js JSON data of 3D model,<br />
+     * has dependency on Three.js<br />
 	 * </p>
 	 * @class
 	 * @name JSONModelFileController
@@ -32,7 +33,7 @@
 	var p = JSONModelFileController.prototype;
 
 	/**
-	 * 識別キー
+	 * Access key.
 	 * 
 	 * @name _key
 	 * @property
@@ -42,28 +43,25 @@
 	p._key = 'Model';
 
 	/**
-	 * ローダ
+	 * Model loader.
 	 *
 	 * @name _loader
 	 * @property
-	 * @type Image[]
+	 * @type Object
 	 * @memberOf jslgEngine.controller.JSONModelFileController#
 	 **/
 	p._loader = null;
 
 	/**
-	 * 画像をロードする
+	 * Load 3D model data.
 	 *
 	 * @name load
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.JSONModelFileController#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadImages 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options
 	 **/
 	p.load = function(connector, data, options) {
 		var self = this;
@@ -105,23 +103,5 @@
 		}
 	};
 
-	/**
-	 * 画像をロードする
-	 *
-	 * @name loaded
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.controller.JSONModelFileController#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadImages 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
-	 **/
-	p.loaded = function(command) {
-		
-	};
-	
 	o.JSONModelFileController = JSONModelFileController;
 }());

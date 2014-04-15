@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>実オブジェクト・管理クラス</h4>
+	 * <h4>ElementBinder</h4>
 	 * <p>
-	 * 循環参照を回避するために、作成される要素管理コントローラ<br />
+	 * This manages relationship of JSLG element.<br />
+     * Likes elements parent data.
 	 * </p>
 	 * @class
 	 * @name ElementBinder
@@ -26,17 +27,17 @@
 	var p = ElementBinder.prototype;
 
 	/**
-	 * マッピングされた情報<br />
-	 * <br />
+	 * Information of parent
+     *
 	 * @name _contents
 	 * @property
-	 * @type String[]
+	 * @type Object[]
 	 * @memberOf jslgEngine.controller.ElementBinder#
 	 **/
 	p._contents = null;
 
 	/**
-	 * 初期化
+	 * Set up
 	 *
 	 * @name initialize
 	 * @method
@@ -49,7 +50,7 @@
 	};
 
 	/**
-	 * ロードする画像の追加
+	 * Set elements relationship
 	 *
 	 * @name set
 	 * @method
@@ -74,9 +75,9 @@
 	};
 
 	/**
-	 * ロードする画像の追加
+	 * Remove elements relationship
 	 *
-	 * @name add
+	 * @name remove
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.ElementBinder#
@@ -98,8 +99,7 @@
 	};
 
 	/**
-	 * オブジェクトの取得<br />
-	 * コールバックが指定されると、ロードが実行される。
+	 * Get elements relationship
 	 *
 	 * @name get
 	 * @method

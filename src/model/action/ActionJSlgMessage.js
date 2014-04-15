@@ -9,11 +9,30 @@
 	o = (o.action = o.action||{});
 
 	/**
-	 * <h4>コード処理・メッセージクラス（SLG固有要素）</h4>
+	 * <h4>ActionJSlgMessage</h4>
 	 * <p>
-	 * メッセージを呼び出す。<br />
-	 * また未解決の選択要素を追加する。<br />
+	 * This shows the message to canvas.<br />
+     * It accepts following parameters
 	 * </p>
+     * <ul>
+     * <li>Messages[]
+     *  <ul>
+     *  <li>Text</li>
+     *  <li>ImageData
+     *   <ul>
+     *   <li>FilePath</li>
+     *   <li>Width</li>
+     *   <li>Height</li>
+     *   </ul>
+     *  </li>
+     *  <li>Selection[]
+     *   <ul>
+     *   <li>Text</li>
+     *   </ul>
+     *  </li>
+     *  </ul>
+     * </li>
+     * </ul>
 	 * @class
 	 * @name ActionJSlgMessage
 	 * @memberOf jslgEngine.model.action
@@ -31,7 +50,7 @@
 	var p = ActionJSlgMessage.prototype;
 	
 	/**
-	 * クラス名
+	 * Class name
 	 *
 	 * @name className
 	 * @property
@@ -41,7 +60,7 @@
 	p.className = 'ActionJSlgMessage';
 
 	/**
-	 * 非同期かどうか
+	 * As if async function
 	 *
 	 * @private
 	 * @name _isAsync
@@ -52,12 +71,14 @@
 	p._isAsync = true;
 
 	/**
-	 * 実行
+	 * Fire this program.
 	 *
-	 * @name run
+	 * @name run$
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionJSlgMessage#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options
 	 */
 	p.run$ = function(connector, data, options) {
@@ -75,15 +96,15 @@
 		var pendingKey = jslgEngine.model.logic.keys.PEND_OBJ;
 		
 		self._readAllElements(connector, data, options);
+		connector.pipe(function(connector_s, result_s) {
+            self.validate(connector_s, {
+                parameters : result_s
+            }, options);
+        });
 		connector.connects(function(connector_s, result_s) {
-			var message = result_s[0].value;
-			var property = result_s[1];
-			var imageData = property[0];
-			var selection = property[1];
-			
-			//メッセージをアニメーションで表示する。
+            var messages = result_s;
+            
 			var groupName = 'message';
-			
 			if(!data.isTest) {
 				var removeKeys = options.iconController.getKeysByGroup(groupName);
 			
@@ -114,36 +135,20 @@
 					});
 				}
 			}
-			imageData = {
-				key : imageData[0].value,
-				width : imageData[1].value,
-				height : imageData[2].value
-			};
-			var selectionName = jslgEngine.ui.keys.MESSAGE_BOARD_SELECTION;
-			for(var i = 0; i < selection.length; i++) {
-				selection[i] = {
-					key : selectionName+i,
-					text : selection[i].value
-				};
-			}
-			
-			settings.push({
-				message : message,
-				imageData : imageData,
-				selection : selection
-			});
 			
 			requiredMessage = new jslgEngine.model.issue.RequiredMessage({
-				settings : settings
+				settings : messages
 			}, options);
-			requiredMessage.makeMessageElement(connector, selection, data, options);
-			
+			//requiredMessage.makeMessageElement(connector, messages[0].selection, data, options);
 		});
 		region.findElements(connector, {
 			key : [pendingVariableKey,pendingKey].join(jslgEngine.config.elementSeparator)
 		}, options);
 		connector.connects(function(connector_s, result_s) {
-			pendingCommand = result_s[0]||new jslgEngine.model.issue.PendingCommand({
+            var pendingVariable = data.localElements[pendingVariableKey];
+            var pendingCommand = pendingVariable ? pendingVariable.getChild({ key : pendingKey }) : null;
+			
+            pendingCommand = pendingCommand||new jslgEngine.model.issue.PendingCommand({
 				key : jslgEngine.model.logic.keys.PEND_OBJ,
 				commandKey : options.commandKey,
 				callback : function() {
@@ -163,12 +168,14 @@
 	};
 
 	/**
-	 * リストア
+	 * Restore data before running.
 	 *
 	 * @name restore
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionJSlgMessage#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options
 	 */
 	p.restore = function(connector, data, options) {
@@ -177,21 +184,66 @@
 		if(!self.isReadyToRestore(connector, options)) return;
 	};
 
-
 	/**
-	 * 展開する
+	 * Validates parameters, and returns reformatted parameters.
 	 *
-	 * @name expand
+	 * @name validate
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionJSlgMessage#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.controller.IconController} iconController</li>
-	 * <li>{jslgEngine.controller.mainController} mainController</li>
-	 * </ul>
 	 */
-	p.expand = function(options) {};
+	p.validate = function(connector, data, options) {
+		var self = this;
+
+        var messages = data.parameters;
+        var result = [];
+        
+        for(var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+            var text = message[0].value;
+            var imageData = message[1];
+            var selection = message[2];
+            
+            if(imageData && imageData.length) {
+                imageData = {
+                    key : imageData[0].value,
+                    regX : imageData[1].value,
+                    regY : imageData[2].value,
+                    width : imageData[3].value,
+                    height : imageData[4].value
+                };
+            } else {
+                imageData = null;
+            }
+            
+            var selectionName = jslgEngine.ui.keys.MESSAGE_BOARD_SELECTION;
+            if(selection) {
+                if(selection.value) {
+                    selection = [selection];
+                }
+                for(var j = 0; j < selection.length; j++) {
+                    selection[j] = {
+                        key : selectionName+j,
+                        text : selection[j].value
+                    };
+                }
+            } else {
+                selection = [{
+                    key : selectionName+0,
+                    text : 'OK'
+                }];
+            }
+            result.push({
+                message : text,
+                imageData : imageData,
+                selection : selection
+            });
+        }
+        connector.resolve(result);
+	};
 
 	o.ActionJSlgMessage = ActionJSlgMessage;
 }());

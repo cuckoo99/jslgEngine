@@ -8,9 +8,9 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>音・管理クラス</h4>
+	 * <h4>AudioFileController</h4>
 	 * <p>
-	 * 音関連のファイルを管理する。<br />
+	 * This is file manager to handle sound data.<br />
 	 * </p>
 	 * @class
 	 * @name AudioFileController
@@ -30,7 +30,7 @@
 	var p = AudioFileController.prototype;
 
 	/**
-	 * 識別キー
+	 * Access key.
 	 * 
 	 * @name _key
 	 * @property
@@ -40,7 +40,7 @@
 	p._key = 'Audio';
 
 	/**
-	 * 繰り返し再生情報
+	 * Constant value to repeat sound.
 	 *
 	 * @private
 	 * @name _REPEAT_ATTRIBUTE
@@ -51,7 +51,7 @@
 	p._REPEAT_ATTRIBUTE = 'repeat';
 
 	/**
-	 * 繰り返し再生情報無効値
+	 * Constant value to no-repeat sound.
 	 *
 	 * @private
 	 * @name _REPEAT_ATTRIBUTE_NO_REPEAT
@@ -62,14 +62,14 @@
 	p._REPEAT_ATTRIBUTE_NO_REPEAT = 'NO_REPEAT';
 
 	/**
-	 * 音をロードする
+	 * load sound file.
 	 *
 	 * @name load
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.AudioFileController#
-	 * @param {jslgEngine.model.network.ConnectorBase} connector 直列化クラス
-	 * @param {Object} data パラメータ
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options 
 	 **/
 	p.load = function(connector, data, options) {
@@ -95,6 +95,7 @@
 					audio.onloadeddata = function() {
 						var loadedResult = audio;
 						audio.setAttribute(self._REPEAT_ATTRIBUTE, false);
+                        
 						//TODO: selfが循環参照？
 						audio.addEventListener('ended', function() {
 							if(	this.getAttribute(self._REPEAT_ATTRIBUTE) !==
@@ -121,14 +122,14 @@
 	};
 
 	/**
-	 * 音を再生する。
+	 * Play sound.
 	 *
 	 * @name play
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.AudioFileController#
-	 * @param {jslgEngine.model.network.ConnectorBase} connector 直列化クラス
-	 * @param {Object} data パラメータ
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options 
 	 **/
 	p.play = function(connector, data, options) {
@@ -140,20 +141,18 @@
 			var repeats = data.loop === true ? data.loop : self._REPEAT_ATTRIBUTE_NO_REPEAT;
 			content.setAttribute(self._REPEAT_ATTRIBUTE, repeats);
 			content.play();
-			//var v = document.getElementById("video");
-			
 		}
 	};
 
 	/**
-	 * 音を停止する。
+	 * Stop sound.
 	 *
 	 * @name stop
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.AudioFileController#
-	 * @param {jslgEngine.model.network.ConnectorBase} connector 直列化クラス
-	 * @param {Object} data パラメータ
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options 
 	 **/
 	p.stop = function(connector, data, options) {

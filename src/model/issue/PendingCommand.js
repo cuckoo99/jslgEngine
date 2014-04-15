@@ -298,12 +298,10 @@
 					obj : obj
 				}, options);
 				
-				connector_s.pipe(function(connector_ss) {
-					//画面更新
-					issue.update(connector_ss, {
-					}, options);
-					//connector_ss.resolve();
-				}).connects(function(connector_ss) {
+				connector_s.connects(function(connector_ss) {
+                    if(issue.wasResolved()) {
+                        self.next();
+                    }
 					if(self.connector) {
 						self.connector.resolve();
 					}
@@ -331,6 +329,31 @@
 			resolved = issue.wasResolved() ? resolved : false;
 		}
 		return resolved;
+	};
+
+	/**
+	 * 解決済みの問題を削除する。
+	 *
+	 * @name removeResolvedIssues
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.issue.PendingCommand#
+	 * @param {Object} options
+	 **/
+	p.removeResolvedIssues = function() {
+		var self = this;
+        
+        var index = 0;
+		for(var i = 0; i < self._issues.length; i++) {
+			var issue = self._issues[i];
+			
+            if(!issue.wasResolved()) {
+                index = i;
+                break;
+            }
+		}
+        self._issues.splice(0, index);
+        self._currentIndex = 0;
 	};
 
 	/**

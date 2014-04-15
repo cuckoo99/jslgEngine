@@ -8,9 +8,9 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>画像・管理クラス</h4>
+	 * <h4>ImageFileController</h4>
 	 * <p>
-	 * 描画画像を管理する。<br />
+	 * This is file manager to handle image data.<br />
 	 * </p>
 	 * @class
 	 * @name ImageFileController
@@ -30,7 +30,7 @@
 	var p = ImageFileController.prototype;
 
 	/**
-	 * 識別キー
+	 * Access key.
 	 * 
 	 * @name _key
 	 * @property
@@ -40,18 +40,15 @@
 	p._key = 'Image';
 
 	/**
-	 * 画像をロードする
+	 * Load image file.
 	 *
 	 * @name load
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.ImageFileController#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadImages 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options
 	 **/
 	p.load = function(connector, data, options) {
 		var self = this;
@@ -90,7 +87,6 @@
 			
 			var image = self._contents[key];
 
-			//既に読み込みが完了しているか確認
 			if (image != null) {
 				images.pop();
 				callback(image);
@@ -117,7 +113,6 @@
 						if (img.complete) {
 							jslgEngine.log('loaded　complete:' + src);
 							self._contents[key] = img;
-							//connector_s.resolve();
 						}
 				});
 			}

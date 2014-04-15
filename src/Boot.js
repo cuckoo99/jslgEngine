@@ -83,7 +83,7 @@ jslgEngine.boot = function(data) {
 		mainController.ticker.unlockAnimation();	
 		
 		//createjs.Ticker.setFPS(24);
-		createjs.Ticker.setFPS(10);
+		//createjs.Ticker.setFPS(10);
 		createjs.Ticker.addEventListener("tick", handleTick);
 		
 		function handleTick(e) {

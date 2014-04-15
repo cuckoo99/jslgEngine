@@ -212,35 +212,42 @@
 	p.update = function(connector, data, options) {
 		var self = this;
 		
-		if(self.wasResolved()) {
-			self._removeMessages(connector, options);
-			return;
-		}
-		
-		var animationKey;
-		var region = options.mainController.getWorldRegion();
-		var settings = self._settings[self._currentIndex];
-		
-		var slgIconFactory = options.iconController.iconFactory;
-		
-		var text = settings.message;
-		var imageData = settings.imageData;
-		var selection = settings.selection;
-		self.makeMessageElement(connector, selection, data, options);
-		
-		slgIconFactory.makeMessageBoard(connector, {
-			position : [0,0],
-			text : text,
-			imageKey : imageData.key,
-			imageSize : {
-				width : imageData.width,
-				height : imageData.height
-			},
-			selection : selection
-		}, options);
-		
-		options.mainController.ticker.unlockAnimation();
 		connector.resolve();
+        
+		connector.pipe(function(connector_s) {
+            self._removeMessages$(connector_s, options);
+        });
+		connector.connects(function(connector_s) {
+            if(self.wasResolved()) {
+                return;
+            }
+            
+            var animationKey;
+            var region = options.mainController.getWorldRegion();
+            var settings = self._settings[self._currentIndex];
+            
+            var slgIconFactory = options.iconController.iconFactory;
+            
+            var text = settings.message;
+            var imageData = settings.imageData;
+            var selection = settings.selection;
+            self.makeMessageElement(connector, selection, data, options);
+            
+            slgIconFactory.makeMessageBoard(connector_s, {
+                position : [0,0],
+                text : text,
+                image : imageData ? {
+                    key : imageData.key,
+                    regX : imageData.regX,
+                    regY : imageData.regY,
+                    width : imageData.width,
+                    height : imageData.height
+                } : null,
+                selection : selection
+            }, options);
+            
+            options.mainController.ticker.unlockAnimation();
+        });
 	};
 	
 	
@@ -254,7 +261,7 @@
 	 * @param {Object} data
 	 * @param {Object} options
 	 **/
-	p._removeMessages = function(connector, options) {
+	p._removeMessages$ = function(connector, options) {
 		var groupName = 'message';
 		
 		var removeKeys = options.iconController.getKeysByGroup(groupName);
@@ -283,7 +290,9 @@
 			}, options);
 			
 			options.mainController.ticker.unlockAnimation();
-		}
+		} else {
+            connector.resolve();
+        }
 	};
 	
 	/**
@@ -350,6 +359,7 @@
 	};
 	
 	/**
+     * Get message information as JSlg element.
 	 *
 	 * @name makeMessageElement
 	 * @method

@@ -496,8 +496,7 @@ o = (o.factory = o.factory||{});
 		var regionKey = region.getKey();
 
 		var text = data.text;
-		var imageKey = data.imageKey;
-		var imageSize = data.imageSize;
+		var image = data.image;
 		var selection = data.selection;
 		var groupKey = 'message';
 
@@ -519,28 +518,28 @@ o = (o.factory = o.factory||{});
 		};
 		
 		//画像
-		if(imageKey) {
+		if(image) {
 			var isReflected = data.isReflected;
 			
 			var imageRect = {
 				x : messageRect.x,
-				y : messageRect.y-imageSize.height/2,
-				width : imageSize.width,
-				height : imageSize.height,
+				y : messageRect.y-image.height/2,
+				width : image.width,
+				height : image.height,
 				round : 5
 			};
 		
 			options.iconController.add(connector, {
 				key : imageName,
-				imageKey : imageKey,
+				imageKey : image.key,
 				group : groupKey,
 				position : { x : imageRect.x,  y : imageRect.y,  z : 0 },
 				sprite : {
 					frames : {
 						width : imageRect.width,
 						height : imageRect.height,
-						regX : 0,
-						regY : 0
+						regX : image.regX,
+						regY : image.regY
 					},
 					animations : { 'default' : [ 0, 0, "default" ] }
 				}

@@ -1,0 +1,6 @@
+[submodule "lib/jquery"]
+	path = lib/jquery
+	url = git://github.com/jquery/jquery.git
+[submodule "lib/easeljs"]
+	path = lib/easeljs
+	url = git://github.com/CreateJS/EaselJS

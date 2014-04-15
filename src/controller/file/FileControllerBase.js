@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>実オブジェクト・管理クラス</h4>
+	 * <h4>FileControllerBase</h4>
 	 * <p>
-	 * ロード処理を必要とし、ロードされたオブジェクトを管理するコントローラ。<br />
+	 * This handles the file,<br />
+     * and implements methods to access content loaded.<br />
 	 * </p>
 	 * @class
 	 * @name FileControllerBase
@@ -26,8 +27,8 @@
 	var p = FileControllerBase.prototype;
 
 	/**
-	 * 識別キー<br />
-	 * <br />
+	 * Access key.
+	 * 
 	 * @name _key
 	 * @property
 	 * @type String
@@ -36,33 +37,33 @@
 	p._key = null;
 
 	/**
-	 * ロード予約済みの情報<br />
-	 * <br />
-	 * Key：キー、Value：Url
+	 * Reserved objects has key and url to load.
+     *
 	 * @name _stock
 	 * @property
-	 * @type String[]
+	 * @type Object[]
 	 * @memberOf jslgEngine.controller.FileControllerBase#
 	 **/
 	p._stock = null;
 
 	/**
-	 * 実オブジェクト
+	 * Loaded contents.
 	 *
 	 * @name _contents
 	 * @property
-	 * @type Object
+	 * @type Object[]
 	 * @memberOf jslgEngine.controller.FileControllerBase#
 	 **/
 	p._contents = null;
 
 	/**
-	 * 初期化
+	 * Set up
 	 *
 	 * @name initialize
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.FileControllerBase#
+	 * @param {Object} data
 	 **/
 	p.initialize = function(data) {
 		var self = this;
@@ -72,7 +73,7 @@
 	};
 
 	/**
-	 * キーの取得
+	 * Get key.
 	 *
 	 * @name initialize
 	 * @method
@@ -85,12 +86,13 @@
 	};
 
 	/**
-	 * ロードする画像の追加
+	 * Add reservation for loading the content.
 	 *
 	 * @name add
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.FileControllerBase#
+	 * @param {Object} data
 	 **/
 	p.add = function(data) {
 		var self = this;
@@ -101,13 +103,16 @@
 	};
 
 	/**
-	 * オブジェクトの取得<br />
-	 * コールバックが指定されると、ロードが実行される。
+	 * Get content.
 	 *
 	 * @name get
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.OBJFileController#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options 
+	 * @param {Function} callback 
 	 **/
 	p.get = function(connector, data, options, callback) {
 		var self = this;
@@ -140,18 +145,15 @@
 	};
 
 	/**
-	 * 画像をロードする
+	 * Load content.
 	 *
 	 * @name load
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.FileControllerBase#
-	 * @param {JSON} options
-	 * <ul>
-	 * <li>{jslgEngine.connector.SynchronizeBase} connector 直列処理クラス</li>
-	 * <li>{String[]} loadContents 読み込む画像</li>
-	 * </ul>
-	 * @param {Function} callback 読み込み後実行されるコールバック関数
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options 
 	 **/
 	p.load = function(connector, data, options) {
 	};
