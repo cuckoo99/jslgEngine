@@ -4,3 +4,9 @@
 [submodule "lib/easeljs"]
 	path = lib/easeljs
 	url = git://github.com/CreateJS/EaselJS
+[submodule "lib/jquery-tmpl"]
+	path = lib/jquery-tmpl
+	url = git://github.com/BorisMoore/jquery-tmpl
+[submodule "lib/jquery-ui"]
+	path = lib/jquery-ui
+	url = git://github.com/jquery/jquery-ui
