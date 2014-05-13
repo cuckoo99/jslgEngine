@@ -106,6 +106,7 @@
 									}
 								}
 								if(!hasMessage) {
+                                    // 実際に実行する場合、ユーザーにメッセージは選択させる。
 									pending.reset({ issues : issues });
 								}
 							} else {

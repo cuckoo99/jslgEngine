@@ -9,9 +9,9 @@
 	o = (o.action = o.action||{});
 
 	/**
-	 * <h4>コード処理・基本クラス</h4>
+	 * <h4>ActionBase</h4>
 	 * <p>
-	 * ステージを操作する命令を実行するクラス。
+	 * This is abstract class of Action classes。
 	 * </p>
 	 * @class
 	 * @name ActionBase
@@ -30,7 +30,7 @@
 	var p = ActionBase.prototype;
 
 	/**
-	 * 初期化
+	 * set up.
 	 *
 	 * @name initialize
 	 * @method
@@ -39,7 +39,7 @@
 	 **/
 	p.initialize = function(options) {
 		var self = this;
-		//jslgEngine.log('make '+self.className);
+        
 		self._arguments = options.arguments;
 		self._wasDone = false;
 	};
@@ -65,7 +65,7 @@
 	p._statement = null;
 
 	/**
-	 * 引数
+	 * parameters
 	 *
 	 * @name arguments
 	 * @property
@@ -75,7 +75,7 @@
 	p._arguments = null;
 
 	/**
-	 * リストア用データ
+	 * information for restoration.
 	 *
 	 * @name _restoreData
 	 * @property
@@ -100,7 +100,7 @@
 	};
 	
 	/**
-	 * 実行済みか確認
+	 * check if it was done.
 	 *
 	 * @name wasDone
 	 * @method
@@ -124,13 +124,12 @@
 	};
 	
 	/**
-	 * 実行済みか確認
+	 * check if it was done, case of true, it could not be run.
 	 *
 	 * @name isReadyToRun
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionBase#
-	 * @boolean is_back 逆実行するかどうか
 	 */
 	p.isReadyToRun = function(connector, options) {
 		var self = this;
@@ -138,8 +137,6 @@
 		var isNotReady = !self._isAlreadyFound();
 		var wasDone = self.wasDone();
 		if(isNotReady||wasDone) {
-//			jslgEngine.log('Cannot Run Action: '+self.className+
-//					(isNotReady?',has unknown arguments':'')+(wasDone?',wasDone':'')+'('+self._arguments.join(',')+')');
 			if(self.run$) {
 				connector.resolve();
 			}
@@ -153,7 +150,7 @@
 	};
 	
 	/**
-	 * 実行済みか確認
+	 * check if it was done, case of false, it could not be run.
 	 *
 	 * @name isReadyToRestore
 	 * @method
@@ -336,60 +333,18 @@
 	};
 	
 	/**
-	 * XML文字列形式として返す
+	 * Validates parameters, and returns reformatted parameters.
 	 *
-	 * @name toXML
+	 * @name validate
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionBase#
-	 * @returns {String}
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options
 	 */
-	p.toXML = function(options) {
-		var self = this;
-		var opts = options||{};
-		opts.increment = opts.increment != null ? opts.increment : 0;
-		var space = '\t';
-		var inc = opts.increment+1;
-		var getIncrement = function(cnt, has_ret) {
-			var retCode = has_ret ? '\r' : '';
-			return retCode + jslgEngine.utility.getRepeatedText(space, cnt);
-		}
-		var limit = 10;
-		var className = ['<className>',self.className,'</className>'].join('');
-		var type = ['<type>',self.elementType,'</type>'].join('');
-		var params = '';
-		
-		var getNestedProperties = function(cnt, tgt, name) {
-			if(cnt > limit) return '';
-			var tx = '';
-			if(tgt instanceof Array) {
-				var stk = [];
-				for(var i = 0; i < tgt.length; i++) {
-					stk.push(arguments.callee(cnt+1, tgt[i], name));
-				}
-				tx = stk.join(getIncrement(inc+cnt+1, true));
-				return ['<'+name+'>',tx].join(getIncrement(inc+cnt+1, true))+
-						getIncrement(inc+cnt, true)+'</'+name+'>';
-			} else {
-				tx = tgt;
-				return '<'+name+'>'+tx+'</'+name+'>';
-			}
-		};
-		
-		if(self._arguments) {
-			params = getNestedProperties(0, self._arguments, 'arguments');
-		}
-		
-		var targets = [type,className,params];
-		var t, nw = [];
-		while ((t = targets.shift()) !== undefined) {
-			if (t !== "") nw.push(t);
-		}
-		getNestedProperties = null;
-		var text = ['<element>',nw.join(getIncrement(inc, true))].join(getIncrement(inc, true))+
-					getIncrement(inc-1, true)+'</element>';
-		return text;
-	};
-	
+	p.validate = function(connector, data, options) {
+    };
+    
 	o.ActionBase = ActionBase;
 }());

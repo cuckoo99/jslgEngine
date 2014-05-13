@@ -63,17 +63,6 @@
 	p._wasMadePendingStack = false;
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionPending#
-	 **/
-	p._isAsync = true;
-
-	/**
 	 * 実行
 	 *
 	 * @name run
@@ -134,6 +123,8 @@
                 if(!data.isTest) {
                     // 解決されたとしても、問題は何だったのか描画する。
                     connector.pipe(function(connector_s) {
+//                        var issue = pendingCommand.getCurrentIssue();
+//                        issue.updateFirstTime(connector, data, options);
                         self._updateDisplay(connector_s, pendingCommand, {
                             wasSolved : false
                         }, options);
@@ -171,7 +162,8 @@
 						key : jslgEngine.model.logic.keys.PEND_OBJ
 					}, options);
 					pendingCommand.reset({ issues : issues });
-					
+					pendingCommand.hoge = 1;
+                    
 					data[pendingPropertyKey].push(pendingCommand);
 					connector_s.resolve();
 				});

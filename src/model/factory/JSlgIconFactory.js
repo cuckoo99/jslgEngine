@@ -497,7 +497,7 @@ o = (o.factory = o.factory||{});
 
 		var text = data.text;
 		var image = data.image;
-		var selection = data.selection;
+		var selection = [].concat(data.selection);
 		var groupKey = 'message';
 
 		var canvasSize = options.iconController.canvasSize;
@@ -585,7 +585,7 @@ o = (o.factory = o.factory||{});
 		}).height+offset*2;
 		
 		selection.unshift({
-			text : 'Question:',
+			text : 'Selection:',
 			colors : ["rgba(216, 0, 0, 0.5)", "rgba(157, 0, 0, 0.5)"]
 		});
 		var selectionHeight = textHeight * selection.length;

@@ -593,5 +593,23 @@
 	p._restoreLocalElement = function(data, options) {
 	};
 	
+	/**
+	 * 複製する
+	 *
+	 * @name generate
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.command.Command#
+	 */
+	p.generate = function(data, options) {
+        var self = this;
+       
+		var clone = jslgEngine.getClone(self, { limit : 10000 });
+		
+		clone.setup({}, options);
+        clone.getKeyData().resetUniqueId(options);
+		return clone;
+	};
+    
 	o.Command = Command;
 }());

@@ -8,9 +8,10 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>要素総合・管理クラス</h4>
+	 * <h4>MainController</h4>
 	 * <p>
-	 * 存在するSLG要素を管理する。
+	 * It has the root of all JSlg element,
+     * and these managing functions.
 	 * </p>
 	 * @class
 	 * @name MainController
@@ -26,7 +27,7 @@
 	var p = MainController.prototype;
 
 	/**
-	 * 初期化
+	 * set up
 	 *
 	 * @name initialize
 	 * @method
@@ -35,8 +36,11 @@
 	 **/
 	p.initialize = function(data) {
 		var self = this;
+        var worldKey = 'w1';
 		var workersPath = data.workersPath||jslgEngine.workSpace+jslgEngine.config.workersURL;
-		self._worldRegion = new jslgEngine.model.area.WorldRegion({}, {
+		self._worldRegion = new jslgEngine.model.area.WorldRegion({
+            key : worldKey
+        }, {
 			mainController : self
 		});
 		self._webworkers = [];
@@ -62,10 +66,11 @@
 		}
 		self.users = [];
 		self._elementBinder = new jslgEngine.controller.ElementBinder();
+        self.bindElement(self._worldRegion, null);
 	};
 
 	/**
-	 * ワールド領域
+	 * WorldRegion
 	 *
 	 * @private
 	 * @name _worldRegion
@@ -106,8 +111,7 @@
 	p.backGroundWorker = null;
 
 	/**
-	 * タイマー・オブジェクト
-	 * TODO: 同階層でいいか検討
+	 * timer
 	 *
 	 * @name ticker
 	 * @property
@@ -147,7 +151,7 @@
 	p._webworkers = null;
 
 	/**
-	 * 未解決オブジェクト
+	 * Unsolved input element.
 	 *
 	 * @name pendingCommand
 	 * @property
@@ -157,7 +161,7 @@
 	p.pendingCommand = null;
 
 	/**
-	 * ユーザオブジェクト
+	 * users
 	 *
 	 * @name users
 	 * @property
@@ -167,7 +171,7 @@
 	p.users = null;
 	
 	/**
-	 * 親要素取得のためのオブジェクト
+	 * ElementBinder.
 	 *
 	 * @name elementBinder
 	 * @property
@@ -177,7 +181,7 @@
 	p._elementBinder = null;
 	
 	/**
-	 * 一意ID用カウント
+	 * unique Id count
 	 *
 	 * @name idCount
 	 * @property
@@ -187,7 +191,7 @@
 	p._idCount = 1;
 	
 	/**
-	 * 任意の要素の持つイベントを実行する。
+	 * call onClick Command in Element.
 	 *
 	 * @name kick
 	 * @method
@@ -245,7 +249,7 @@
 	};
 
 	/**
-	 * ファイルの読み込み
+	 * Load files in FileControllers.
 	 *
 	 * @name load
 	 * @method
@@ -282,10 +286,16 @@
 			for(var j = 0; j < self._fileControllers.length; j++) {
 				var fileController = self._fileControllers[j];
 				
-				if(fileController.getKey() === resouce.resourceFileType) {
+                var fileType = resouce.getStatus('fileType');
+                fileType = fileType ? fileType.value : null;
+                var key = resouce.getKey();
+                var url = resouce.getStatus('url');
+                url = url ? url.value : null;
+                
+				if(fileController.getKey() === fileType) {
 					fileController.add({
-						key : resouce.resourceKey,
-						url : resouce.resourceUrl
+						key : key,
+						url : url
 					});
 				}
 			}
@@ -293,16 +303,13 @@
 	};
 
 	/**
-	 * ワールド空間を取得
+	 * get WorldRegion.
 	 *
 	 * @name getWorldRegion
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.MainController#
 	 * @param {Object} options
-	 * <ul>
-	 * <li>{Object} position 入力座標</li>
-	 * </ul>
 	 **/
 	p.getWorldRegion = function(options) {
 		var self = this;
@@ -310,12 +317,13 @@
 	};
 
 	/**
-	 * 特定のファイルコントローラを取得する
+	 * get a controller by key.
 	 *
 	 * @name getController
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.MainController#
+	 * @param {String} key
 	 **/
 	p.getController = function(key) {
 		var self = this;
@@ -330,7 +338,7 @@
 	};
 	
 	/**
-	 * 子要素の検索
+	 * find elements from WorldRegion.
 	 *
 	 * @name findElements
 	 * @method
@@ -396,7 +404,7 @@
 	};
 		
 	/**
-	 * ユーザーを追加する
+	 * add user.
 	 *
 	 * @name addUser
 	 * @method
@@ -416,7 +424,7 @@
 	};
 	
 	/**
-	 * ユーザーをアクティブ化する
+	 * activate user.
 	 *
 	 * @name activateUser
 	 * @method
@@ -437,7 +445,7 @@
 	};
 	
 	/**
-	 * 要素を紐づける
+	 * bind relationship between elements.
 	 *
 	 * @name bindElement
 	 * @method
@@ -446,14 +454,28 @@
 	 **/
 	p.bindElement = function(key_element, element, data) {
 		var self = this;
-		var uniqueId = key_element.getKeyData().getUniqueId();
-		var key = [key_element.getKey(),uniqueId].join(jslgEngine.config.elementSeparator);
-		
-		self._elementBinder.set(key, element);
+        
+        var key = self._elementBinder.getUniqueId(key_element);
+		self._elementBinder.set(key, key_element);
+		self._elementBinder.attachParent(key, element);
 	};
 	
 	/**
-	 * 要素のもつ一意キーから、対象の要素を取得する。
+	 * search for elements in ElementBinder.
+	 *
+	 * @name getElementFromBinder
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.MainController#
+	 **/
+	p.searchElements = function(connector, data, options) {
+		var self = this;
+        
+		self._elementBinder.search(connector, data, options);
+	};
+	
+	/**
+	 * get element from ElementBinder.
 	 *
 	 * @name getElementFromBinder
 	 * @method
@@ -462,14 +484,13 @@
 	 **/
 	p.getElementFromBinder = function(key_element) {
 		var self = this;
-		var uniqueId = key_element.getKeyData().getUniqueId();
-		var key = [key_element.getKey(),uniqueId].join(jslgEngine.config.elementSeparator);
-		
-		return self._elementBinder.get(key);
+        
+        var key = self._elementBinder.getUniqueId(key_element);
+		return self._elementBinder.getParent(key);
 	};
 	
 	/**
-	 * 要素のもつ一意キーから、対象の要素を取得する。
+	 * get web workers from key.
 	 *
 	 * @name getWebWorkers
 	 * @method
@@ -482,7 +503,7 @@
 	};
 	
 	/**
-	 * 一意なIDを取得する。
+	 * get unique id.
 	 *
 	 * @name getUniqueId
 	 * @method
@@ -491,7 +512,6 @@
 	 **/
 	p.getUniqueId = function() {
 		var self = this;
-		
 		return (self._idCount++);
 	};
 	

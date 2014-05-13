@@ -246,14 +246,13 @@
 
 					sprite.images = [ image ];
 
-					var obj = new createjs.BitmapAnimation(
+					var obj = new createjs.Sprite(
 							new createjs.SpriteSheet(sprite));
 
 					obj.name = key;
 					obj.x = position.x;
 					obj.y = position.y;
-					//obj.alpha = data.alpha != null ? data.alpha : 1;
-					//obj.visible = data.visibility != null ? data.visibility : true;
+					
 					obj.gotoAndPlay("default");
 
 					obj.addEventListener("animationend", function(e) {
@@ -361,8 +360,8 @@
 			
 			obj.x = position.x;
 			obj.y = position.y;
-			if(obj.text) {
-				obj.text = data.text||obj.text;
+			if(obj.text != null) {
+				obj.text = data.text != null ? data.text : obj.text;
 			}
 
 			if(data.animeKey) {

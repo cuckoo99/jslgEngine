@@ -150,37 +150,34 @@
 	 */
 	p._findElements = function(connector, data, options) {
 		var self = this;
-		var obj = data.obj||[];
+		
+        var obj = self._getObjectToFind(data, options);
+		if(obj.length == 0) return data.result;
+		
 		var target = obj.shift();
 		
 		var issue = self.getCurrentIssue();
 		var element = issue.getAppliedElement();
 		
-		//解決済みの要素が存在し、キーが一致する場合、その要素内と一致させた状態から、
-		//さらに内部を探査
-		if(element instanceof jslgEngine.model.common.JSlgKey) {
-			var path = element.getPath();
-			
-			element = options.mainController.findElements(connector, {
-				key : path
-			}, options)[0];
-		
-			if(self.getKey() === target.data.key && obj.length == 0) {
-				data.result.push(element);
-				return data.result;
+        if(element) {
+			if(self.equals(target.data)) {
+                
+                if(obj.length === 0) {
+                    data.result.push(element);
+                } else {
+                    element.findElements(connector, {
+                        index : 0,
+                        obj : [].concat({
+                                type : 'get',
+                                data : {
+                                    key : element.getKey()
+                                }
+                        }).concat(obj),
+                        result : data.result
+                    }, options);
+                }
 			}
-			
-			element.findElements(connector, {
-				index : 0,
-				obj : [].concat({
-						type : 'get',
-						data : {
-							key : element.getKey()
-						}
-				}).concat(obj),
-				result : data.result
-			}, options);
-		}
+        }
 		
 		return data.result;
 	};
@@ -211,7 +208,10 @@
 	p.reset = function(data) {
 		var self = this;
 	
-		self._issues = data.issues;
+		self._issues = [];
+        for(var i = 0; i < data.issues.length; i++) {
+            self._issues.push(data.issues[i]);
+        }
 		self._currentIndex = 0;
 	};
 	

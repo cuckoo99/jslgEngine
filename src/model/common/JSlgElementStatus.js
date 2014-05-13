@@ -83,9 +83,9 @@
 	p.getNumber = function(options) {
 		var self = this;
 		
-		if(!self.value || typeof(self.value) === 'string') return null;
-		
-		return ~~self.value;
+		if(self.value == null || typeof(self.value) === 'string') return null;
+        
+		return isNaN(self.value) ? ~~self.value : self.value;
 	};
 
 	/**

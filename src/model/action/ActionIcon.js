@@ -61,86 +61,39 @@
 		
 		self._readAllElements(connector, data, options);
 		connector.pipe(function(connector_s, result_s) {
+            self.validate(connector_s, {
+                parameters : result_s
+            }, options);
+        });
+        connector.pipe(function(connector_s, result_s) {
 			connector_s.resolve();
+            var parameter = result_s;
 			
-			var target = result_s[0];
-			var key = result_s[1];
-			var imageKey = result_s[2];
-			var commandKey = result_s[3];
-			var property = result_s[4];
-			
-			if(target === null || key === null ||
-				imageKey === null || commandKey === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
-				return;
-			}
-	
 			self._wasDone = true;
 			
-			var position = property[0] ? {
-				x : property[0][0].value,
-				y : property[0][1].value,
-				z : property[0][2].value
-			} : { x : 0, y : 0, z : 0 };
-			var alpha = property[1].value;
-			
-			var textProperties = property[2];
-			var text = textProperties instanceof Array ? {
-					textValue : textProperties[0].value,
-					color : textProperties[1].value,
-					font : textProperties[2].value
-				} : null;
-			
-			var spriteProperties = property[3];
-			var framesProperties = spriteProperties[0];
-			var frames = framesProperties instanceof Array ? {
-				width : framesProperties[0].value,
-				height : framesProperties[1].value,
-				regX : framesProperties[2].value,
-				regY : framesProperties[3].value
-			} : null;
-			
-			var animationsProperties = spriteProperties[1];
-			var animations = null;
-			if(animationsProperties instanceof Array) {
-				animations = {};
-	
-				var length = animationsProperties.length;
-				for(var i = 0; i < length; i++) {
-					var animePropaties = animationsProperties[i];
-					if(animePropaties[0]) {
-						animations[animePropaties[0].value] = [
-							animePropaties[1].value, animePropaties[2].value, animePropaties[0].value];
-					}
-				}
-			}
-			
 			options.iconController.add(connector_s, {
-				key : key.value,
-				imageKey : imageKey.value,
-				position : position,
-				alpha : alpha,
-				text : text,
-				sprite : spriteProperties != null ? {
-					frames : frames,
-					animations : animations,
-					clickFunc : function(e, options_s) {
+				key : parameter.key,
+				imageKey : parameter.imageKey,
+				position : parameter.position,
+				alpha : parameter.alpha,
+				text : parameter.text,
+				sprite : parameter.spriteProperties != null ? {
+					frames : parameter.frames,
+					animations : parameter.animations,
+					onClick : function(e, options_s) {
 						var mainController = options_s.mainController;
 						var name = e.target.name;
 						
 						mainController.kick({
 							key : name,
 							className : 'Icon',
-							x : location.x,
-							y : location.y,
-							z : location.z
 						}, options_s);
 					}
 				} : null
 			});
 			
-			if(target.onAdd) {
-				target.onAdd.run(connector_s, data, options);
+			if(parameter.target.onAdd) {
+				parameter.target.onAdd.run(connector_s, data, options);
 			}
 		});
 	};
@@ -227,6 +180,86 @@
 	 * </ul>
 	 */
 	p.expand = function(options) {};
+
+	/**
+	 * Validates parameters, and returns reformatted parameters.
+	 *
+	 * @name validate
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.action.ActionIcon#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
+	 * @param {Object} options
+	 */
+	p.validate = function(connector, data, options) {
+		var self = this;
+
+        var parameters = data.parameters;
+        var result = [];
+        
+        var target = parameters[0];
+        var key = parameters[1];
+        var imageKey = parameters[2];
+        var property = parameters[3];
+        
+        if(target === null || key === null ||
+            imageKey === null) {
+            jslgEngine.log(self.className + ' has no enough arguments.');
+            return;
+        }
+
+        var position = property[0] ? {
+            x : property[0][0].value,
+            y : property[0][1].value,
+            z : property[0][2].value
+        } : { x : 0, y : 0, z : 0 };
+        var alpha = property[1].value;
+        
+        var textProperties = property[2];
+        var text = textProperties instanceof Array ? {
+                textValue : textProperties[0].value,
+                color : textProperties[1].value,
+                font : textProperties[2].value
+            } : null;
+        
+        var spriteProperties = property[3];
+        var framesProperties = spriteProperties[0];
+        var frames = framesProperties instanceof Array ? {
+            regX : framesProperties[0].value,
+            regY : framesProperties[1].value,
+            width : framesProperties[2].value,
+            height : framesProperties[3].value
+        } : null;
+        
+        var animationsProperties = spriteProperties[1];
+        var animations = null;
+        if(animationsProperties instanceof Array) {
+            animations = {};
+
+            var length = animationsProperties.length;
+            for(var i = 0; i < length; i++) {
+                var animePropaties = animationsProperties[i];
+                if(animePropaties[0]) {
+                    animations[animePropaties[0].value] = [
+                        animePropaties[1].value, animePropaties[2].value, animePropaties[0].value];
+                }
+            }
+        }
+        
+        connector.resolve({
+            target : target,
+            key : key.value,
+            imageKey : imageKey.value,
+            position : position,
+            alpha : alpha,
+            text : text,
+            spriteProperties : {
+                frames : frames,
+                animations : animations
+            }
+        });
+	};
 
 	o.ActionIcon = ActionIcon;
 }());

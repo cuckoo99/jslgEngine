@@ -72,14 +72,12 @@
 		});
 		connector.pipe(function(connector_s, result_s) {
 			connector_s.resolve();
-			jslgEngine.log('hoge');
 			options.mainController.findElements(connector_s, {
 				className : 'Cast'
 			}, options);
 			connector_s.pipe(function(connector_ss,result_ss) {
 				var casts = result_ss;
 				
-			jslgEngine.log('hhoge');
 				//全ての所属キャストを実行するか
 				//単体のキャストを実行する
 				for(var i = 0; i < casts.length; i++) {
@@ -95,14 +93,12 @@
 		});
 		//TODO: connectsにすると動かない（非同期が重複解決する）
 		connector.pipe(function(connector_s, result_s) {
-				jslgEngine.log('hhghoge');
 			connector_s.resolve();
 			connector_s.loop({
 				elements : targets
 			}, function(connector_ss, result_ss) {
 				var target = result_ss;
 				
-				jslgEngine.log('hhhoge');
 				target.findElements(connector_ss, {
 					className : 'Mind'
 				}, options);
@@ -140,11 +136,13 @@
 				if(commandDrivers) {
 					var commandDriversLength = commandDrivers.length;
 					for(var j = 0; j < commandDriversLength; j++) {
-						connector_s.pipe(function(connector_ss) {
-							var driver = commandDrivers.pop();
-							
-							driver.run(connector_ss.resolve(), data, options);
-						});
+                        var driver = commandDrivers.pop();
+                        
+                        if(driver.getReview() >= 0) {
+                            connector_s.pipe(function(connector_ss) {
+                                driver.run(connector_ss.resolve(), data, options);
+                            });
+                        }
 					}
 				}
 			}
@@ -160,7 +158,7 @@
 	};
 
 	/**
-	 * リストア
+	 * restore
 	 *
 	 * @name restore
 	 * @method
@@ -177,12 +175,12 @@
 		
 		if(!self.isReadyToRestore(connector, options)) return;
 		
-		
+		connector.resolve();
 	};
 
 
 	/**
-	 * 展開する
+	 * expand
 	 *
 	 * @name expand
 	 * @method

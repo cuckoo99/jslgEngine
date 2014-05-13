@@ -214,6 +214,9 @@
 		
 		connector.resolve();
         
+        // 強制アップデートが指定された場合、何も描画処理を行わない。
+        if(data.wasSolved === false) return;
+        
 		connector.pipe(function(connector_s) {
             self._removeMessages$(connector_s, options);
         });
@@ -231,7 +234,7 @@
             var text = settings.message;
             var imageData = settings.imageData;
             var selection = settings.selection;
-            self.makeMessageElement(connector, selection, data, options);
+            self._makeMessageElement(connector, selection, data, options);
             
             slgIconFactory.makeMessageBoard(connector_s, {
                 position : [0,0],
@@ -321,6 +324,11 @@
 		
 		var passed;
 		
+        //即席で要素を作成する。
+        var settings = self._settings[self._currentIndex];
+        var selection = settings.selection;
+        self._makeMessageElement(connector, selection, data, options);
+        
 		var messageElement = self._getMessageElement(connector, data, options);
 		var selectionItems = messageElement.getChildren();
 		for(var j = 0; j < selectionItems.length; j++) {
@@ -359,6 +367,32 @@
 	};
 	
 	/**
+     * create JSlg element.
+	 *
+	 * @name makeElement
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.issue.RequiredMessage#
+	 * @param {Object} count
+	 * @param {Object} data
+	 * @param {Object} options
+	 **/
+	p.makeElement = function(connector, data, options) {
+        var self = this;
+        
+        if(self.wasResolved()) {
+            return;
+        }
+        
+        var settings = self._settings[self._currentIndex];
+        var text = settings.message;
+        var imageData = settings.imageData;
+        var selection = settings.selection;
+        
+        self._makeMessageElement(connector, selection, data, options);
+    };
+    
+	/**
      * Get message information as JSlg element.
 	 *
 	 * @name makeMessageElement
@@ -369,7 +403,7 @@
 	 * @param {Object} data
 	 * @param {Object} options
 	 **/
-	p.makeMessageElement = function(connector, selection, data, options) {
+	p._makeMessageElement = function(connector, selection, data, options) {
 		var self = this;
 		
 		//入力要素を構築

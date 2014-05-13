@@ -9,9 +9,9 @@
 	o = (o.action = o.action||{});
 
 	/**
-	 * <h4>コード処理・追加クラス</h4>
+	 * <h4>ActionAdd</h4>
 	 * <p>
-	 * SLG要素に子要素を追加する。
+	 * add JSlg element.
 	 * </p>
 	 * @class
 	 * @name ActionAdd
@@ -30,7 +30,7 @@
 	var p = ActionAdd.prototype;
 	
 	/**
-	 * クラス名
+	 * class name
 	 *
 	 * @name className
 	 * @property
@@ -40,28 +40,15 @@
 	p.className = 'ActionAdd';
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionAdd#
-	 **/
-	p._isAsync = true;
-
-	/**
-	 * 実行
+	 * run
 	 *
 	 * @name run
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionAdd#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.network.ConnectorBase} connector</li>
-	 * <li>{Object} options</li>
-	 * </ul>
 	 */
 	p.run$ = function(connector, data, options) {
 		var self = this;
@@ -100,17 +87,15 @@
 	};
 
 	/**
-	 * リストア
+	 * restore
 	 *
 	 * @name restore
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionAdd#
+	 * @param {jslgEngine.model.network.ConnectorBase} connector
+	 * @param {Object} data
 	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.controller.IconController} iconController</li>
-	 * <li>{jslgEngine.controller.mainController} mainController</li>
-	 * </ul>
 	 */
 	p.restore$ = function(connector, data, options) {
 		var self = this;
@@ -145,34 +130,15 @@
 		});
 	};
 
-
 	/**
-	 * 展開する
-	 *
-	 * @name expand
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.action.ActionAdd#
-	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.controller.IconController} iconController</li>
-	 * <li>{jslgEngine.controller.mainController} mainController</li>
-	 * </ul>
-	 */
-	p.expand = function(options) {};
-
-	/**
-	 * Pendingに対して参照があれば評価を行う
+	 * get value for Mind priority.
 	 *
 	 * @name review
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.action.ActionAdd#
+	 * @param {Object} data
 	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.controller.IconController} iconController</li>
-	 * <li>{jslgEngine.controller.mainController} mainController</li>
-	 * </ul>
 	 */
 	p.review = function(result, data, options) {
 		//Mindから得た情報を元に評価を行う

@@ -1,0 +1,2872 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<element>
+	<className>LocalRegion</className>
+	<key>r1</key>
+	<location>
+		<x>0</x>
+		<y>0</y>
+		<z>0</z>
+	</location>
+	<size>
+		<width>30</width>
+		<height>5</height>
+		<depth>1</depth>
+	</size>
+	<element>
+		<className>Resource</className>
+		<key>map1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/map_04.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<key>human1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/human_01.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<fileType>Image</fileType>
+		<key>monster1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/monster_01.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<key>grid1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/bg_01.jpg</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<key>sc_human1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/screen_human_01.png</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<key>model1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Model</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./models/cube1/cube1.js</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
+		<key>model2</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Model</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./models/simple_chara1.js</value>
+		</element>
+	</element>
+	<element>
+		<className>StageFrame</className>
+		<key>rs1</key>
+		<size>
+			<width>30</width>
+			<height>5</height>
+			<depth>1</depth>
+		</size>
+		<element>
+			<className>Status</className>
+			<key>width</key>
+			<value>5</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>height</key>
+			<value>5</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>depth</key>
+			<value>1</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>drawingOptions</key>
+			<value>
+				<argument>1</argument>
+			</value>
+		</element>
+	</element>
+	<element>
+		<className>GroundFrame</className>
+		<key>rg1</key>
+		<element>
+			<className>Status</className>
+			<key>type</key>
+			<value>grass</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>effect</key>
+			<value>0</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>drawingOptions</key>
+			<value>
+				<argument>
+					<argument>map1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>160</argument>
+					<argument>160</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+					</argument>
+					<argument>
+						<argument>area0</argument>
+						<argument>4</argument>
+						<argument>5</argument>
+					</argument>
+					<argument>
+						<argument>area1</argument>
+						<argument>8</argument>
+						<argument>8</argument>
+					</argument>
+				</argument>
+				<argument>
+					<argument>model1</argument>
+					<argument>2</argument>
+				</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_show</key>
+			<value>area0</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_default</key>
+			<value>default</value>
+		</element>
+	</element>
+	<element>
+		<className>GroundFrame</className>
+		<key>rg2</key>
+		<element>
+			<className>Status</className>
+			<key>type</key>
+			<value>pond</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>effect</key>
+			<value>3</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>drawingOptions</key>
+			<value>
+				<argument>
+					<argument>map1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>160</argument>
+					<argument>160</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>8</argument>
+						<argument>8</argument>
+					</argument>
+					<argument>
+						<argument>area0</argument>
+						<argument>4</argument>
+						<argument>5</argument>
+					</argument>
+					<argument>
+						<argument>area1</argument>
+						<argument>8</argument>
+						<argument>8</argument>
+					</argument>
+				</argument>
+				<argument>
+					<argument>model1</argument>
+				</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_show</key>
+			<value>area0</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_default</key>
+			<value>area1</value>
+		</element>
+	</element>
+	<element>
+		<className>Command</className>
+		<key>init</key>
+		<element>
+			<className>ActionLog</className>
+			<argument>"初期化"</argument>
+		</element>
+		<element>
+			<className>ActionJSlgMessage2</className>
+			<argument>
+				<argument>"モンスターが出現しました"</argument>
+				<argument></argument>
+				<argument>
+					<argument>"▼"</argument>
+				</argument>
+			</argument>
+			<argument>
+				<argument>"わあ、どうしよう。"</argument>
+				<argument>
+					<argument>"sc_human1"</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>550</argument>
+					<argument>350</argument>
+				</argument>
+				<argument>
+					<argument>"▼"</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>ActionPending2</className>
+		</element>
+		<element>
+			<className>ActionRequireArea2</className>
+			<argument>w1.r1.s1.g0_0_0</argument>
+			<argument>
+				<argument>0</argument>
+				<argument>0</argument>
+				<argument>0</argument>
+			</argument>
+			<argument>
+				<argument>
+					<argument>1</argument>
+					<argument>3</argument>
+					<argument>2</argument>
+					<argument>
+						<argument>
+							<argument>0</argument>
+							<argument>3</argument>
+							<argument>0</argument>
+						</argument>
+					</argument>
+					<argument>0</argument>
+					<argument>
+						<argument>90</argument>
+						<argument>0</argument>
+					</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>ActionPending2</className>
+		</element>
+		<element>
+			<className>ActionJSlgMessage2</className>
+			<argument>
+				<argument>"モンスターが出現しました！"</argument>
+				<argument></argument>
+				<argument>
+					<argument>"▼"</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>ActionPending2</className>
+		</element>
+		<element>
+			<className>ActionIcon2</className>
+			<argument>$THIS.parent()</argument>
+			<argument>"hoge1"</argument>
+			<argument>"human1"</argument>
+			<argument>
+				<argument>
+					<argument>10</argument>
+					<argument>10</argument>
+					<argument>0</argument>
+				</argument>
+				<argument>1</argument>
+				<argument>null</argument>
+				<argument>
+					<argument>
+						<argument>0</argument>
+						<argument>0</argument>
+						<argument>160</argument>
+						<argument>160</argument>
+					</argument>
+					<argument>
+						<argument>
+							<argument>"default"</argument>
+							<argument>0</argument>
+							<argument>3</argument>
+						</argument>
+						<argument>
+							<argument>"area0"</argument>
+							<argument>4</argument>
+							<argument>5</argument>
+						</argument>
+						<argument>
+							<argument>"area1"</argument>
+							<argument>8</argument>
+							<argument>8</argument>
+						</argument>
+					</argument>
+				</argument>
+			</argument>
+		</element>
+	</element>
+	<element>
+		<className>Command</className>
+		<key>isWonAndLose</key>
+		<element>
+			<className>ActionVariable</className>
+			<argument>"$won"</argument>
+			<argument>true</argument>
+		</element>
+		<element>
+			<className>ActionVariable</className>
+			<argument>"$lose"</argument>
+			<argument>true</argument>
+		</element>
+		<element>
+			<className>CommandBlockFOR</className>
+			<argument>"$temp"</argument>
+			<argument>w1.find(Cast)</argument>
+			<element>
+				<className>CommandBlockIF</className>
+				<argument>$temp.belongs=="enemy"</argument>
+				<element>
+					<className>ActionVariable</className>
+					<argument>"$won"</argument>
+					<argument>false</argument>
+				</element>
+			</element>
+			<element>
+				<className>CommandBlockIF</className>
+				<argument>$temp.belongs=="player"</argument>
+				<element>
+					<className>ActionVariable</className>
+					<argument>"$lose"</argument>
+					<argument>false</argument>
+				</element>
+			</element>
+		</element>
+		<element>
+			<className>CommandBlockIF</className>
+			<argument>$won==true</argument>
+			<element>
+				<className>ActionLog</className>
+				<argument>"You won"</argument>
+			</element>
+			<element>
+				<className>ActionJSlgMessage</className>
+				<argument>
+					<argument>"You Win!(^^)"</argument>
+					<argument></argument>
+					<argument><argument>"OK"</argument></argument>
+				</argument>
+			</element>
+			<element>
+				<className>ActionPending</className>
+			</element>
+		</element>
+		<element>
+			<className>CommandBlockElseIF</className>
+			<argument>$lose==true</argument>
+			<element>
+				<className>ActionLog</className>
+				<argument>"You lose"</argument>
+			</element>
+			<element>
+				<className>ActionJSlgMessage</className>
+				<argument>
+					<argument>"You Lose!"</argument>
+					<argument></argument>
+					<argument><argument>"OK"</argument></argument>
+				</argument>
+			</element>
+			<element>
+				<className>ActionPending</className>
+			</element>
+		</element>
+	</element>
+	<element>
+		<className>Command</className>
+		<key>Changing</key>
+		<element>
+			<className>ActionAnime</className>
+			<argument>$SENDER.parent()</argument>
+			<argument>"area0"</argument>
+		</element>
+		<element>
+			<className>ActionJSlgText</className>
+			<argument>$SENDER.parent()</argument>
+			<argument>$ActionSet.changeValue</argument>
+		</element>
+		<element>
+			<className>ActionJSlgProfile</className>
+			<argument>$SENDER.parent()</argument>
+			<argument>
+				<argument>
+					<argument>"life"</argument>
+					<argument>$ActionSet.before</argument>
+					<argument>$ActionSet.after</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>CommandBlockIF</className>
+			<argument>$SENDER.parent().life&lt;1</argument>
+			<element>
+				<className>ActionRemove</className>
+				<argument>$SENDER.parent()</argument>
+			</element>
+			<element>
+				<className>ActionCall</className>
+				<argument>w1.r1.isWonAndLose</argument>
+			</element>
+		</element>
+		<element>
+			<className>ActionUpdate</className>
+		</element>
+	</element>
+	<element>
+		<className>Command</className>
+		<key>move</key>
+		<element>
+			<className>ActionLog</className>
+			<argument>"移動"</argument>
+		</element>
+		<element>
+			<className>ActionJSlgMenu</className>
+			<argument>null</argument>
+		</element>
+		<element>
+			<className>ActionRequireArea</className>
+			<argument>$SENDER</argument>
+			<argument>
+				<argument>0</argument>
+				<argument>0</argument>
+				<argument>0</argument>
+			</argument>
+			<argument>
+				<argument>
+					<argument>1</argument>
+					<argument>$SENDER.parent().parent().moving</argument>
+					<argument>2</argument>
+					<argument>
+						<argument>
+							<argument>0</argument>
+							<argument>3</argument>
+							<argument>0</argument>
+						</argument>
+					</argument>
+					<argument>0</argument>
+					<argument>
+						<argument>90</argument>
+						<argument>0</argument>
+					</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>ActionPending</className>
+		</element>
+		<element>
+			<className>ActionJSlgMove</className>
+			<argument>$SENDER.parent().parent()</argument>
+			<argument>$PENDING.obj</argument>
+		</element>
+	</element>
+	<element>
+		<className>CastFrame</className>
+		<key>rc1</key>
+		<element>
+			<className>Status</className>
+			<key>drawingOptions</key>
+			<value>
+				<argument>
+					<argument>human1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>160</argument>
+					<argument>160</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>3</argument>
+					</argument>
+					<argument>
+						<argument>area0</argument>
+						<argument>4</argument>
+						<argument>5</argument>
+					</argument>
+					<argument>
+						<argument>area1</argument>
+						<argument>6</argument>
+						<argument>8</argument>
+					</argument>
+				</argument>
+				<argument>
+					<argument>model2</argument>
+				</argument>
+			</value>
+		</element>
+		<element>
+			<className>Command</className>
+			<key>onClick</key>
+			<element>
+				<className>ActionJSlgMenu</className>
+				<argument>$THIS.parent()</argument>
+			</element>
+		</element>
+		<element>
+			<className>Command</className>
+			<key>onChange</key>
+			<element>
+				<className>ActionCall</className>
+				<argument>w1.r1.Changing</argument>
+			</element>
+			<element>
+				<className>CommandBlockIF</className>
+				<argument>$THIS.parent().life&gt;0</argument>
+				<element>
+					<className>ActionCall</className>
+					<argument>$THIS.parent().Kill.c1_kill</argument>
+					<argument>
+						<argument>
+							<argument>"$Target"</argument>
+							<argument>$SENDER</argument>
+						</argument>
+					</argument>
+				</element>
+			</element>
+		</element>
+		<element>
+			<className>ItemFrame</className>
+			<key>Move</key>
+			<element>
+				<className>Command</className>
+				<key>onClick</key>
+				<element>
+					<className>ActionCall</className>
+					<argument>w1.r1.move</argument>
+				</element>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>name</key>
+				<value>移動</value>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>count</key>
+				<value>1</value>
+			</element>
+		</element>
+		<element>
+			<className>ItemFrame</className>
+			<key>Kill</key>
+			<element>
+				<className>Command</className>
+				<key>onClick</key>
+				<element>
+					<className>ActionLog</className>
+					<argument>"攻撃"</argument>
+				</element>
+				<element>
+					<className>CommandBlockIF</className>
+					<argument>$Target!=null</argument>
+					<element>
+						<className>ActionVariable</className>
+						<argument>"$T"</argument>
+						<argument>$Target.parent()</argument>
+					</element>
+				</element>
+				<element>
+					<className>CommandBlockElseIF</className>
+					<argument>true==true</argument>
+					<element>
+						<className>ActionJSlgMenu</className>
+						<argument>null</argument>
+					</element>
+					<element>
+						<className>ActionRequireArea</className>
+						<argument>$THIS</argument>
+						<argument>
+							<argument>0</argument>
+							<argument>0</argument>
+							<argument>0</argument>
+						</argument>
+						<argument>
+							<argument>
+								<argument>1</argument>
+								<argument>4</argument>
+								<argument>2</argument>
+								<argument>
+									<argument>
+										<argument>0</argument>
+										<argument>3</argument>
+										<argument>0</argument>
+									</argument>
+								</argument>
+								<argument>0</argument>
+								<argument>
+									<argument>90</argument>
+									<argument>0</argument>
+								</argument>
+							</argument>
+						</argument>
+					</element>
+					<element>
+						<className>ActionPending</className>
+					</element>
+					<element>
+						<className>ActionVariable</className>
+						<argument>"$T"</argument>
+						<argument>$PENDING.obj</argument>
+					</element>
+				</element>
+				<element>
+					<className>ActionAnime</className>
+					<argument>$THIS.parent()</argument>
+					<argument>"area1"</argument>
+				</element>
+				<element>
+					<className>ActionSet</className>
+					<argument>$T</argument>
+					<argument>"life"</argument>
+					<argument>$T.life-10</argument>
+				</element>
+				<element>
+					<className>ActionUpdate</className>
+				</element>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>name</key>
+				<value>攻撃</value>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>count</key>
+				<value>1</value>
+			</element>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>life</key>
+			<value>10</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>moving</key>
+			<value>5</value>
+		</element>
+	</element>
+	<element>
+		<className>CastFrame</className>
+		<key>rc2</key>
+		<element>
+			<className>Status</className>
+			<key>drawingOptions</key>
+			<value>
+				<argument>
+					<argument>monster1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>160</argument>
+					<argument>160</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>3</argument>
+					</argument>
+					<argument>
+						<argument>area0</argument>
+						<argument>4</argument>
+						<argument>5</argument>
+					</argument>
+					<argument>
+						<argument>area1</argument>
+						<argument>6</argument>
+						<argument>8</argument>
+					</argument>
+				</argument>
+				<argument>
+					<argument>model2</argument>
+				</argument>
+			</value>
+		</element>
+		<element>
+			<className>Command</className>
+			<key>onChange</key>
+			<element>
+				<className>ActionCall</className>
+				<argument>w1.r1.Changing</argument>
+			</element>
+		</element>
+		<element>
+			<className>ItemFrame</className>
+			<key>Fire</key>
+			<element>
+				<className>Command</className>
+				<key>onClick</key>
+				<element>
+					<className>ActionLog</className>
+					<argument>"攻撃E"</argument>
+				</element>
+				<element>
+					<className>ActionRequireArea</className>
+					<argument>$THIS</argument>
+					<argument>
+						<argument>0</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+					</argument>
+					<argument>
+						<argument>
+							<argument>1</argument>
+							<argument>4</argument>
+							<argument>2</argument>
+							<argument>
+								<argument>
+									<argument>0</argument>
+									<argument>3</argument>
+									<argument>0</argument>
+								</argument>
+							</argument>
+							<argument>0</argument>
+							<argument>
+								<argument>90</argument>
+								<argument>0</argument>
+							</argument>
+						</argument>
+					</argument>
+					<argument>"Cast"</argument>
+				</element>
+				<element>
+					<className>ActionPending</className>
+				</element>
+				<element>
+					<className>ActionAnime</className>
+					<argument>$THIS.parent().parent()</argument>
+					<argument>"area1"</argument>
+				</element>
+				<element>
+					<className>ActionUpdate</className>
+				</element>
+				<element>
+					<className>ActionSet</className>
+					<argument>$PENDING.obj</argument>
+					<argument>"life"</argument>
+					<argument>$PENDING.obj.life-10</argument>
+				</element>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>name</key>
+				<value>攻撃</value>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>count</key>
+				<value>1</value>
+			</element>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>life</key>
+			<value>10</value>
+		</element>
+	</element>
+	<element>
+		<className>MindFrame</className>
+		<key>mind_p</key>
+		<element>
+			<className>Status</className>
+			<key>decreasedKeys</key>
+			<value>
+				<argument>life</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>increasedKeys</key>
+			<value>
+				
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>memberKey</key>
+			<value>belongs</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>familyMemberNames</key>
+			<value>
+				<argument>player</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>enemyMemberNames</key>
+			<value>
+				<argument>enemy</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>commandKey</key>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>commandValue</key>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>thumbnail</key>
+			<value>./sample/images/heart_01.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>MindFrame</className>
+		<key>mind_e</key>
+		<element>
+			<className>Status</className>
+			<key>decreasedKeys</key>
+			<value>
+				<argument>life</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>increasedKeys</key>
+			<value>
+				
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>memberKey</key>
+			<value>belongs</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>familyMemberNames</key>
+			<value>
+				<argument>enemy</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>enemyMemberNames</key>
+			<value>
+				<argument>player</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>commandKey</key>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>commandValue</key>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>thumbnail</key>
+			<value>./sample/images/heart_02.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>Stage</className>
+		<source>rs1</source>
+		<location>
+			<x>0</x>
+			<y>0</y>
+			<z>0</z>
+		</location>
+		<key>s1</key>
+		
+		<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>0</y><z>0</z></location>
+<key>g0_0_0</key>
+
+			<element>
+				<className>Cast</className>
+				<source>rc1</source>
+				<key>c1</key>
+				<element>
+					<className>Mind</className>
+					<key>mind_p1</key>
+					<source>mind_p</source>
+				</element>
+				<element>
+					<className>Status</className>
+					<key>belongs</key>
+					<value>player</value>
+				</element>
+			</element>
+			
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>0</y><z>0</z></location>
+<key>g1_0_0</key>
+			<element>
+				<className>Cast</className>
+				<source>rc2</source>
+				<key>c2</key>
+				<element>
+					<className>Mind</className>
+					<key>mind_e1</key>
+					<source>mind_e</source>
+				</element>
+				<element>
+					<className>Status</className>
+					<key>belongs</key>
+					<value>enemy</value>
+				</element>
+			</element>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>0</y><z>0</z></location>
+<key>g2_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>0</y><z>0</z></location>
+<key>g3_0_0</key>
+
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>0</y><z>0</z></location>
+<key>g4_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>0</y><z>0</z></location>
+<key>g5_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>0</y><z>0</z></location>
+<key>g6_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>0</y><z>0</z></location>
+<key>g7_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>0</y><z>0</z></location>
+<key>g8_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>0</y><z>0</z></location>
+<key>g9_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>0</y><z>0</z></location>
+<key>g10_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>0</y><z>0</z></location>
+<key>g11_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>0</y><z>0</z></location>
+<key>g12_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>0</y><z>0</z></location>
+<key>g13_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>0</y><z>0</z></location>
+<key>g14_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>0</y><z>0</z></location>
+<key>g15_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>0</y><z>0</z></location>
+<key>g16_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>0</y><z>0</z></location>
+<key>g17_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>0</y><z>0</z></location>
+<key>g18_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>0</y><z>0</z></location>
+<key>g19_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>0</y><z>0</z></location>
+<key>g20_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>0</y><z>0</z></location>
+<key>g21_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>0</y><z>0</z></location>
+<key>g22_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>0</y><z>0</z></location>
+<key>g23_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>0</y><z>0</z></location>
+<key>g24_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>0</y><z>0</z></location>
+<key>g25_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>0</y><z>0</z></location>
+<key>g26_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>0</y><z>0</z></location>
+<key>g27_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>0</y><z>0</z></location>
+<key>g28_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>0</y><z>0</z></location>
+<key>g29_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>0</y><z>0</z></location>
+<key>g30_0_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>1</y><z>0</z></location>
+<key>g0_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>1</y><z>0</z></location>
+<key>g1_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>1</y><z>0</z></location>
+<key>g2_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>1</y><z>0</z></location>
+<key>g3_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>1</y><z>0</z></location>
+<key>g4_1_0</key>
+
+
+			<element>
+				<className>Cast</className>
+				<source>rc2</source>
+				<key>c3</key>
+				<element>
+					<className>Mind</className>
+					<key>mind_e2</key>
+					<source>mind_e</source>
+				</element>
+				<element>
+					<className>Status</className>
+					<key>belongs</key>
+					<value>enemy</value>
+				</element>
+			</element>
+			
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>1</y><z>0</z></location>
+<key>g5_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>1</y><z>0</z></location>
+<key>g6_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>1</y><z>0</z></location>
+<key>g7_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>1</y><z>0</z></location>
+<key>g8_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>1</y><z>0</z></location>
+<key>g9_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>1</y><z>0</z></location>
+<key>g10_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>1</y><z>0</z></location>
+<key>g11_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>1</y><z>0</z></location>
+<key>g12_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>1</y><z>0</z></location>
+<key>g13_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>1</y><z>0</z></location>
+<key>g14_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>1</y><z>0</z></location>
+<key>g15_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>1</y><z>0</z></location>
+<key>g16_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>1</y><z>0</z></location>
+<key>g17_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>1</y><z>0</z></location>
+<key>g18_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>1</y><z>0</z></location>
+<key>g19_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>1</y><z>0</z></location>
+<key>g20_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>1</y><z>0</z></location>
+<key>g21_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>1</y><z>0</z></location>
+<key>g22_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>1</y><z>0</z></location>
+<key>g23_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>1</y><z>0</z></location>
+<key>g24_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>1</y><z>0</z></location>
+<key>g25_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>1</y><z>0</z></location>
+<key>g26_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>1</y><z>0</z></location>
+<key>g27_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>1</y><z>0</z></location>
+<key>g28_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>1</y><z>0</z></location>
+<key>g29_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>1</y><z>0</z></location>
+<key>g30_1_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>2</y><z>0</z></location>
+<key>g0_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>2</y><z>0</z></location>
+<key>g1_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>2</y><z>0</z></location>
+<key>g2_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>2</y><z>0</z></location>
+<key>g3_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>2</y><z>0</z></location>
+<key>g4_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>2</y><z>0</z></location>
+<key>g5_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>2</y><z>0</z></location>
+<key>g6_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>2</y><z>0</z></location>
+<key>g7_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>2</y><z>0</z></location>
+<key>g8_2_0</key>
+
+			
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>2</y><z>0</z></location>
+<key>g9_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>2</y><z>0</z></location>
+<key>g10_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>2</y><z>0</z></location>
+<key>g11_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>2</y><z>0</z></location>
+<key>g12_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>2</y><z>0</z></location>
+<key>g13_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>2</y><z>0</z></location>
+<key>g14_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>2</y><z>0</z></location>
+<key>g15_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>2</y><z>0</z></location>
+<key>g16_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>2</y><z>0</z></location>
+<key>g17_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>2</y><z>0</z></location>
+<key>g18_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>2</y><z>0</z></location>
+<key>g19_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>2</y><z>0</z></location>
+<key>g20_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>2</y><z>0</z></location>
+<key>g21_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>2</y><z>0</z></location>
+<key>g22_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>2</y><z>0</z></location>
+<key>g23_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>2</y><z>0</z></location>
+<key>g24_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>2</y><z>0</z></location>
+<key>g25_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>2</y><z>0</z></location>
+<key>g26_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>2</y><z>0</z></location>
+<key>g27_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>2</y><z>0</z></location>
+<key>g28_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>2</y><z>0</z></location>
+<key>g29_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>2</y><z>0</z></location>
+<key>g30_2_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>3</y><z>0</z></location>
+<key>g0_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>3</y><z>0</z></location>
+<key>g1_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>3</y><z>0</z></location>
+<key>g2_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>3</y><z>0</z></location>
+<key>g3_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>3</y><z>0</z></location>
+<key>g4_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>3</y><z>0</z></location>
+<key>g5_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>3</y><z>0</z></location>
+<key>g6_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>3</y><z>0</z></location>
+<key>g7_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>3</y><z>0</z></location>
+<key>g8_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>3</y><z>0</z></location>
+<key>g9_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>3</y><z>0</z></location>
+<key>g10_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>3</y><z>0</z></location>
+<key>g11_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>3</y><z>0</z></location>
+<key>g12_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>3</y><z>0</z></location>
+<key>g13_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>3</y><z>0</z></location>
+<key>g14_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>3</y><z>0</z></location>
+<key>g15_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>3</y><z>0</z></location>
+<key>g16_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>3</y><z>0</z></location>
+<key>g17_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>3</y><z>0</z></location>
+<key>g18_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>3</y><z>0</z></location>
+<key>g19_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>3</y><z>0</z></location>
+<key>g20_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>3</y><z>0</z></location>
+<key>g21_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>3</y><z>0</z></location>
+<key>g22_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>3</y><z>0</z></location>
+<key>g23_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>3</y><z>0</z></location>
+<key>g24_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>3</y><z>0</z></location>
+<key>g25_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>3</y><z>0</z></location>
+<key>g26_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>3</y><z>0</z></location>
+<key>g27_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>3</y><z>0</z></location>
+<key>g28_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>3</y><z>0</z></location>
+<key>g29_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>3</y><z>0</z></location>
+<key>g30_3_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>4</y><z>0</z></location>
+<key>g0_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>4</y><z>0</z></location>
+<key>g1_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>4</y><z>0</z></location>
+<key>g2_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>4</y><z>0</z></location>
+<key>g3_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>4</y><z>0</z></location>
+<key>g4_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>4</y><z>0</z></location>
+<key>g5_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>4</y><z>0</z></location>
+<key>g6_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>4</y><z>0</z></location>
+<key>g7_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>4</y><z>0</z></location>
+<key>g8_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>4</y><z>0</z></location>
+<key>g9_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>4</y><z>0</z></location>
+<key>g10_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>4</y><z>0</z></location>
+<key>g11_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>4</y><z>0</z></location>
+<key>g12_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>4</y><z>0</z></location>
+<key>g13_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>4</y><z>0</z></location>
+<key>g14_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>4</y><z>0</z></location>
+<key>g15_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>4</y><z>0</z></location>
+<key>g16_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>4</y><z>0</z></location>
+<key>g17_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>4</y><z>0</z></location>
+<key>g18_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>4</y><z>0</z></location>
+<key>g19_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>4</y><z>0</z></location>
+<key>g20_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>4</y><z>0</z></location>
+<key>g21_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>4</y><z>0</z></location>
+<key>g22_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>4</y><z>0</z></location>
+<key>g23_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>4</y><z>0</z></location>
+<key>g24_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>4</y><z>0</z></location>
+<key>g25_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>4</y><z>0</z></location>
+<key>g26_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>4</y><z>0</z></location>
+<key>g27_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>4</y><z>0</z></location>
+<key>g28_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>4</y><z>0</z></location>
+<key>g29_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>4</y><z>0</z></location>
+<key>g30_4_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>5</y><z>0</z></location>
+<key>g0_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>5</y><z>0</z></location>
+<key>g1_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>5</y><z>0</z></location>
+<key>g2_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>5</y><z>0</z></location>
+<key>g3_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>5</y><z>0</z></location>
+<key>g4_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>5</y><z>0</z></location>
+<key>g5_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>5</y><z>0</z></location>
+<key>g6_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>5</y><z>0</z></location>
+<key>g7_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>5</y><z>0</z></location>
+<key>g8_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>5</y><z>0</z></location>
+<key>g9_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>5</y><z>0</z></location>
+<key>g10_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>5</y><z>0</z></location>
+<key>g11_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>5</y><z>0</z></location>
+<key>g12_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>5</y><z>0</z></location>
+<key>g13_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>5</y><z>0</z></location>
+<key>g14_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>5</y><z>0</z></location>
+<key>g15_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>5</y><z>0</z></location>
+<key>g16_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>5</y><z>0</z></location>
+<key>g17_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>5</y><z>0</z></location>
+<key>g18_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>5</y><z>0</z></location>
+<key>g19_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>5</y><z>0</z></location>
+<key>g20_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>5</y><z>0</z></location>
+<key>g21_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>5</y><z>0</z></location>
+<key>g22_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>5</y><z>0</z></location>
+<key>g23_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>5</y><z>0</z></location>
+<key>g24_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>5</y><z>0</z></location>
+<key>g25_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>5</y><z>0</z></location>
+<key>g26_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>5</y><z>0</z></location>
+<key>g27_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>5</y><z>0</z></location>
+<key>g28_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>5</y><z>0</z></location>
+<key>g29_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>5</y><z>0</z></location>
+<key>g30_5_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>6</y><z>0</z></location>
+<key>g0_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>6</y><z>0</z></location>
+<key>g1_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>6</y><z>0</z></location>
+<key>g2_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>6</y><z>0</z></location>
+<key>g3_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>6</y><z>0</z></location>
+<key>g4_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>6</y><z>0</z></location>
+<key>g5_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>6</y><z>0</z></location>
+<key>g6_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>6</y><z>0</z></location>
+<key>g7_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>6</y><z>0</z></location>
+<key>g8_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>6</y><z>0</z></location>
+<key>g9_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>6</y><z>0</z></location>
+<key>g10_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>6</y><z>0</z></location>
+<key>g11_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>6</y><z>0</z></location>
+<key>g12_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>6</y><z>0</z></location>
+<key>g13_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>6</y><z>0</z></location>
+<key>g14_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>6</y><z>0</z></location>
+<key>g15_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>6</y><z>0</z></location>
+<key>g16_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>6</y><z>0</z></location>
+<key>g17_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>6</y><z>0</z></location>
+<key>g18_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>6</y><z>0</z></location>
+<key>g19_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>6</y><z>0</z></location>
+<key>g20_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>6</y><z>0</z></location>
+<key>g21_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>6</y><z>0</z></location>
+<key>g22_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>6</y><z>0</z></location>
+<key>g23_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>6</y><z>0</z></location>
+<key>g24_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>6</y><z>0</z></location>
+<key>g25_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>6</y><z>0</z></location>
+<key>g26_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>6</y><z>0</z></location>
+<key>g27_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>6</y><z>0</z></location>
+<key>g28_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>6</y><z>0</z></location>
+<key>g29_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>6</y><z>0</z></location>
+<key>g30_6_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>7</y><z>0</z></location>
+<key>g0_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>7</y><z>0</z></location>
+<key>g1_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>7</y><z>0</z></location>
+<key>g2_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>7</y><z>0</z></location>
+<key>g3_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>7</y><z>0</z></location>
+<key>g4_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>7</y><z>0</z></location>
+<key>g5_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>7</y><z>0</z></location>
+<key>g6_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>7</y><z>0</z></location>
+<key>g7_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>7</y><z>0</z></location>
+<key>g8_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>7</y><z>0</z></location>
+<key>g9_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>7</y><z>0</z></location>
+<key>g10_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>7</y><z>0</z></location>
+<key>g11_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>7</y><z>0</z></location>
+<key>g12_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>7</y><z>0</z></location>
+<key>g13_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>7</y><z>0</z></location>
+<key>g14_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>7</y><z>0</z></location>
+<key>g15_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>7</y><z>0</z></location>
+<key>g16_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>7</y><z>0</z></location>
+<key>g17_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>7</y><z>0</z></location>
+<key>g18_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>7</y><z>0</z></location>
+<key>g19_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>7</y><z>0</z></location>
+<key>g20_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>7</y><z>0</z></location>
+<key>g21_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>7</y><z>0</z></location>
+<key>g22_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>7</y><z>0</z></location>
+<key>g23_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>7</y><z>0</z></location>
+<key>g24_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>7</y><z>0</z></location>
+<key>g25_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>7</y><z>0</z></location>
+<key>g26_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>7</y><z>0</z></location>
+<key>g27_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>7</y><z>0</z></location>
+<key>g28_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>7</y><z>0</z></location>
+<key>g29_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>7</y><z>0</z></location>
+<key>g30_7_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>8</y><z>0</z></location>
+<key>g0_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>8</y><z>0</z></location>
+<key>g1_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>8</y><z>0</z></location>
+<key>g2_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>8</y><z>0</z></location>
+<key>g3_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>8</y><z>0</z></location>
+<key>g4_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>8</y><z>0</z></location>
+<key>g5_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>8</y><z>0</z></location>
+<key>g6_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>8</y><z>0</z></location>
+<key>g7_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>8</y><z>0</z></location>
+<key>g8_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>8</y><z>0</z></location>
+<key>g9_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>8</y><z>0</z></location>
+<key>g10_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>8</y><z>0</z></location>
+<key>g11_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>8</y><z>0</z></location>
+<key>g12_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>8</y><z>0</z></location>
+<key>g13_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>8</y><z>0</z></location>
+<key>g14_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>8</y><z>0</z></location>
+<key>g15_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>8</y><z>0</z></location>
+<key>g16_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>8</y><z>0</z></location>
+<key>g17_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>8</y><z>0</z></location>
+<key>g18_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>8</y><z>0</z></location>
+<key>g19_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>8</y><z>0</z></location>
+<key>g20_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>8</y><z>0</z></location>
+<key>g21_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>8</y><z>0</z></location>
+<key>g22_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>8</y><z>0</z></location>
+<key>g23_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>8</y><z>0</z></location>
+<key>g24_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>8</y><z>0</z></location>
+<key>g25_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>8</y><z>0</z></location>
+<key>g26_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>8</y><z>0</z></location>
+<key>g27_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>8</y><z>0</z></location>
+<key>g28_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>8</y><z>0</z></location>
+<key>g29_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>8</y><z>0</z></location>
+<key>g30_8_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>0</x><y>9</y><z>0</z></location>
+<key>g0_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>1</x><y>9</y><z>0</z></location>
+<key>g1_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>2</x><y>9</y><z>0</z></location>
+<key>g2_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>3</x><y>9</y><z>0</z></location>
+<key>g3_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>4</x><y>9</y><z>0</z></location>
+<key>g4_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>5</x><y>9</y><z>0</z></location>
+<key>g5_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>6</x><y>9</y><z>0</z></location>
+<key>g6_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>7</x><y>9</y><z>0</z></location>
+<key>g7_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>8</x><y>9</y><z>0</z></location>
+<key>g8_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>9</x><y>9</y><z>0</z></location>
+<key>g9_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>10</x><y>9</y><z>0</z></location>
+<key>g10_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>11</x><y>9</y><z>0</z></location>
+<key>g11_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>12</x><y>9</y><z>0</z></location>
+<key>g12_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>13</x><y>9</y><z>0</z></location>
+<key>g13_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>14</x><y>9</y><z>0</z></location>
+<key>g14_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>15</x><y>9</y><z>0</z></location>
+<key>g15_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>16</x><y>9</y><z>0</z></location>
+<key>g16_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>17</x><y>9</y><z>0</z></location>
+<key>g17_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>18</x><y>9</y><z>0</z></location>
+<key>g18_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>19</x><y>9</y><z>0</z></location>
+<key>g19_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>20</x><y>9</y><z>0</z></location>
+<key>g20_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>21</x><y>9</y><z>0</z></location>
+<key>g21_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>22</x><y>9</y><z>0</z></location>
+<key>g22_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>23</x><y>9</y><z>0</z></location>
+<key>g23_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>24</x><y>9</y><z>0</z></location>
+<key>g24_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>25</x><y>9</y><z>0</z></location>
+<key>g25_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>26</x><y>9</y><z>0</z></location>
+<key>g26_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>27</x><y>9</y><z>0</z></location>
+<key>g27_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>28</x><y>9</y><z>0</z></location>
+<key>g28_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>29</x><y>9</y><z>0</z></location>
+<key>g29_9_0</key>
+</element>
+<element>
+<className>Ground</className>
+<source>rg1</source>
+<location><x>30</x><y>9</y><z>0</z></location>
+<key>g30_9_0</key>
+</element>
+
+	</element>
+</element>

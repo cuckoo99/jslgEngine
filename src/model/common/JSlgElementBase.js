@@ -61,6 +61,17 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
 	 **/
 	p.elementType = 'Element';
+ 
+	/**
+	 * 非出力対象フラグ
+	 *
+	 * @private
+	 * @name isUnexportment
+	 * @property
+	 * @type boolean
+	 * @memberOf jslgEngine.model.common.JSlgElementBase#
+	 **/
+	p.isUnexportment = false;
 
 	/**
 	 * キー
@@ -112,37 +123,7 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
 	 **/
 	p._children = null;
-
-	/**
-	 * 追加時発生イベント
-	 *
-	 * @name onAdd
-	 * @property
-	 * @type jslgEngine.model.command.Command
-	 * @memberOf jslgEngine.model.common.JSlgElementBase#
-	 **/
-	p.onAdd = null;
-
-	/**
-	 * 削除時発生イベント
-	 *
-	 * @name onRemove
-	 * @property
-	 * @type jslgEngine.model.command.Command
-	 * @memberOf jslgEngine.model.common.JSlgElementBase#
-	 **/
-	p.onRemove = null;
-
-	/**
-	 * ステータス変更時発生イベント
-	 *
-	 * @name onChange
-	 * @property
-	 * @type jslgEngine.model.command.Command
-	 * @memberOf jslgEngine.model.common.JSlgElementBase#
-	 **/
-	p.onChange = null;
-
+   
 	/**
 	 * メインイベントの実行
 	 *
@@ -573,67 +554,126 @@
 	 */
 	p.findElements = function(connector, data, options) {
 		var self = this;
-		var baseElement = options.mainController.getWorldRegion();
 		if(connector) {
-			connector.pipe(function(connector_s) {
-				var backGroundWorker = options.mainController.getWebWorkers('FindElements');
-	        
-	        	var elm = self, parent, limit = 100;
-	        	var keysStrip = [];
-	        	var findTargets;
-	        	
-	        	while((parent = elm.getParent(options)) != null && (limit--) > 0) {
-	        		keysStrip.push(parent.getKey());
-	        		elm = parent;
-	        	}
-	        	var elementSeparator = jslgEngine.config.elementSeparator;
-	        	if(keysStrip.length > 0) {
-	        		//TODO: 現在data.objには対応していない
-		        	if(data.key) {
-		    			//親が存在する場合、親の取得が考えられるので完全パスを取得
-		        		var fullpath = [keysStrip.reverse().join(elementSeparator), data.key].join(elementSeparator);
-			        	data.key = fullpath;
-		        	} else if(data.className) {
-		        		findTargets = baseElement._getObjectToFind({
-							key : keysStrip.reverse().join(elementSeparator)
-						}, options);
-						findTargets.push(baseElement._getObjectToFind({
-							className : data.className
-						}, options)[0]);
-		        	}
-	        	} else {
-		        	baseElement = self;
-	        	}
-	        	
-				//var elements = self.toSimpleElements({});
-				var elements = baseElement.toSimpleElements({});
-				findTargets = findTargets||self._getObjectToFind(data, options);
-				
-				var obj = {
-					elements : elements,
-					findTargets : findTargets
-				};
-				
-		        backGroundWorker.add(JSON.stringify(obj), function(result) {
-		        	connector_s.resolve(result);
-		        });
-	        
-			}).pipe(function(connector_s, result_s) {
-				var elements = [];
-				for(var i = 0; i < result_s.length; i++) {
-					if(result_s[i]) {
-						elements.push(baseElement.getElementFromSimpleElement({
-				        	obj : result_s[i]
-				        }));
-					}
-				}
-		        connector_s.resolve(elements);
-			});	
+//            connector.pipe(function(connector_s) {
+//                var base = options.mainController.getWorldRegion();
+//                var parent = self.getParent(options);
+//                if(parent) {
+//                    var fullpath = parent.getAbsolutePath(connector_s, data, options);
+//                    if(data.key) {
+//                        //親が存在する場合、親の取得が考えられるので完全パスを取得
+//                        data.key = [fullpath,data.key].join(jslgEngine.config.elementSeparator);
+//                    }
+//                } else {
+//                    base = self;
+//                }
+//                connector_s.resolve(base._findElements(null, data, options));
+//            });
+            if(data.className) {
+                data.target = self;
+                options.mainController.searchElements(connector, data);
+            } else {
+                self._findElementsByWorkers(connector, data, options);
+            }
 		} else {
 			return self._findElements(connector, data, options);
 		}
 	};
 	
+	/**
+	 * 子要素の取得
+	 *
+	 * @name _findElements
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElementBase#
+	 * @param {Object} options
+	 * <ul>
+	 * <li>{jslgEngine.model.network.ConnectorBase} connector</li>
+	 * <li>{jslgEngine.model.common.JSlgElementFinder} finder</li>
+	 * <li>{String} filter</li>
+	 * </ul>
+	 */
+	p.getAbsolutePath = function(connector, data, options) {
+        var self = this;
+        var elm = self, parent, limit = 100;
+        var elementSeparator = jslgEngine.config.elementSeparator;
+        var keysStrip = [];
+        
+        keysStrip.push(elm.getKey());
+        while((parent = elm.getParent(options)) != null && (limit--) > 0) {
+            keysStrip.push(parent.getKey());
+            elm = parent;
+        }
+        var fullpath = keysStrip.reverse().join(elementSeparator);
+        return fullpath;
+    };
+    
+	/**
+	 * 子要素の取得
+     * TODO: 現在data.objには対応していない、必要ないかも。
+	 *
+	 * @name _findElements
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElementBase#
+	 * @param {Object} options
+	 * <ul>
+	 * <li>{jslgEngine.model.network.ConnectorBase} connector</li>
+	 * <li>{jslgEngine.model.common.JSlgElementFinder} finder</li>
+	 * <li>{String} filter</li>
+	 * </ul>
+	 */
+	p._findElementsByWorkers = function(connector, data, options) {
+        var self = this;
+		var baseElement = options.mainController.getWorldRegion();
+        connector.pipe(function(connector_s) {
+            var backGroundWorker = options.mainController.getWebWorkers('FindElements');
+            var findTargets;
+            
+            var parent = self.getParent(options);
+            if(parent) {
+                var fullpath = parent.getAbsolutePath(connector_s, data, options);
+                if(data.key) {
+                    //親が存在する場合、親の取得が考えられるので完全パスを取得
+                    data.key = [fullpath,data.key].join(jslgEngine.config.elementSeparator);
+                } else if(data.className) {
+                    findTargets = baseElement._getObjectToFind({
+                        key : fullpath
+                    }, options);
+                    findTargets.push(baseElement._getObjectToFind({
+                        className : data.className
+                    }, options)[0]);
+                }
+            } else {
+                baseElement = self;
+            }
+            
+            var elements = baseElement.toSimpleElements({});
+            findTargets = findTargets||self._getObjectToFind(data, options);
+            
+            var obj = {
+                elements : elements,
+                findTargets : findTargets
+            };
+            
+            backGroundWorker.add(JSON.stringify(obj), function(result) {
+                connector_s.resolve(result);
+            });
+        
+        }).pipe(function(connector_s, result_s) {
+            var elements = [];
+            for(var i = 0; i < result_s.length; i++) {
+                if(result_s[i]) {
+                    elements.push(baseElement.getElementFromSimpleElement({
+                        obj : result_s[i]
+                    }));
+                }
+            }
+            connector_s.resolve(elements);
+        });	
+    };
+    
 	/**
 	 * 子要素の取得
 	 *
@@ -665,7 +705,7 @@
 		var children = self.getChildren();
 		
 		target.data.index = data.index;
-		if(self._isMatched(target.data)) {
+		if(self.equals(target.data)) {
 			if(obj.length === 0) {
 				data.result.push(self);
 			} else {
@@ -806,7 +846,7 @@
 	/**
 	 * 座標が同一か
 	 *
-	 * @name _isMatched
+	 * @name equals
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
@@ -817,16 +857,16 @@
 	 * <li>{String} filter</li>
 	 * </ul>
 	 */
-	p._isMatched = function(data, options) {
+	p.equals = function(data, options) {
 		var self = this;
 		var key = data.key;
 		var location = data.key ? data.key.split(jslgEngine.config.locationSeparator) : null;
-		location = location ? { x : location[0],  y : location[1], z : location[2] } : null;
+		location = location && location.length === 3 ? { x : location[0],  y : location[1], z : location[2] } : null;
 		var index = data.index;
 		var className = data.className;
 		
 		if(key && self.getKey() !== key) {
-			if(location && !self.exists(location)) {
+			if(!location || (location && !self.exists(location))) {
 				if(!index || (index && key !== index)) {
 					return false;
 				}
@@ -1143,6 +1183,12 @@
 		var self = this;
 		var opts = options||{};
 		opts.increment = opts.increment != null ? opts.increment : 0;
+        
+        // exceptional key.
+        if(self.getKey()[0] === '_' || self.isUnexportment) {
+            return null;
+        }
+        
 		var space = '\t';
 		var inc = opts.increment+1;
 		var getIncrement = function(cnt, has_ret) {
@@ -1151,7 +1197,7 @@
 		}
 		var limit = 10;
 		var className = ['<className>',self.className,'</className>'].join('');
-		var type = ['<type>',self.elementType,'</type>'].join('');
+		//var type = ['<type>',self.elementType,'</type>'].join('');
 		var key = ['<key>',self.getKey(),'</key>'].join('');
 		var params = '';
 		
@@ -1161,24 +1207,27 @@
 			if(tgt instanceof Array) {
 				var stk = [];
 				for(var i = 0; i < tgt.length; i++) {
-					stk.push(arguments.callee(cnt+1, tgt[i], name));
+                    var prp = arguments.callee(cnt+1, tgt[i], name);
+                    if(tgt[i] instanceof Array) {
+					   prp = [getIncrement(inc+cnt+1, true),prp,getIncrement(inc+cnt, true)].join('');
+                    }
+					stk.push(['<'+name+'>',prp,'</'+name+'>'].join(''));
 				}
-				tx = stk.join(getIncrement(inc+cnt+1, true));
-				return ['<'+name+'>',tx].join(getIncrement(inc+cnt+1, true))+
-						getIncrement(inc+cnt, true)+'</'+name+'>';
+				tx = stk.join(getIncrement(inc+cnt, true));
+                return tx;
 			} else {
 				tx = tgt;
-				return '<'+name+'>'+tx+'</'+name+'>';
+				return tx;
 			}
 		};
 		
 		if(self._arguments) {
-			params = getNestedProperties(0, self._arguments, 'arguments');
+			params = getNestedProperties(0, self._arguments, 'argument');
 		}
 		var value = '';
 		if(self.value) {
 			value = (self.value instanceof Array) ?
-						['<value>',getNestedProperties(0, self.value, 'arguments'),'</value>'].join(getIncrement(inc, true)) :
+						['<value>',getIncrement(inc+1, true),getNestedProperties(1, self.value, 'argument'),getIncrement(inc, true),'</value>'].join('') :
 						'<value>'+self.value+'</value>';
 		}
 		var location = self.location ? (
@@ -1189,14 +1238,23 @@
 			[	'<size>','<width>'+self.size.width+'</width>',
 				'<height>'+self.size.height+'</height>','<depth>'+self.size.depth+'</depth>','</size>'].join(getIncrement(inc, true))
 		) : '';
+        var resource = '';
+        var resourceElement = self.getChild({ key : '$FRAME'});
+        if(resourceElement) {
+            var frame = resourceElement.getChildren()[0];
+            resource = frame ? ['<source>',frame.getKey(),'</source>'].join('') : '';
+        }
 		
 		var childrenWords = [];
 		var length = self._children.length;
 		for(var i = 0; i < length; i++) {
 			var child = self._children[i];
-			childrenWords.push(child.toXML({increment : inc}));
+            var childText = child.toXML({increment : inc});
+			if(childText) {
+                childrenWords.push(childText);
+            }
 		}
-		var targets = [type,className,key,location,size,params,value,childrenWords.join(getIncrement(inc, true))];
+		var targets = [className,resource,key,location,size,params,value,childrenWords.join(getIncrement(inc, true))];
 		var t, nw = [];
 		while ((t = targets.shift()) !== undefined) {
 			if (t !== "") nw.push(t);

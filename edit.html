@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>無題ドキュメント</title>
+<link rel="stylesheet" type="text/css" href="./css/jslg_editor.css" />
+<link rel="stylesheet" type="text/css" href="./css/jquery-resizable.css" />
+<script type="text/javascript" src="./lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="./lib/jquery-ui/dist/jquery-ui.js"></script>
+<script type="text/javascript" src="./lib/jquery-tmpl/jquery.tmpl.min.js"></script>
+
+<script type="text/javascript" src="./src/JSlgEngine.js"></script>
+<script type="text/javascript">
+	jslgEngine.workSpace = '';
+	var list = [
+			"./src/Utility.js",
+			"./src/model/common/SerialRunner.js",
+			"./src/model/common/JSlgKey.js",
+			"./src/model/common/JSlgElementBase.js",
+			"./src/model/common/JSlgElementFrame.js",
+			"./src/model/common/JSlgElement.js",
+			"./src/model/common/JSlgElementStatus.js",
+			"./src/model/common/JSlgElementCommand.js",
+			"./src/model/common/JSlgElementVariable.js",
+			"./src/model/common/JSlgElementFinder.js",
+			"./src/model/common/ResourceElement.js",
+			"./src/model/command/Command.js",
+			"./src/model/command/CommandBlockBase.js",
+			"./src/model/command/CommandBlockCode.js",
+			"./src/model/command/CommandBlockIF.js",
+			"./src/model/command/CommandBlockElseIF.js",
+			"./src/model/command/CommandBlockFOR.js",
+			"./src/model/command/CommandDriver.js",
+			"./src/model/action/ActionBase.js",
+			"./src/model/action/ActionLog.js",
+			"./src/model/action/ActionCall.js",
+			"./src/model/action/ActionAdd.js",
+			"./src/model/action/ActionAddFrame.js",
+			"./src/model/action/ActionAudio.js",
+			"./src/model/action/ActionAnime.js",
+			"./src/model/action/ActionPending.js",
+			"./src/model/action/ActionSet.js",
+			"./src/model/action/ActionMind.js",
+			"./src/model/action/ActionRemove.js",
+			"./src/model/action/ActionRequireArea.js",
+			"./src/model/action/ActionUpdate.js",
+			"./src/model/action/ActionVariable.js",
+			"./src/model/action/ActionIcon.js",
+			"./src/model/action/ActionJSlgMenu.js",
+			"./src/model/action/ActionJSlgScroll.js",
+			"./src/model/action/ActionJSlgMessage.js",
+			"./src/model/action/ActionJSlgUpdateArea.js",
+			"./src/model/action/ActionJSlgMove.js",
+			"./src/model/action/ActionJSlgText.js",
+			"./src/model/action/ActionJSlgProfile.js",
+			"./src/model/action/ActionJSlgEffect.js",
+			"./src/model/area/Region.js",
+			"./src/model/area/Area.js",
+			"./src/model/area/Location.js",
+			"./src/model/area/Size.js",
+			"./src/model/area/LocalRegion.js",
+			"./src/model/area/WorldRegion.js",
+			"./src/model/mind/MindFrame.js",
+			"./src/model/mind/Mind.js",
+			"./src/model/stage/ItemFrame.js",
+			"./src/model/stage/CastFrame.js",
+			"./src/model/stage/GroundFrame.js",
+			"./src/model/stage/StageFrame.js",
+			"./src/model/stage/Item.js",
+			"./src/model/stage/Cast.js",
+			"./src/model/stage/Ground.js",
+			"./src/model/stage/Stage.js",
+			"./src/model/stage/Icon.js",
+			"./src/model/logic/Converter.js",
+			"./src/model/logic/Logic.js",
+			"./src/model/network/ConnectorBase.js",
+			"./src/model/network/ConnectorOnline.js",
+			"./src/model/network/Ajax.js",
+			"./src/controller/Ticker.js",
+			"./src/controller/ElementBinder.js",
+			"./src/controller/BackGroundWorker.js",
+			"./src/controller/file/FileControllerBase.js",
+			"./src/controller/file/ImageFileController.js",
+			"./src/controller/file/AudioFileController.js",
+			"./src/controller/MainController.js"
+	];
+	jslgEngine.loadJs(list);
+</script>
+
+<script type="text/javascript" src="./sample/sample.js"></script>
+<script type="text/javascript" src="./sample/tool_item.js"></script>
+<script type="text/javascript" src="./src/etc/jslg_model_accessor.js"></script>
+<script type="text/javascript" src="./src/etc/jslg_property_editor.js"></script>
+<script type="text/javascript" src="./src/etc/jslg_picker.js"></script>
+<script type="text/javascript">
+$(function() {
+	$.jslgPicker.loadElements({
+		url : '',
+        fileControllers : [
+            new jslgEngine.controller.ImageFileController(),
+            new jslgEngine.controller.AudioFileController()
+        ]
+    }, function(elements) {
+		var stages,grounds,casts,items,commands,resource,mindFrames;
+		var localRegion;
+		
+		$df = $.Deferred();
+		$df.pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'Resource' }, function(result) {
+					resource = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'StageFrame' }, function(result) {
+					stages = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'GroundFrame' }, function(result) {
+					grounds = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'CastFrame' }, function(result) {
+					casts = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'ItemFrame' }, function(result) {
+					items = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'Command' }, function(result) {
+					commands = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'MindFrame' }, function(result) {
+					mindFrames = result;
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			return $.Deferred(function(d) {
+				$.jslgPicker.modelAccessor.findElements(elements, {
+					className : 'LocalRegion' }, function(result) {
+					localRegion = result[0];
+					d.resolve()
+				});
+			}).promise();
+		}).pipe(function() {
+			$('#drag_mind_frame').draggableJSlgElement({
+				className : 'MindFrame',
+				position : {x:10,y:0},
+				windowSize : {width:280,height:80},
+				elements : mindFrames,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_command').draggableJSlgElement({
+				className : 'Command',
+				position : {x:10,y:100},
+				windowSize : {width:280,height:80},
+				elements : commands,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_stage_frame').draggableJSlgElement({
+				className : 'StageFrame',
+				position : {x:10,y:200},
+				windowSize : {width:280,height:80},
+				elements : stages,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_ground_frame').draggableJSlgElement({
+				className : 'GroundFrame',
+				position : {x:10,y:300},
+				windowSize : {width:280,height:80},
+				elements : grounds,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_cast_frame').draggableJSlgElement({
+				className : 'CastFrame',
+				position : {x:10,y:400},
+				windowSize : {width:280,height:80},
+				elements : casts,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_item_frame').draggableJSlgElement({
+				className : 'ItemFrame',
+				position : {x:10,y:500},
+				windowSize : {width:280,height:80},
+				elements : items,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drag_resource_frame').draggableJSlgElement({
+				className : 'ResourceElement',
+				position : {x:10,y:600},
+				windowSize : {width:280,height:80},
+				elements : resource,
+				target : localRegion,
+				parentWindowId : '#drop_local_region'
+			});
+			$('#drop_local_region').droppableJSlgElement({
+				className : 'LocalRegion',
+                size : localRegion.size,
+				position : {x:300,y:10},
+				windowSize : {width:380,height:400},
+				target : localRegion,
+				parentWindowId : ''
+			});
+		});
+		
+		$df.resolve();
+	});
+});
+</script>
+</head>
+
+<body>
+<div id="container">
+	<div id="drop_local_region">&nbsp;</div>
+	<div id="drop_stage">&nbsp;</div>
+	<div id="drag_item_frame">&nbsp;</div>
+	<div id="drag_cast_frame">&nbsp;</div>
+	<div id="drag_ground_frame">&nbsp;</div>
+	<div id="drag_stage_frame">&nbsp;</div>
+	<div id="drag_resource_frame">&nbsp;</div>
+	<div id="drag_command">&nbsp;</div>
+	<div id="drag_mind_frame">&nbsp;</div>
+	<div id="export">
+		<a id="export_xml" target="_blank" type="button"><input type="button" value="Export" /></a>
+	</div>
+</div>
+
+<!-- Drag Window Template -->
+<script id="tmpl_drag_area" type="text/x-jquery-tmpl">
+	<div id="${$item.bindWithUniqueId($data.target)}" class="tool_area drag_area">
+		<div class="header">
+			<div class="header_icon frame"><img src="./sample/images/header_icon.png" width="20" height="20" /></div>
+			<div class="header_body">
+				<div class="header_close"><img src="./sample/images/close_icon.png" width="20" height="20" /></div>
+				<div class="header_text">${className}</div>
+			</div>
+			<br class="clear" />
+		</div>
+		<div class="content resize_area">
+            <div class="scroll_wrapper">
+                <ul class="content_panel">
+                {{each elements}}
+                    {{tmpl(this, {
+                        getThumbnail : $item.getThumbnail,
+                        getKey : $item.getKey,
+                        bindWithUniqueId : $item.bindWithUniqueId
+                    }) "#tmpl_tool_content"}}
+                {{/each}}
+                {{if hasAddButton}}
+                    <li class="add">
+                      <div id="${$item.bindWithUniqueId($data)}" class="element">
+                        <div class="element_data"></div>
+                        <img src="./sample/images/add_icon.png" alt="${className}" title="${className}" width="70" height="70" />
+                        <input class="content_info" type="hidden" value="${$item.getKey($data)}" />
+                      </div>
+                    </li>
+                {{/if}}
+                </ul>
+            </div>
+		</div>
+	</div>
+</script>
+
+<!-- Drag Window Content Template -->
+<script id="tmpl_tool_content" type="text/x-jquery-tmpl">
+                    <li class="${viewListType}">
+                      <div id="${$item.bindWithUniqueId($data)}" class="element">
+                        <div class="element_data"></div>
+                        <img src="${$item.getThumbnail($data)}" alt="${className}" title="${className}" width="70" height="70" />
+                        <input class="content_info" type="hidden" value="${$item.getKey($data)}" />
+                      </div>
+                    </li>
+</script>
+
+<!-- Drop Window Content Template -->
+<script id="tmpl_drop_area" type="text/x-jquery-tmpl">
+	<div id="${$item.bindWithUniqueId($data.target)}" class="tool_area drop_area">
+		<div class="header">
+			<div class="header_icon edit"><img src="./sample/images/edit_icon.png" width="20" height="20" /></div>
+			<div class="header_body">
+		  		<div class="header_close"><img src="./sample/images/close_icon.png" width="20" height="20" /></div>
+				<div class="header_text">${className}</div>
+			</div>
+		<br class="clear" />
+		</div>
+		<div class="content drop">
+		  <div class="resize_area">
+            <div class="scroll_wrapper">
+                {{if area}}
+                <canvas width="${area.canvasSize.width}" height="${area.canvasSize.height}"></canvas>
+                {{else}}
+                <ul class="content_panel">
+                {{each elements}}
+                    {{if $item.isVisible(this)}}
+                    {{tmpl(this, {
+                        getThumbnail : $item.getThumbnail,
+                        getKey : $item.getKey,
+                        bindWithUniqueId : $item.bindWithUniqueId
+                    }) "#tmpl_tool_content"}}
+                    {{/if}}
+                {{/each}}
+                {{if hasAddButton}}
+                    <li class="add">
+                      <div id="${$item.bindWithUniqueId($data)}" class="element">
+                        <div class="element_data"></div>
+                        <img src="./sample/images/add_icon.png" alt="${className}" title="${className}" width="70" height="70" />
+                        <input class="content_info" type="hidden" value="${$item.getKey($data)}" />
+                      </div>
+                    </li>
+                {{/if}}
+                </ul>
+                {{/if}}
+                <br class="clear" />
+            </div>
+          </div>
+		</div>
+	</div>
+</script>
+
+<!-- Menu Template -->
+<script id="tmpl_tool_menu" type="text/x-jquery-tmpl">
+	<ul class="tool_menu">
+		{{each items}}
+		<li id="${id}" class="tool_menu_item">
+            <input type="hidden" class="menu_information" value="${information}"/>
+			<a href="#" style="display: block;">${name}</a>
+		</li>
+		{{/each}}
+		<input class="menu_target_id" type="hidden" value="${targetId}" />
+	</ul>
+</script>
+
+
+
+
+<!-- Following Property Editor Template -->
+<script id="tmpl_property_editor" type="text/x-jquery-tmpl">
+	<div class="frame_form">
+		<fieldset>
+			<legend>要素編集</legend>
+			<br />
+			<label>名前：</label>
+			<input class="element_name" type="text" value="${name}"><br />
+			
+			<div class="properties">
+			</div>
+			
+			<input class="update" type="button" value="更新" />
+			<input class="restore" type="button" value="復元" />
+		</fieldset>
+	</div>
+</script>
+
+<script id="tmpl_property_header" type="text/x-jquery-tmpl">
+			<div class="property_head property ${additionalClass}">
+				<ul>
+					{{tmpl($data.data, { 
+						getKey : $item.getKey,
+						getChildren : $item.getChildren,
+						getObjectParameters : $item.getObjectParameters,
+						getConvertedObject : $item.getConvertedObject,
+						getSelection : $item.getSelection,
+						getSelectionItem : $item.getSelectionItem }) $data.templateId}}
+				</ul>
+			</div>
+</script>
+
+<script id="tmpl_array_editor" type="text/x-jquery-tmpl">
+	<li class="parameters_list">
+		<div class="parameter">
+			<div class="parameter_icon">
+				<img class="add" src="" width="16" height="16" />
+				<img class="remove" src="" width="16" height="16" />
+				<input type="hidden" class="template_class_name" value="tmpl_array_editor" />
+				<input type="hidden" class="hide_parent" value="true" />
+			</div>
+			<div class="parameter_in">
+				{{if children}}
+				{{else}}
+				&nbsp;
+				<label>値：</label>
+				<input class="parameter_value" type="text" value="${value}">
+				{{/if}}
+			</div>
+			<br style="clear:both" />
+		</div>
+		<div class="additional_parameters" style="margin-left: 16px;">
+			<ul>
+			</ul>
+		</div>
+		<div class="property array_property" style="margin-left: 16px;">
+			<ul>
+				{{if children}}
+				{{each(i, v) children}}
+					{{tmpl(v) "#tmpl_array_editor"}}
+				{{/each}}
+				{{/if}}
+			</ul>
+		</div>
+	</li>
+</script>
+
+<script id="tmpl_status_wrapper_editor" type="text/x-jquery-tmpl">
+	<li class="parameters_list">
+		<div class="parameter">
+			<div class="parameter_icon">
+				<img class="add" src="" width="16" height="16" />
+				<img class="remove" src="" width="16" height="16" />
+				<input type="hidden" class="template_class_name" value="tmpl_status_editor" />
+				<input type="hidden" class="additional_class_name" value="tmpl_array_editor" />
+			</div>
+			<div class="parameter_in">
+				&nbsp;
+			</div>
+			<br style="clear:both" />
+		</div>
+		<div class="additional_parameters" style="margin-left: 16px;">
+			<ul>
+			</ul>
+		</div>
+		<div class="property status_property" style="margin-left: 16px;">
+			<ul>
+				{{tmpl($data, { 
+						getKey : $item.getKey,
+						getConvertedObject : $item.getConvertedObject }) "#tmpl_status_editor"}}
+			</ul>
+		</div>
+	</li>
+</script>
+
+<script id="tmpl_status_editor" type="text/x-jquery-tmpl">
+	<li class="parameters_list">
+		<div class="parameter">
+			<div class="parameter_icon">
+				<img class="remove" src="" width="16" height="16" />
+				<input type="hidden" class="template_class_name" value="" />
+			</div>
+			<div class="parameter_in">
+				&nbsp;
+				<label>キー：</label>
+				<input class="parameter_key" type="text" value="${$item.getKey($data) ? $item.getKey($data) : ''}">
+			</div>
+			<br style="clear:both" />
+		</div>
+		<div class="additional_parameters property array_property" style="margin-left: 16px;">
+			<ul>
+				{{tmpl($item.getConvertedObject(value)) "#tmpl_array_editor"}}
+			</ul>
+		</div>
+		<div class="property" style="margin-left: 16px;">
+			<ul>
+			</ul>
+		</div>
+	</li>
+</script>
+
+<script id="tmpl_action_wrapper_editor" type="text/x-jquery-tmpl">
+	<li class="parameters_list">
+		<div class="parameter">
+			<div class="parameter_icon">
+				<img class="add" src="" width="16" height="16" />
+				<img class="remove" src="" width="16" height="16" />
+				<input type="hidden" class="template_class_name" value="tmpl_status_editor" />
+				<input type="hidden" class="additional_class_name" value="tmpl_array_editor" />
+			</div>
+			<div class="parameter_in">
+				&nbsp;
+			</div>
+			<br style="clear:both" />
+		</div>
+		<div class="additional_parameters" style="margin-left: 16px;">
+			<ul>
+			</ul>
+		</div>
+		<div class="property action_property" style="margin-left: 16px;">
+			<ul>  
+				{{each(i, v) $data}}
+					{{tmpl(v, { 
+							getChildren : $item.getChildren,
+							getObjectParameters : $item.getObjectParameters,
+							getSelection : $item.getSelection,
+							getSelectionItem : $item.getSelectionItem }) "#tmpl_action_editor"}}
+				{{/each}}
+			</ul>
+		</div>
+	</li>
+</script>
+
+<script id="tmpl_action_editor" type="text/x-jquery-tmpl">
+	<li class="parameters_list">
+		<div class="parameter">
+			<div class="parameter_icon">
+				<img class="add ${$item.getSelectionItem(className).hasChild ? '' : 'invisible'}" src="" width="16" height="16" />
+				<img class="remove" src="" width="16" height="16" />
+				<input type="hidden" class="template_class_name" value="tmpl_action_editor" />
+			</div>
+			<div class="parameter_in">
+				{{tmpl($data, { getSelection : $item.getSelection }) "#tmpl_action_selection"}}
+			</div>
+			<br style="clear:both" />
+		</div>
+		<div class="additional_parameters property array_property" style="margin-left: 16px;">
+			<ul>
+				{{if $item.getSelectionItem(className).hasParameters}}
+				{{tmpl($item.getObjectParameters($data)) "#tmpl_array_editor"}}
+				{{/if}}
+			</ul>
+		</div>
+		<div class="property action_property" style="margin-left: 16px;">
+			<ul>
+				{{if $item.getChildren($data)}}
+				{{each(i, v) $item.getChildren($data)}}
+					{{if $item.getSelectionItem(v.className).isEmpty}}
+					{{else}}
+					{{tmpl(v, { 
+						getChildren : $item.getChildren,
+						getObjectParameters : $item.getObjectParameters,
+						getSelection : $item.getSelection,
+						getSelectionItem : $item.getSelectionItem }) "#tmpl_action_editor"}}
+					{{/if}}
+				{{/each}}
+				{{/if}}
+			</ul>
+		</div>
+	</li>
+</script>
+
+<script id="tmpl_action_selection" type="text/x-jquery-tmpl">
+				<select class="element_type">
+				{{each $item.getSelection(className)}}
+					<option class="" value="${value}" ${isSelected ? 'selected' : ''}>${value}</option>
+				{{/each}}
+				</select>
+</script>
+
+
+</body>
+</html>

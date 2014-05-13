@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <element>
-	<type>Element</type>
 	<className>LocalRegion</className>
 	<key>r1</key>
 	<location>
@@ -14,54 +13,99 @@
 		<depth>1</depth>
 	</size>
 	<element>
-		<type>Resource</type>
-		<fileType>Image</fileType>
+		<className>Resource</className>
 		<key>map1</key>
-		<url>./sample/images/map_04.gif</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/map_04.gif</value>
+		</element>
 	</element>
 	<element>
-		<type>Resource</type>
-		<fileType>Image</fileType>
+		<className>Resource</className>
 		<key>human1</key>
-		<url>./sample/images/human_01.gif</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/human_01.gif</value>
+		</element>
 	</element>
 	<element>
-		<type>Resource</type>
+		<className>Resource</className>
 		<fileType>Image</fileType>
 		<key>monster1</key>
-		<url>./sample/images/monster_01.gif</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/monster_01.gif</value>
+		</element>
 	</element>
 	<element>
-		<type>Resource</type>
-		<fileType>Image</fileType>
+		<className>Resource</className>
 		<key>grid1</key>
-		<url>./sample/images/grid1.jpg</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/grid1.jpg</value>
+		</element>
 	</element>
 	<element>
-		<type>Resource</type>
-		<fileType>Model</fileType>
+		<className>Resource</className>
 		<key>model1</key>
-		<url>./models/cube1/cube1.js</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Model</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./models/cube1/cube1.js</value>
+		</element>
 	</element>
 	<element>
-		<type>Resource</type>
-		<fileType>Model</fileType>
+		<className>Resource</className>
 		<key>model2</key>
-		<url>./models/simple_chara1.js</url>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Model</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./models/simple_chara1.js</value>
+		</element>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Command</className>
 		<key>eve1</key>
 		<element>
-			<type>Element</type>
 			<className>CommandBlockCode</className>
 			<element>
-				<type>Element</type>
 				<className>CommandBlockIF</className>
 				<argument>10+5==15</argument>
 				<element>
-					<type>Element</type>
 					<className>ActionLog</className>
 					<argument>test</argument>
 				</element>
@@ -69,7 +113,6 @@
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
 		<className>StageFrame</className>
 		<key>rs1</key>
 		<size>
@@ -78,25 +121,21 @@
 			<depth>1</depth>
 		</size>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>width</key>
 			<value>5</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>height</key>
 			<value>5</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>depth</key>
 			<value>1</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>drawingOptions</key>
 			<value>
@@ -105,23 +144,19 @@
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
 		<className>GroundFrame</className>
 		<key>rg1</key>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>type</key>
 			<value>grass</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>effect</key>
 			<value>0</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>drawingOptions</key>
 			<value>
@@ -156,36 +191,30 @@
 			</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>anime_show</key>
 			<value>area0</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>anime_default</key>
 			<value>default</value>
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
 		<className>GroundFrame</className>
 		<key>rg2</key>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>type</key>
 			<value>pond</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>effect</key>
 			<value>3</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>drawingOptions</key>
 			<value>
@@ -219,66 +248,94 @@
 			</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>anime_show</key>
 			<value>area0</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>anime_default</key>
 			<value>area1</value>
 		</element>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Command</className>
 		<key>init</key>
 		<element>
-			<type>Element</type>
 			<className>ActionLog</className>
 			<argument>"初期化"</argument>
 		</element>
+		<element>
+			<className>ActionIcon</className>
+			<argument>$THIS.parent()</argument>
+			<argument>"hoge1"</argument>
+			<argument>"human1"</argument>
+			<argument>
+				<argument>
+					<argument>10</argument>
+					<argument>10</argument>
+					<argument>0</argument>
+				</argument>
+				<argument>1</argument>
+				<argument>null</argument>
+				<argument>
+					<argument>
+						<argument>0</argument>
+						<argument>0</argument>
+						<argument>160</argument>
+						<argument>160</argument>
+					</argument>
+					<argument>
+						<argument>
+							<argument>"default"</argument>
+							<argument>0</argument>
+							<argument>3</argument>
+						</argument>
+						<argument>
+							<argument>"area0"</argument>
+							<argument>4</argument>
+							<argument>5</argument>
+						</argument>
+						<argument>
+							<argument>"area1"</argument>
+							<argument>8</argument>
+							<argument>8</argument>
+						</argument>
+					</argument>
+				</argument>
+			</argument>
+		</element>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Command</className>
 		<key>isWonAndLose</key>
 		<element>
-			<type>Element</type>
 			<className>ActionVariable</className>
 			<argument>"$won"</argument>
 			<argument>true</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionVariable</className>
 			<argument>"$lose"</argument>
 			<argument>true</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>CommandBlockFOR</className>
 			<argument>"$temp"</argument>
 			<argument>w1.find(Cast)</argument>
 			<element>
-				<type>Element</type>
 				<className>CommandBlockIF</className>
 				<argument>$temp.belongs=="enemy"</argument>
 				<element>
-					<type>Element</type>
 					<className>ActionVariable</className>
 					<argument>"$won"</argument>
 					<argument>false</argument>
 				</element>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>CommandBlockIF</className>
 				<argument>$temp.belongs=="player"</argument>
 				<element>
-					<type>Element</type>
 					<className>ActionVariable</className>
 					<argument>"$lose"</argument>
 					<argument>false</argument>
@@ -286,16 +343,13 @@
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>CommandBlockIF</className>
 			<argument>$won==true</argument>
 			<element>
-				<type>Element</type>
 				<className>ActionLog</className>
 				<argument>"You won"</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>ActionJSlgMessage</className>
 				<argument>"You Win!(^^)"</argument>
 				<argument>
@@ -308,21 +362,17 @@
 				</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>ActionPending</className>
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>CommandBlockElseIF</className>
 			<argument>$lose==true</argument>
 			<element>
-				<type>Element</type>
 				<className>ActionLog</className>
 				<argument>"You lose"</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>ActionJSlgMessage</className>
 				<argument>"You Lose!"</argument>
 				<argument>
@@ -335,29 +385,24 @@
 				</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>ActionPending</className>
 			</element>
 		</element>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Command</className>
 		<key>Changing</key>
 		<element>
-			<type>Element</type>
 			<className>ActionAnime</className>
 			<argument>$SENDER.parent()</argument>
 			<argument>"area0"</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionJSlgText</className>
 			<argument>$SENDER.parent()</argument>
 			<argument>$ActionSet.changeValue</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionJSlgProfile</className>
 			<argument>$SENDER.parent()</argument>
 			<argument>
@@ -369,41 +414,33 @@
 			</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>CommandBlockIF</className>
 			<argument>$SENDER.parent().life&lt;0</argument>
 			<element>
-				<type>Element</type>
 				<className>ActionRemove</className>
 				<argument>$SENDER.parent()</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>ActionCall</className>
 				<argument>w1.r1.isWonAndLose</argument>
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionUpdate</className>
 		</element>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Command</className>
 		<key>move</key>
 		<element>
-			<type>Element</type>
 			<className>ActionLog</className>
 			<argument>"移動"</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionJSlgMenu</className>
 			<argument>null</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionRequireArea</className>
 			<argument>$SENDER</argument>
 			<argument>
@@ -432,22 +469,18 @@
 			</argument>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionPending</className>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>ActionJSlgMove</className>
 			<argument>$SENDER.parent().parent()</argument>
 			<argument>$PENDING.obj</argument>
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
 		<className>CastFrame</className>
 		<key>rc1</key>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>drawingOptions</key>
 			<value>
@@ -481,30 +514,24 @@
 			</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Command</className>
 			<key>onClick</key>
 			<element>
-				<type>Element</type>
 				<className>ActionJSlgMenu</className>
 				<argument>$THIS.parent()</argument>
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Command</className>
 			<key>onChange</key>
 			<element>
-				<type>Element</type>
 				<className>ActionCall</className>
 				<argument>w1.r1.Changing</argument>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>CommandBlockIF</className>
 				<argument>$THIS.parent().life&gt;0</argument>
 				<element>
-					<type>Element</type>
 					<className>ActionCall</className>
 					<argument>$THIS.parent().Kill.c1_kill</argument>
 					<argument>
@@ -517,67 +544,54 @@
 			</element>
 		</element>
 		<element>
-			<type>Frame</type>
 			<className>ItemFrame</className>
 			<key>Move</key>
 			<element>
-				<type>Element</type>
 				<className>Command</className>
 				<key>onClick</key>
 				<element>
-					<type>Element</type>
 					<className>ActionCall</className>
 					<argument>w1.r1.move</argument>
 				</element>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>name</key>
 				<value>移動</value>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>count</key>
 				<value>1</value>
 			</element>
 		</element>
 		<element>
-			<type>Frame</type>
 			<className>ItemFrame</className>
 			<key>Kill</key>
 			<element>
-				<type>Element</type>
 				<className>Command</className>
 				<key>onClick</key>
 				<element>
-					<type>Element</type>
 					<className>ActionLog</className>
 					<argument>"攻撃"</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>CommandBlockIF</className>
 					<argument>$Target!=null</argument>
 					<element>
-						<type>Element</type>
 						<className>ActionVariable</className>
 						<argument>"$T"</argument>
 						<argument>$Target.parent()</argument>
 					</element>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>CommandBlockElseIF</className>
 					<argument>true==true</argument>
 					<element>
-						<type>Element</type>
 						<className>ActionJSlgMenu</className>
 						<argument>null</argument>
 					</element>
 					<element>
-						<type>Element</type>
 						<className>ActionRequireArea</className>
 						<argument>$THIS</argument>
 						<argument>
@@ -606,66 +620,55 @@
 						</argument>
 					</element>
 					<element>
-						<type>Element</type>
 						<className>ActionPending</className>
 					</element>
 					<element>
-						<type>Element</type>
 						<className>ActionVariable</className>
 						<argument>"$T"</argument>
 						<argument>$PENDING.obj</argument>
 					</element>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionAnime</className>
 					<argument>$THIS.parent()</argument>
 					<argument>"area1"</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionSet</className>
 					<argument>$T</argument>
 					<argument>"life"</argument>
 					<argument>$T.life-10</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionUpdate</className>
 				</element>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>name</key>
 				<value>攻撃</value>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>count</key>
 				<value>1</value>
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>life</key>
 			<value>50</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>moving</key>
 			<value>5</value>
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
 		<className>CastFrame</className>
 		<key>rc2</key>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>drawingOptions</key>
 			<value>
@@ -699,30 +702,24 @@
 			</value>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Command</className>
 			<key>onChange</key>
 			<element>
-				<type>Element</type>
 				<className>ActionCall</className>
 				<argument>w1.r1.Changing</argument>
 			</element>
 		</element>
 		<element>
-			<type>Frame</type>
 			<className>ItemFrame</className>
 			<key>Fire</key>
 			<element>
-				<type>Element</type>
 				<className>Command</className>
 				<key>onClick</key>
 				<element>
-					<type>Element</type>
 					<className>ActionLog</className>
 					<argument>"攻撃E"</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionRequireArea</className>
 					<argument>$THIS</argument>
 					<argument>
@@ -752,21 +749,17 @@
 					<argument>"Cast"</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionPending</className>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionAnime</className>
 					<argument>$THIS.parent().parent()</argument>
 					<argument>"area1"</argument>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionUpdate</className>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>ActionSet</className>
 					<argument>$PENDING.obj</argument>
 					<argument>"life"</argument>
@@ -774,28 +767,24 @@
 				</element>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>name</key>
 				<value>攻撃</value>
 			</element>
 			<element>
-				<type>Element</type>
 				<className>Status</className>
 				<key>count</key>
 				<value>1</value>
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Status</className>
 			<key>life</key>
 			<value>80</value>
 		</element>
 	</element>
 	<element>
-		<type>Frame</type>
-		<className>Mind</className>
+		<className>MindFrame</className>
 		<key>mind_p</key>
 		<memberKey>belongs</memberKey>
 		<decreasedKeys>
@@ -810,8 +799,7 @@
 		</enemyMemberNames>
 	</element>
 	<element>
-		<type>Frame</type>
-		<className>Mind</className>
+		<className>MindFrame</className>
 		<key>mind_e</key>
 		<memberKey>belongs</memberKey>
 		<decreasedKeys>
@@ -826,7 +814,6 @@
 		</enemyMemberNames>
 	</element>
 	<element>
-		<type>Element</type>
 		<className>Stage</className>
 		<source>rs1</source>
 		<location>
@@ -836,24 +823,20 @@
 		</location>
 		<key>s1</key>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>0</x><y>0</y><z>0</z></location>
 			<key>g0_0_0</key>
 			<element>
-				<type>Element</type>
 				<className>Cast</className>
 				<source>rc1</source>
 				<key>c1</key>
 				<element>
-					<type>Element</type>
 					<className>Mind</className>
 					<key>mind_p1</key>
 					<source>mind_p</source>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>Status</className>
 					<key>belongs</key>
 					<value>player</value>
@@ -861,87 +844,74 @@
 			</element>
 		</element>		
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>1</x><y>0</y><z>0</z></location>
 			<key>g1_0_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>2</x><y>0</y><z>0</z></location>
 			<key>g2_0_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>3</x><y>0</y><z>0</z></location>
 			<key>g3_0_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>0</x><y>1</y><z>0</z></location>
 			<key>g0_1_0</key>
 		</element>		
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>1</x><y>1</y><z>0</z></location>
 			<key>g1_1_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>2</x><y>1</y><z>0</z></location>
 			<key>g2_1_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>3</x><y>1</y><z>0</z></location>
 			<key>g3_1_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>0</x><y>2</y><z>0</z></location>
 			<key>g0_2_0</key>
 		</element>		
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>1</x><y>2</y><z>0</z></location>
 			<key>g1_2_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>2</x><y>2</y><z>0</z></location>
 			<key>g2_2_0</key>
 			<element>
-				<type>Element</type>
 				<className>Cast</className>
 				<source>rc2</source>
 				<key>c2</key>
 				<element>
-					<type>Element</type>
 					<className>Mind</className>
 					<key>mind_e1</key>
 					<source>mind_e</source>
 				</element>
 				<element>
-					<type>Element</type>
 					<className>Status</className>
 					<key>belongs</key>
 					<value>enemy</value>
@@ -949,35 +919,30 @@
 			</element>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>3</x><y>2</y><z>0</z></location>
 			<key>g3_2_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>0</x><y>3</y><z>0</z></location>
 			<key>g0_3_0</key>
 		</element>		
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>1</x><y>3</y><z>0</z></location>
 			<key>g1_3_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg2</source>
 			<location><x>2</x><y>3</y><z>0</z></location>
 			<key>g2_3_0</key>
 		</element>
 		<element>
-			<type>Element</type>
 			<className>Ground</className>
 			<source>rg1</source>
 			<location><x>3</x><y>3</y><z>0</z></location>

@@ -22,9 +22,10 @@
 		jslgEngine.model.common.JSlgElement,
 		function(data) {
 			this.initialize(data);
-			this.resourceFileType = data.resourceFileType;
-			this.resourceKey = data.resourceKey;
-			this.resourceUrl = data.resourceUrl;
+            // ステータスとして格納することにした。
+//			this.resourceFileType = data.fileType;
+//			this.resourceKey = data.key;
+//			this.resourceUrl = data.url;
 		}
 	);
 	/**
@@ -70,7 +71,7 @@
 	 * @type String
 	 * @memberOf jslgEngine.model.stage.ResourceElement#
 	 **/
-	p.className = 'ResourceElement';
+	p.className = 'Resource';
 
 	/**
 	 * パスのキーコード
@@ -80,7 +81,7 @@
 	 * @type String[]
 	 * @memberOf jslgEngine.model.stage.ResourceElement#
 	 **/
-	p._keyPathCodes = [	jslgEngine.model.stage.keys.WORLD_REGION,
+	p._keyPathCodes = [	jslgEngine.model.stage.keys.LOCAL_REGION,
 						jslgEngine.model.stage.keys.RESOURCE];
 
 	/**

@@ -21,7 +21,7 @@
 	var JSlgElement = jslgEngine.extend(
 		jslgEngine.model.common.JSlgElementFrame,
 		function(data, options) {
-			this.initialize(data, options);
+            this.initialize(data, options);
 		}
 	);
 	/**
@@ -99,21 +99,9 @@
 	 **/
 	p.initialize = function(data, options) {
 		var self = this;
-		var baseOptions = data||{};
 
-		//TODO:パスは完全にキーに委譲するべき
-		var keyPathCodes = self._keyPathCodes||baseOptions.keyPathCodes;
-		
-		var keyCode = self._keyCode||baseOptions.keyCode;
-		self._key = new jslgEngine.model.common.JSlgKey({
-			keyCode : keyCode,
-			keys : keyPathCodes
-		}, options);
-		if(baseOptions.key) {
-			self.setKey(baseOptions.key);
-		}
-		self._children = [];
-		
+        p.__super__.initialize.call(self, data, options);
+        
 		//ここからBaseとが違う？
 		self._resetOffset(data ? data.parent : null);
 		if(self.hasLocation) {

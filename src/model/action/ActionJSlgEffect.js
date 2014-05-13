@@ -41,17 +41,6 @@
 	p.className = 'ActionJSlgEffect';
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionJSlgEffect#
-	 **/
-	p._isAsync = true;
-
-	/**
 	 * 実行
 	 *
 	 * @name run

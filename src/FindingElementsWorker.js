@@ -1,15 +1,15 @@
-onmessage = function(command) {
+onmessage = function(dt) {
     var results;
-    var data = command.data;
+    var data = dt.data;
     
     if(data) {
     	var obj = JSON.parse(data);
     	
     	if(obj) {
-    		//要素が展開される。
     		var result = [];
     		var data = {
     			obj : obj.findTargets,
+                getOne : data.getOne,
     			result : result
     		};
     		var options = {
@@ -17,11 +17,6 @@ onmessage = function(command) {
     		
     		findElements(obj.elements, data, options);
     		
-    		//座標
-    		// var key = obj.key;
-    		// var className = obj.className;
-	    	// var location = obj.location;
-
 	    	results = data.result;
     	} else {
     		jslgEngine.log('failed to parse JSON in FindingElementsWorker.');
@@ -125,8 +120,6 @@ var isMatched = function(element, data, options) {
 	var self = element;
 	var key = data.key;
 	var location = data.key ? data.key : null;
-	//var location = data.key ? data.key.split(locationSeparator) : null;
-	//location = location ? { x : location[0],  y : location[1], z : location[2] } : null;
 	var index = data.index;
 	var className = data.className;
 	

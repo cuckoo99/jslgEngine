@@ -21,6 +21,8 @@
      *  <li>ImageData
      *   <ul>
      *   <li>FilePath</li>
+     *   <li>regX</li>
+     *   <li>regY</li>
      *   <li>Width</li>
      *   <li>Height</li>
      *   </ul>
@@ -58,17 +60,6 @@
 	 * @memberOf jslgEngine.model.action.ActionJSlgMessage#
 	 **/
 	p.className = 'ActionJSlgMessage';
-
-	/**
-	 * As if async function
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionJSlgMessage#
-	 **/
-	p._isAsync = true;
 
 	/**
 	 * Fire this program.
@@ -139,7 +130,6 @@
 			requiredMessage = new jslgEngine.model.issue.RequiredMessage({
 				settings : messages
 			}, options);
-			//requiredMessage.makeMessageElement(connector, messages[0].selection, data, options);
 		});
 		region.findElements(connector, {
 			key : [pendingVariableKey,pendingKey].join(jslgEngine.config.elementSeparator)

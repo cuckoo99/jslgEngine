@@ -105,7 +105,7 @@
 		//子要素キーが存在する場合、配列ならばそれぞれ自身の一致した状態から検索
 		//配列でなければ、通常の要素として変数を扱う。
 		target.data.index = data.index;
-		if(self._isMatched(target.data)) {
+		if(self.equals(target.data)) {
 			if(obj.length === 0) {
 				data.result.push(self);
 			} else {
@@ -402,5 +402,19 @@
 		}
 		return element;
 	};
+    
+	/**
+	 * XML文字列形式として返す
+	 *
+	 * @name toXML
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElementVariable#
+	 * @returns {String}
+	 */
+	p.toXML = function(options) {
+        return '';
+    };
+    
 	o.JSlgElementVariable = JSlgElementVariable;
 }());

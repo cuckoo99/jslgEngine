@@ -354,13 +354,13 @@
 	 * <ul>
 	 * </ul>
 	 **/
-	p.makeElement = function(options) {
+	p.makeElement = function(data, options) {
 		return new jslgEngine.model.common.JSlgElementStatus({
-			key : options.key,
-			value : options.value,
-			location : options.location,
-			parent : options.parent
-		});
+			key : data.key,
+			value : data.value,
+			location : data.location,
+			parent : data.parent
+		}, options);
 	};
 
 	/**

@@ -9,11 +9,10 @@
 	o = (o.action = o.action||{});
 
 	/**
-	 * <h4>コード処理・範囲要求クラス</h4>
 	 * <p>
-	 * 未解決の範囲選択要素を追加する。<br />
-	 * この要素はPendingによって入力待機状態のうちに、<br />
-	 * 座標を持つ要素で解決しなければならない。<br />
+	 * This class records information about inputing the range.<br />
+	 * When ActionPending is called, it would be read for waiting<br />
+	 * until input information of the range.<br />
 	 * </p>
 	 * @class
 	 * @name ActionRequireArea
@@ -42,7 +41,7 @@
 	p.className = 'ActionRequireArea';
 
 	/**
-	 * 実行
+	 * run
 	 *
 	 * @name run
 	 * @method
@@ -140,7 +139,6 @@
 				}
 			}, options);
 			
-			//var selfElement = self.getSelfElement(connector_s, data, options);
 			var selfElement = base;
 			
 			if(selfElement) {
@@ -149,12 +147,13 @@
 				var targetApplied = selfElement;
 				var limit = 100;
 				
-				while((targetApplied = targetApplied.getParent(options)) && (limit--) > 0) {
+				while(targetApplied && (limit--) > 0) {
 					if(targetApplied.className === targetClassName) {
 						if(!targetApplied.getGlobalLocation) break;
 						requiredArea.resolve(connector_s, targetApplied, {}, options);
 						break;
 					}
+                    targetApplied = targetApplied.getParent(options);
 				}
 			} else {
 				jslgEngine.log('Not Found Self Element: cound not apply location in RequiredArea');
@@ -176,7 +175,7 @@
 	};
 
 	/**
-	 * リストア
+	 * restore
 	 *
 	 * @name restore
 	 * @method

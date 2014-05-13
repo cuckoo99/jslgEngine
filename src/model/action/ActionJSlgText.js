@@ -40,17 +40,6 @@
 	p.className = 'ActionJSlgText';
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionJSlgText#
-	 **/
-	p._isAsync = true;
-
-	/**
 	 * 実行
 	 *
 	 * @name run

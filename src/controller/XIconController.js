@@ -9,9 +9,8 @@
 
 	/**
 	 * <p>
-	 * this class is abstact.<br />
      * it includes graphical objects managed.<br />
-	 * it'sdepending on <em>easelJs</em>.<br />
+	 * it'sdepending on <em>Three.js</em>.<br />
 	 * </p>
 	 * @class
 	 * @name XIconController
@@ -183,20 +182,6 @@
 	 * @memberOf jslgEngine.controller.XIconController#
 	 * @param {jslgEngine.model.network.ConnectorBase} connector
 	 * @param {Object} data
-	 * <ul>
-	 * 	<li>{String} key</li>
-	 * 	<li>{String} imageKey</li>
-	 * 	<li>{createjs.Graphics} graphics TODO</li>
-	 * 	<li>{Number} alpha</li>
-	 * 	<li>{Object} text</li>
-	 * 	<ul>
-	 * 	<li>{String} font</li>
-	 * 	<li>{String} textValue</li>
-	 * 	<li>{String} color</li>
-	 * 	</ul>
-	 * 	<li>{careatejs.Sprite} sprite TODO</li>
-	 * 	<li>{jslgEngine.controller.MainController} mainController</li>
-	 * </ul>
 	 * @param {Object} options
 	 **/
 	p.add = function(connector, data, options) {
@@ -542,7 +527,7 @@
 	};
 	
 	/**
-	 * remove information.
+	 * get object.
 	 *
 	 * @name get
 	 * @method

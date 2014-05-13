@@ -40,17 +40,6 @@
 	p.className = 'ActionJSlgMenu';
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionJSlgMenu#
-	 **/
-	p._isAsync = true;
-
-	/**
 	 * 実行
 	 *
 	 * @name run

@@ -9,10 +9,9 @@
 	o = (o.logic = o.logic||{});
 
 	/**
-	 * <h4>要素変換クラス</h4>
+	 * <h4>Converter</h4>
 	 * <p>
-	 * 文字列‐SLG要素間の変換を行う。
-	 * また、SLG要素の計算処理を行う。
+     * makes JSlgElement from outer file XML or JSON.
 	 * </p>
 	 * @class
 	 * @name Converter
@@ -28,7 +27,7 @@
 	var p = Converter.prototype;
 
 	/**
-	 * 初期化
+	 * set up.
 	 *
 	 * @name initialize
 	 * @method
@@ -46,12 +45,11 @@
 				'GroundFrame' : isThree ? jslgEngine.model.stage.XGroundFrame : jslgEngine.model.stage.GroundFrame,
 				'CastFrame' : isThree ? jslgEngine.model.stage.XCastFrame : jslgEngine.model.stage.CastFrame,
 				'ItemFrame' : jslgEngine.model.stage.ItemFrame,
-				'Mind' : jslgEngine.model.mind.Mind
+				'MindFrame' : jslgEngine.model.mind.MindFrame
 			},
 			generics : {
 				'Icon' : jslgEngine.model.stage.Icon,
 				'Command' : jslgEngine.model.command.Command,
-				'CommandBlockCode' : jslgEngine.model.command.CommandBlockCode,
 				'CommandBlockIF' : jslgEngine.model.command.CommandBlockIF,
 				'CommandBlockElseIF' : jslgEngine.model.command.CommandBlockElseIF,
 				'CommandBlockFOR' : jslgEngine.model.command.CommandBlockFOR,
@@ -73,7 +71,6 @@
 				'ActionJSlgMove' : jslgEngine.model.action.ActionJSlgMove,
 				'ActionJSlgScroll' : jslgEngine.model.action.ActionJSlgScroll,
 				'ActionJSlgMenu' : jslgEngine.model.action.ActionJSlgMenu,
-				'ActionJSlgTurn' : jslgEngine.model.action.ActionJSlgTurn,
 				'ActionJSlgUpdateArea' : jslgEngine.model.action.ActionJSlgUpdateArea,
 				'ActionJSlgText' : jslgEngine.model.action.ActionJSlgText,
 				'ActionJSlgProfile' : jslgEngine.model.action.ActionJSlgProfile,
@@ -84,7 +81,6 @@
 				'Cast' : isThree ? jslgEngine.model.stage.XCast : jslgEngine.model.stage.Cast,
 				'Item' : jslgEngine.model.stage.Item,
 				'Mind' : jslgEngine.model.mind.Mind,
-				'Resource' : jslgEngine.model.stage.Resource,
 				'LocalRegion' : jslgEngine.model.area.LocalRegion
 			}
 		};
@@ -94,7 +90,7 @@
 			'Ground' : isThree ? jslgEngine.model.stage.XGroundFrame : jslgEngine.model.stage.GroundFrame,
 			'Cast' : isThree ? jslgEngine.model.stage.XCastFrame : jslgEngine.model.stage.CastFrame,
 			'Item' : jslgEngine.model.stage.ItemFrame,
-			'Mind' : jslgEngine.model.mind.Mind,
+			'Mind' : jslgEngine.model.mind.MindFrame,
 		};
 	};
 
@@ -118,6 +114,32 @@
 	 **/
 	p._sources = null;
 
+	/**
+	 * 外部へ作成可能な要素の情報を提供する。
+	 *
+	 * @name getElementInformation
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.logic.Converter#
+	 * @param {JSON} options
+	 **/
+	p.getElementInformation = function(connector, options) {
+        var self = this;
+        var result = [];
+        var list = self._models.generics;
+        
+        for(var key in list) {
+            var obj = list[key];
+            var className = obj.prototype.className;
+            result.push({
+                className : obj.prototype.className,
+                hasSize : obj.prototype.hasSize,
+                hasLocation : obj.prototype.hasLocation
+            });
+        }
+        return result;
+	};
+    
 	/**
 	 * 文字列からインスタンスを返す
 	 *
@@ -224,7 +246,7 @@
 		
 		var property = data.property;
 		
-		if(property.type === "Frame") {
+		if(models.frames[property.className]) {
 			var frame;
 			var factory = models.frames[property.className];
 
@@ -233,7 +255,13 @@
 				data.createdElements.push(frame);
 			}
 			return frame;
-		} else if(property.type === "Element") {
+		} else if(property.className === "Resource") {
+			var resource = new jslgEngine.model.common.ResourceElement(property, options);
+			data.createdElements.push(resource);
+            
+            //TODO: 返すべきか。
+            return resource;
+		} else if(models.generics[property.className]) {
 			var sourceFrame;
 			
 			var factory = models.generics[property.className];
@@ -245,14 +273,6 @@
 			} else if(factory) {
 				return new factory(property, options);
 			}
-		} else if(property.type === "Resource") {
-			var resource = new jslgEngine.model.common.ResourceElement({
-				key : property.key,
-				resourceFileType : property.fileType,
-				resourceKey : property.key,
-				resourceUrl : property.url
-			});
-			data.createdElements.push(resource);
 		}
 		return null;
 	};
@@ -362,7 +382,7 @@
 		var resources = [];
 		for(var i = 0; i < createdElements.length; i++) {
 			var element = createdElements[i];
-			if(element.className === 'ResourceElement') {
+			if(element.className === 'Resource') {
 				resources.push(element);
 			}
 		}
@@ -413,6 +433,8 @@
 					mainController : options.mainController
 				});
 	
+                if(!child) continue;
+			
 				obj.addChild({
 					obj : child
 				}, options);
@@ -552,9 +574,9 @@
 			
 			if(!child) continue;
 			
-			if(passingResult && child instanceof jslgEngine.model.command.CommandBlockElseIF) {
+			if(passingResult && child.className === 'CommandBlockElseIF') {
 				child.setPassingResult(passingResult);
-			} else if(child instanceof jslgEngine.model.command.CommandBlockIF) {
+			} else if(child.className === 'CommandBlockIF') {
 				passingResult = {
 					id : options.mainController.getUniqueId(),
 					result : false

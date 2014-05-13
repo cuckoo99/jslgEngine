@@ -41,17 +41,6 @@
 	p.className = 'ActionJSlgProfile';
 
 	/**
-	 * 非同期かどうか
-	 *
-	 * @private
-	 * @name _isAsync
-	 * @property
-	 * @type Boolean
-	 * @memberOf jslgEngine.model.action.ActionJSlgProfile#
-	 **/
-	p._isAsync = true;
-
-	/**
 	 * 実行
 	 *
 	 * @name run
@@ -92,7 +81,6 @@
 			
 				if(removeKeys.length > 0) {
 					for(var i = 0; i < removeKeys.length; i++) {
-						// 現在のメッセージを優先して表示
 						options.mainController.ticker.addAnimation({
 							key : removeKeys[i],
 							fadeType : jslgEngine.model.animation.keys.fadeType.FADE_OUT,
@@ -120,11 +108,13 @@
 				
 				var key = 'pf';
 				
-				slgIconFactory.makeProfile(connector_s, {
-					key : key,
-					name : cast.getKey(),
-					targets : viewStatus,
-				}, options);
+                connector_s.connects(function(connector_ss) {
+                    slgIconFactory.makeProfile(connector_s, {
+                        key : key,
+                        name : cast.getKey(),
+                        targets : viewStatus,
+                    }, options);
+                });
 				connector_s.pipe(function(connector_ss) {
 					var targetKeys = [];
 					
@@ -136,6 +126,8 @@
 						for(var j = viewTarget.before; (j !== viewTarget.after && (limit--) > 0); j+=direction) {
 							textList.push(j);
 						}
+				        textList.push(viewTarget.after);
+				        textList.push(viewTarget.after);
 						
 						var targetKey = [key,viewTarget.key].join(jslgEngine.config.elementSeparator);
 						targetKeys.push(targetKey);

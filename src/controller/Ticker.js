@@ -8,9 +8,9 @@
 	o = (o.controller = o.controller||{});
 
 	/**
-	 * <h4>タイマー処理クラス</h4>
 	 * <p>
-	 * 定期的に実行する処理を管理する。
+	 * this class frequently updates anything of data like images on canvas.
+     * and it manages animation data to update object in IconController.
 	 * </p>
 	 * @class
 	 * @name Ticker
@@ -26,7 +26,7 @@
 	var p = Ticker.prototype;
 
 	/**
-	 * 初期化
+	 * set up
 	 *
 	 * @name initialize
 	 * @method
@@ -41,7 +41,8 @@
 	};
 
 	/**
-	 * コールバック関数
+	 * callback functions.
+     * when all animations are done, it would be called.
 	 *
 	 * @private
 	 * @name _callbacks
@@ -52,7 +53,7 @@
 	p._callbacks = null;
 
 	/**
-	 * 管理アニメーション
+	 * animation containers
 	 *
 	 * @private
 	 * @name _animationContainers
@@ -63,7 +64,7 @@
 	p._animationContainers = null;
 
 	/**
-	 * 管理アニメーションのグループ
+	 * animation groups.
 	 *
 	 * @private
 	 * @name _animationGroups
@@ -74,26 +75,13 @@
 	p._animationGroups = null;
 
 	/**
-	 * 通信
-	 *
-	 * @private
-	 * @name _connector
-	 * @property
-	 * @type jslgEngine.model.network.ConnectorOnline
-	 * @memberOf jslgEngine.controller.Ticker#
-	 **/
-	p._connector = null;
-
-	/**
-	 * タイマー処理を実行する
+	 * run
 	 *
 	 * @name tick
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {Object} options
 	 **/
 	p.tick = function(options) {
 		var self = this;
@@ -127,15 +115,13 @@
 	};
 
 	/**
-	 * コールバック関数を追加する
+	 * add callback function.
 	 *
 	 * @name addCallback
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {Object} options
 	 **/
 	p.addCallback = function(callback, options) {
 		var self = this;
@@ -144,15 +130,14 @@
 	};
 
 	/**
-	 * アニメーションを追加する
+	 * add animation
 	 *
 	 * @name addAnimation
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {Object} data
+	 * @param {Object} options
 	 **/
 	p.addAnimation = function(data, options) {
 		var self = this;
@@ -182,15 +167,13 @@
 	};
 
 	/**
-	 * アニメーション・グループを追加する
+	 * add AnimationGroup.
 	 *
 	 * @name addAnimationGroup
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {Object} options
 	 **/
 	p.addAnimationGroup = function(data, options) {
 		var self = this;
@@ -206,16 +189,13 @@
 	};
 
 	/**
-	 * アニメーションが終了したか確認
+	 * check if all animations were finished.
 	 *
 	 * @name wasFinished
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * @returns Boolean
-	 * <ul>
-	 * </ul>
+	 * @param {Object} options
 	 **/
 	p.wasFinished = function(options) {
 		var self = this;
@@ -248,15 +228,14 @@
 	
 
 	/**
-	 * アニメーション・グループを追加する
+	 * let a animation be finished.
 	 *
 	 * @name notifyEndOfAnimation
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {String} key
+	 * @param {Boolean} flag
 	 **/
 	p.notifyEndOfAnimation = function(key, flag) {
 		var self = this;
@@ -272,15 +251,13 @@
 	};
 
 	/**
-	 * アニメーションのロックを解除する
+	 * play all animations.
 	 *
 	 * @name unlockAnimation
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {Object} options
 	 **/
 	p.unlockAnimation = function(options) {
 		var self = this;
@@ -306,15 +283,13 @@
 
 
 	/**
-	 * アニメーションを取得する
+	 * get AnimationContainer.
 	 *
 	 * @name _getAnimationContainer
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {String} key
 	 **/
 	p._getAnimationContainer = function(key) {
 		var self = this;
@@ -332,15 +307,14 @@
 	};
 
 	/**
-	 * グループを取得する
+	 * get AnimationGroup.
 	 *
 	 * @name _setAnimationGroup
 	 * @method
 	 * @function
 	 * @memberOf jslgEngine.controller.Ticker#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
+	 * @param {String} key
+	 * @param {Object} options
 	 **/
 	p._setAnimationGroup = function(key, options) {
 		var self = this;

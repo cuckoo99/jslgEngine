@@ -651,14 +651,14 @@
 
 		//それが敵なのか、味方なのか抜き出して伝える。
 		var targetFamily = self._pickUpElements(
-			arguments.status.member.key,
-			arguments.status.member.familyMemberNames,
+			arguments.memberKey,
+			arguments.familyMemberNames,
 			targets,
 			options
 			);
 		var targetEnemy = self._pickUpElements(
-			arguments.status.member.key,
-			arguments.status.member.enemyMemberNames,
+			arguments.memberKey,
+			arguments.enemyMemberNames,
 			targets,
 			options
 			);

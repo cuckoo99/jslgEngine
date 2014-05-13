@@ -22,18 +22,11 @@
 	 * @constructor
 	 */
 	var Mind = jslgEngine.extend(
-		jslgEngine.model.common.JSlgElementBase,
+		jslgEngine.model.common.JSlgElement,
 		function(data, options) {
 			this.initialize(data, options);
-			
-			this._makeArguments();
-			this._arguments.status.decreasedKeys = data.decreasedKeys;
-			this._arguments.status.increasedKeys = data.increasedKeys;
-			this._arguments.status.member.key = data.memberKey;
-			this._arguments.status.member.familyMemberNames = data.familyMemberNames;
-			this._arguments.status.member.enemyMemberNames = data.enemyMemberNames;
-			this._arguments.status.command.key = data.commandKey;
-			this._arguments.status.command.value = data.commandValue;
+			 //jslgEngine.model.mind.MindFrame.prototype.makeArguments.call(this, data, options);
+        
 		}
 	);
 	/**
@@ -62,142 +55,25 @@
 	p._keyCode = 'Mind';
 
 	/**
-	 * 実行
+	 * Information to decide its activity.
 	 *
-	 * @name _makeArguments
+	 * @name getArguments
 	 * @method
 	 * @function
-	 * @memberOf jslgEngine.model.mind.Mind#
+	 * @memberOf jslgEngine.model.mind.MindFrame#
 	 * @param {Object} options
 	 * <ul>
 	 * </ul>
 	 **/
-	p._makeArguments = function() {
-		var self = this;
-		
-		/**
-		 * コード
-		 *
-		 * @private
-		 * @name _arguments
-		 * @property
-		 * @type Object
-		 * @memberOf jslgEngine.model.mind.Mind#
-		 **/
-		self._arguments = {
-			/**
-			 * ステータス
-			 *
-			 * @private
-			 * @name status
-			 * @property
-			 * @type Object
-			 * @memberOf jslgEngine.model.mind.Mind._arguments#
-			 **/
-			status : {
-				/**
-				 * 自身の数値を減少させる事で優位に立てる要素（ステータス）
-				 *
-				 * @private
-				 * @name decreasedKeys
-				 * @property
-				 * @type String[]
-				 * @memberOf jslgEngine.model.mind.Mind._arguments#
-				 **/
-				decreasedKeys : [],
-				/**
-				 * 自身の数値を増加させる事で優位に立てる要素（ステータス）
-				 *
-				 * @private
-				 * @name increasedKeys
-				 * @property
-				 * @type String[]
-				 * @memberOf jslgEngine.model.mind.Mind._arguments#
-				 **/
-				increasedKeys : [],
-				/**
-				 * 自身の所属を表す要素（ステータス）
-				 *
-				 * @private
-				 * @name memberKey
-				 * @property
-				 * @type String
-				 * @memberOf jslgEngine.model.mind.Mind._arguments#
-				 **/
-				member : {
-					/**
-					 * 自身の所属を表す要素（ステータス）
-					 *
-					 * @private
-					 * @name key
-					 * @property
-					 * @type String
-					 * @memberOf jslgEngine.model.mind.Mind._arguments#
-					 **/
-					key : null,
-					/**
-					 * 味方の所属名
-					 *
-					 * @private
-					 * @name familyMemberNames
-					 * @property
-					 * @type String[]
-					 * @memberOf jslgEngine.model.mind.Mind._arguments#
-					 **/
-					familyMemberNames : [],
-					/**
-					 * 味方の所属名
-					 *
-					 * @private
-					 * @name enemyMemberNames
-					 * @property
-					 * @type String[]
-					 * @memberOf jslgEngine.model.mind.Mind._arguments#
-					 **/
-					enemyMemberNames : []
-				},
-				/**
-				 * 実行できるイベント要素（ステータス）
-				 *
-				 * @private
-				 * @name command
-				 * @property
-				 * @type String
-				 * @memberOf jslgEngine.model.mind.Mind._arguments#
-				 **/
-				command : {
-					/**
-					　* 実行できるイベント要素（ステータス）
-					 *
-					 * @private
-					 * @name key
-					 * @property
-					 * @type String
-					 * @memberOf jslgEngine.model.mind.Mind._arguments#
-					 **/
-					key : null,
-					/**
-					　* 実行できるイベント要素（ステータス）
-					 *
-					 * @private
-					 * @name value
-					 * @property
-					 * @type String
-					 * @memberOf jslgEngine.model.mind.Mind._arguments#
-					 **/
-					value : null
-				}
-			}
-		};
-	};
-
+	p.getArguments = jslgEngine.model.mind.MindFrame.prototype.getArguments;
+    
 	/**
 	 * 最適なイベントドライバを取り出す。
 	 *
 	 * @name chooseCommandDrivers
 	 * @method
 	 * @function
-	 * @memberOf jslgEngine.model.mind.Mind#
+	 * @memberOf jslgEngine.model.mind.MindFrame#
 	 * @param {Object} options
 	 * <ul>
 	 * </ul>
@@ -206,7 +82,7 @@
 		var self = this;
 		var length;
 		var region = options.mainController.getWorldRegion();
-		var mindArguments = self._arguments;
+		var mindArguments = self.getArguments();
 		var result = [];
 		
 		var casts = [];
@@ -227,14 +103,14 @@
 				var me = result_ss[0];
 				
 				var family = self._pickUpElements(
-					mindArguments.status.member.key,
-					mindArguments.status.member.familyMemberNames,
+					mindArguments.memberKey,
+					mindArguments.familyMemberNames,
 					casts,
 					options
 					);
 				var enemy = self._pickUpElements(
-					mindArguments.status.member.key,
-					mindArguments.status.member.enemyMemberNames,
+					mindArguments.memberKey,
+					mindArguments.enemyMemberNames,
 					casts,
 					options
 					);
@@ -267,6 +143,36 @@
 	 * @name _pickUpElements
 	 * @method
 	 * @function
+	 * @memberOf jslgEngine.model.mind.MindFrame#
+	 * @param {Object} options
+	 * <ul>
+	 * </ul>
+	 **/
+	p._pickUpElements = function(key, values, objs, options) {
+		var length, objsLength;
+		var elements = [];
+		length = values.length;
+		for(var i = 0; i < length; i++) {
+			var value = values[i];
+			objsLength = objs.length;
+			for(var j = 0; j < objsLength; j++) {
+				var obj = objs[j];
+				var status = obj.getStatus(key);
+				if(status && status.value === value) {
+					elements.push(obj);
+				}
+			}
+		}
+		return elements;
+	};
+    
+	/**
+	 * 指定されたステータスを持つ要素を取り出す
+	 * TODO: Simulatorと同じ機能なので統合が必要。
+	 *
+	 * @name _pickUpElements
+	 * @method
+	 * @function
 	 * @memberOf jslgEngine.model.mind.Mind#
 	 * @param {Object} options
 	 * <ul>
@@ -290,31 +196,5 @@
 		return elements;
 	};
 	
-	/**
-	 * 実オブジェクトの生成
-	 * TODO:JSlgElementFrameを継承していないのに生成できる事、
-	 *		自身を生成する事の問題
-	 *
-	 * @name getRunnableCommand
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.mind.Mind#
-	 **/
-	p.generate = function(data, options) {
-		var self = this;
-		
-		return new jslgEngine.model.mind.Mind({
-			key : data.key,
-			decreasedKeys : self._arguments.status.decreasedKeys,
-			increasedKeys : self._arguments.status.increasedKeys,
-			memberKey : self._arguments.status.member.key,
-			familyMemberNames : self._arguments.status.member.familyMemberNames,
-			enemyMemberNames : self._arguments.status.member.enemyMemberNames,
-			commandKey : self._arguments.status.command.key,
-			commandValue : self._arguments.status.command.value
-		}, options);
-		//return self;
-	};
-
 	o.Mind = Mind;
 }());

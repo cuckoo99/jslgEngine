@@ -166,7 +166,7 @@
 				 y : parentsPosition.y + position.y,
 				 z : parentsPosition.z + position.z };
 	};
-	
+    
 	/**
 	 * 実体要素取得
 	 *

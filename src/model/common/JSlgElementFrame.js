@@ -21,7 +21,7 @@
 	var JSlgElementFrame = jslgEngine.extend(
 		jslgEngine.model.common.JSlgElementBase,
 		function(data, options) {
-			this.initialize(data, options);
+            this.initialize(data, options);
 		}
 	);
 	/**
@@ -79,21 +79,7 @@
 	 **/
 	p.initialize = function(data, options) {
 		var self = this;
-		var baseOptions = data||{};
-
-		self._keyPathCodes = self._keyPathCodes||baseOptions.keyPathCodes;
-		//self._keyCode = self._keyCode||baseOptions.keyCode;
-		
-		var keyCode = self._keyCode||baseOptions.keyCode;
-		self._key = new jslgEngine.model.common.JSlgKey({
-			keyCode : keyCode,
-			keys : self._keyPathCodes
-		}, options);
-		if(baseOptions.key) {
-			self.setKey(baseOptions.key);
-		}
-		self._children = [];
-		
+        p.__super__.initialize.call(self, data, options);
 		if(self.hasSize) {
 			self.size = data ? data.size : 
 			new jslgEngine.model.area.Size({width : 0, height : 0, depth : 0});
@@ -141,7 +127,7 @@
 		//サイズの継承
 		//TODO: フレームのサイズを変更できるようにしたがいいのか。
 		data.size = data.size ? data.size : self.size;
-		var obj = self.getModel(data);
+		var obj = self.getModel(data, options);
 
 		var length = children.length;
 		for(var i = 0; i < length; i++) {
@@ -152,7 +138,7 @@
 				child.setup({
 					parent : self
 				}, options);
-			} else if(child instanceof jslgEngine.model.common.JSlgElementFrame) {
+			} else if(child.elementType === 'Frame' || child.className === 'Command') {
 				child = child.generate({
 					key : child.getKey()
 				}, options);
@@ -220,5 +206,35 @@
 		return text;
 	};
 	
+	/**
+	 * 実体要素取得
+	 *
+	 * @name getImageData
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElementFrame#
+	 **/
+	p.getImageData = function() {
+		var self = this;
+		
+		var drawingKey = jslgEngine.model.common.keys.DRAWING_OPTIONS;
+		var drawingOptions = self.getStatus(drawingKey);
+		drawingOptions = drawingOptions ? drawingOptions.value : null;
+		
+		var key = drawingOptions ? drawingOptions[0][0] : null;
+		var regX = drawingOptions ? drawingOptions[0][1] : 0;
+		var regY = drawingOptions ? drawingOptions[0][2] : 0;
+		var width = drawingOptions ? drawingOptions[0][3] : 0;
+		var height = drawingOptions ? drawingOptions[0][4] : 0;
+		
+		return {
+            key : key,
+            regX : regX,
+            regY : regY,
+			width : width,
+			height : height,
+		};
+	};
+    
 	o.JSlgElementFrame = JSlgElementFrame;
 }());

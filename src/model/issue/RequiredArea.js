@@ -659,6 +659,20 @@
 	};
 	
 	/**
+     * create JSlg element.
+	 *
+	 * @name makeElement
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.issue.RequiredArea#
+	 * @param {Object} count
+	 * @param {Object} data
+	 * @param {Object} options
+	 **/
+	p.makeElement = function(connector, data, options) {
+    };
+    
+	/**
 	 * 全てのパターンを実行できるようにクローンを作成する<br />
 	 * 座標から正負評価をし、設定する。<br />
 	 *

@@ -78,16 +78,21 @@
 	
 			self._wasDone = true;
 			
-			var findElements = function(connector_ss, keys, list, class_name, options_ss) {
+			var findElements = function(connector_ss, keys, list, class_name, rect_s, options_ss) {
 				var element = options_ss.mainController.findElements(connector_ss, {
 					className : class_name
 				}, options);
 				connector_ss.pipe(function(connector_sss, result_sss) {
-					var elements = result_sss;
+					var elements_s = result_sss;
 					
+                    // キー判定しているのはなぜか。
+                    // 全ての要素を取得すべきでない。
+//                    for(var j = 0; j < elements_s.length; j++) {
+//                        list.push(elements_s[j]);
+//                    }
 					for(var i = 0; i < keys.length; i++) {
-						for(var j = 0; j < elements.length; j++) {
-							var element = elements[j];
+						for(var j = 0; j < elements_s.length; j++) {
+							var element = elements_s[j];
 							
 							//一意キーが前提となる
 							if(element.getKey() === keys[i]) {
@@ -101,8 +106,9 @@
 			
 			connector_s.resolve();
 			
-			findElements(connector_s, groundKeys, elements, 'Ground', options);
-			findElements(connector_s, castKeys, elements, 'Cast', options);
+            var rect = [];
+			findElements(connector_s, groundKeys, elements, 'Ground', rect, options);
+			findElements(connector_s, castKeys, elements, 'Cast', rect, options);
 			
 			connector_s.connects(function(connector_ss) {
 				afterStageOffset = {

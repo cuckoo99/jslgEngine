@@ -61,6 +61,16 @@
 	p.elementType = 'Element';
 
 	/**
+	 * コマンドの要素かどうか
+	 *
+	 * @name isCommandChild
+	 * @property
+	 * @type String
+	 * @memberOf jslgEngine.model.command.CommandBlockBase#
+	 **/
+	p.isCommandChild = true;
+
+	/**
 	 * 子要素
 	 *
 	 * @private
@@ -622,23 +632,26 @@
 			if(tgt instanceof Array) {
 				var stk = [];
 				for(var i = 0; i < tgt.length; i++) {
-					stk.push(arguments.callee(cnt+1, tgt[i], name));
+                    var prp = arguments.callee(cnt+1, tgt[i], name);
+                    if(tgt[i] instanceof Array) {
+					   prp = [getIncrement(inc+cnt+1, true),prp,getIncrement(inc+cnt, true)].join('');
+                    }
+					stk.push(['<'+name+'>',prp,'</'+name+'>'].join(''));
 				}
-				tx = stk.join(getIncrement(inc+cnt+1, true));
-				return ['<'+name+'>',tx].join(getIncrement(inc+cnt+1, true))+
-						getIncrement(inc+cnt, true)+'</'+name+'>';
+				tx = stk.join(getIncrement(inc+cnt, true));
+                return tx;
 			} else {
 				tx = tgt;
-				return '<'+name+'>'+tx+'</'+name+'>';
+				return tx;
 			}
 		};
 		
 		if(self._arguments) {
-			params = getNestedProperties(0, self._arguments, 'arguments');
+			params = getNestedProperties(0, self._arguments, 'argument');
 		}
 		
 		var childrenWords = [];
-		var length = self._children.length;
+		var length = self._children ? self._children.length : 0;
 		for(var i = 0; i < length; i++) {
 			var child = self._children[i];
 			childrenWords.push(child.toXML({increment : inc}));
@@ -652,6 +665,8 @@
 		var text = ['<element>',nw.join(getIncrement(inc, true))].join(getIncrement(inc, true))+
 					getIncrement(inc-1, true)+'</element>';
 		return text;
+        
+        
 	};
 	
 	o.CommandBlockBase = CommandBlockBase;

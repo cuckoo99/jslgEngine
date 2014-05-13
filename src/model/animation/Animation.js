@@ -411,6 +411,7 @@
 			return;
 		}
 	
+        //jslgEngine.log('unlocked:'+self.iconKey);
 		if(self.wasFinished(['delay'])) {
 			if(self.delay <= 0) {
 				self.wasFinishedFlags.delay = true;
@@ -428,7 +429,7 @@
 			self.wasFinishedFlags.animation, logLevel);
 	
 			// if(self.iconKey === 'w1.r1.s1.g3_0_0')
-			// jslgEngine.log('key: '+self.iconKey+' fade:' +self.fadeValue);
+            //jslgEngine.log('key: '+self.iconKey+' fade:' +self.fadeValue);
 			
 		if(!self.wasFinishedFlags.motion) {
 			position = self.positions[self.positionIndex];
