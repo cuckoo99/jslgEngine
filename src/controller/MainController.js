@@ -456,7 +456,9 @@
 		var self = this;
         
         var key = self._elementBinder.getUniqueId(key_element);
-		self._elementBinder.set(key, key_element);
+		self._elementBinder.set(key, key_element, {
+            mainController : self
+        });
 		self._elementBinder.attachParent(key, element);
 	};
 	

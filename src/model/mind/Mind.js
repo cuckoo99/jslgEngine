@@ -24,9 +24,7 @@
 	var Mind = jslgEngine.extend(
 		jslgEngine.model.common.JSlgElement,
 		function(data, options) {
-			this.initialize(data, options);
-			 //jslgEngine.model.mind.MindFrame.prototype.makeArguments.call(this, data, options);
-        
+			this.initialize(data, options); 
 		}
 	);
 	/**
@@ -85,48 +83,35 @@
 		var mindArguments = self.getArguments();
 		var result = [];
 		
-		var casts = [];
-		region.findElements(connector, {
-			className : 'Cast'
-		}, options);
 		connector.connects(function(connector_s, result_s) {
-			casts = result_s;
+			var casts = data.casts;
 			
-			var keyPathCodes = jslgEngine.getElementPathCodes(jslgEngine.model.stage.keys.CAST);
-			
-			var path = self.getPath(keyPathCodes);
-
-			region.findElements(connector_s, {
-				key : path
-			}, options);
-			connector_s.connects(function(connector_ss, result_ss) {
-				var me = result_ss[0];
-				
-				var family = self._pickUpElements(
-					mindArguments.memberKey,
-					mindArguments.familyMemberNames,
-					casts,
-					options
-					);
-				var enemy = self._pickUpElements(
-					mindArguments.memberKey,
-					mindArguments.enemyMemberNames,
-					casts,
-					options
-					);
-		        
-		        //シミュレートし、最適なイベントドライバを得る。
-		        var simulator = new jslgEngine.model.mind.Simulator({
-		        	arguments : mindArguments
-		        }, options);
-		        
-		        simulator.run(connector_ss, {
-		            me : me,
-		            family : family,
-		            enemy : enemy,
-		            result : result
-		        }, options);
-			});
+            var me = self.getParent(options);
+            
+            var family = self._pickUpElements(
+                mindArguments.memberKey,
+                mindArguments.familyMemberNames,
+                casts,
+                options
+                );
+            var enemy = self._pickUpElements(
+                mindArguments.memberKey,
+                mindArguments.enemyMemberNames,
+                casts,
+                options
+                );
+            
+            //シミュレートし、最適なイベントドライバを得る。
+            var simulator = new jslgEngine.model.mind.Simulator({
+                arguments : mindArguments
+            }, options);
+            
+            simulator.run(connector_s, {
+                me : me,
+                family : family,
+                enemy : enemy,
+                result : result
+            }, options);
 		});
         connector.pipe(function(connector_s, result_s) {
         	if(data.callback) {

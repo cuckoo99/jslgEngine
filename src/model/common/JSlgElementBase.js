@@ -38,10 +38,8 @@
 		var self = this;
 		var baseOptions = data||{};
 
-		//TODO:パスは完全にキーに委譲するべき
-		var keyPathCodes = self._keyPathCodes||baseOptions.keyPathCodes;
-		
 		var keyCode = self._keyCode||baseOptions.keyCode;
+		var keyPathCodes = self._keyPathCodes||baseOptions.keyPathCodes;
 		self._key = new jslgEngine.model.common.JSlgKey({
 			keyCode : keyCode,
 			keys : keyPathCodes
@@ -453,28 +451,6 @@
 	};
 
 	/**
-	 * イベントの設定
-	 *
-	 * @name addCommandListner
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.common.JSlgElementBase#
-	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.model.network.ConnectorBase} connector</li>
-	 * <li>{jslgEngine.model.common.JSlgElementFinder} finder</li>
-	 * </ul>
-	 */
-	p.addCommandListner = function(key, command, options) {
-		var self = this;
-
-		self.addChild({
-			obj : command
-		}, options);
-	};
-
-
-	/**
 	 * 子要素の取得
 	 *
 	 * @name getChild
@@ -511,22 +487,18 @@
 		var self = this;
 		var child = null;
 
-		if(!options || !options.key) return false;
+		if(!options) return false;
 
-		var key = options.key;
-
-		var length = self._children.length;
-		for(var i = 0; i < length; i++) {
+		for(var i = 0, len = self._children.length; i < len; i++) {
 			var element = self._children[i];
-			var location = element.location||{};
-			location = location.toString({ offset : element.offset})||null;
-
+            
 			// CommandBlock対策
 			if(!element.getKey) continue;
 
-			if(element.getKey() === key||location === key) {
+			if(element.equals(options)) {
 				child = element;
 				
+                //TODO: ?
 				if(!child) {
 					if(options.finder) options.finder.find(key);
 					return null;
@@ -538,6 +510,40 @@
 		return child||null;
 	};
 
+	/**
+	 * 絶対パスの取得
+	 *
+	 * @name getAbsolutePath
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElementBase#
+	 * @param {Object} options
+	 * <ul>
+	 * <li>{jslgEngine.model.network.ConnectorBase} connector</li>
+	 * <li>{jslgEngine.model.common.JSlgElementFinder} finder</li>
+	 * <li>{String} filter</li>
+	 * </ul>
+	 */
+	p.getAbsolutePath = function(connector, data, options) {
+        var self = this;
+        var elm = self, parent, limit = 100;
+        var elementSeparator = jslgEngine.config.elementSeparator;
+        var keysStrip = [];
+        var getLocation = data.getLocation;
+        var location = getLocation && elm.hasLocation ? elm.getLocation() : null;
+        location = location ? [location.x,location.y,location.z].join(jslgEngine.config.locationSeparator) : '';
+        
+        keysStrip.push(elm.getKey()+location);
+        while((parent = elm.getParent(options)) != null && (limit--) > 0) {
+            location = getLocation && parent.hasLocation ? parent.getLocation() : null;
+            location = location ? [location.x,location.y,location.z].join(jslgEngine.config.locationSeparator) : '';
+            keysStrip.push(parent.getKey()+location);
+            elm = parent;
+        }
+        var fullpath = keysStrip.reverse().join(elementSeparator);
+        return fullpath;
+    };
+    
 	/**
 	 * 子要素の取得
 	 *
@@ -571,7 +577,7 @@
 //            });
             if(data.className) {
                 data.target = self;
-                options.mainController.searchElements(connector, data);
+                options.mainController.searchElements(connector, data, options);
             } else {
                 self._findElementsByWorkers(connector, data, options);
             }
@@ -580,35 +586,6 @@
 		}
 	};
 	
-	/**
-	 * 子要素の取得
-	 *
-	 * @name _findElements
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.common.JSlgElementBase#
-	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.model.network.ConnectorBase} connector</li>
-	 * <li>{jslgEngine.model.common.JSlgElementFinder} finder</li>
-	 * <li>{String} filter</li>
-	 * </ul>
-	 */
-	p.getAbsolutePath = function(connector, data, options) {
-        var self = this;
-        var elm = self, parent, limit = 100;
-        var elementSeparator = jslgEngine.config.elementSeparator;
-        var keysStrip = [];
-        
-        keysStrip.push(elm.getKey());
-        while((parent = elm.getParent(options)) != null && (limit--) > 0) {
-            keysStrip.push(parent.getKey());
-            elm = parent;
-        }
-        var fullpath = keysStrip.reverse().join(elementSeparator);
-        return fullpath;
-    };
-    
 	/**
 	 * 子要素の取得
      * TODO: 現在data.objには対応していない、必要ないかも。

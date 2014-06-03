@@ -61,13 +61,18 @@
 		
 		var membersValue, usingCount;
 		var driversList = [];
-		//var casts = [];
+		var casts = [];
 		var targets = [];
 		
+        //TODO: テスト
+        jslgEngine.now = new Date().getTime();
+        
 		self._readAllElements(connector, data, options);
 		connector.pipe(function(connector_s, result_s) {
 			membersValue = result_s[0].value;
 			usingCount = result_s[1].value;
+            
+            
 			connector_s.resolve();
 		});
 		connector.pipe(function(connector_s, result_s) {
@@ -76,7 +81,7 @@
 				className : 'Cast'
 			}, options);
 			connector_s.pipe(function(connector_ss,result_ss) {
-				var casts = result_ss;
+				casts = result_ss;
 				
 				//全ての所属キャストを実行するか
 				//単体のキャストを実行する
@@ -97,28 +102,27 @@
 			connector_s.loop({
 				elements : targets
 			}, function(connector_ss, result_ss) {
+				console.log(new Date().getTime()-jslgEngine.now);
 				var target = result_ss;
 				
-				target.findElements(connector_ss, {
+				var mind = target.getChild({
 					className : 'Mind'
 				}, options);
-				connector_ss.connects(function(connector_sss, result_sss) {
-					var mind = result_sss[0];
-					
-					if(!mind) {
-						jslgEngine.log('has no Mind');
-						return;
-					}
-					//Mindを起動し、テストを行う。
-					mind.chooseCommandDrivers(connector_sss, {
-						callback : function(result_ssss) {
-							if(result_ssss) {
-								var bestCommandDrivers = result_ssss[0];
-								driversList.push(bestCommandDrivers);
-							}
-						}
-					}, options);
-				});
+
+                if(!mind) {
+                    jslgEngine.log('has no Mind');
+                } else {
+                    //Mindを起動し、テストを行う。
+                    mind.chooseCommandDrivers(connector_ss, {
+                        casts : casts,
+                        callback : function(result_sss) {
+                            if(result_sss) {
+                                var bestCommandDrivers = result_sss[0];
+                                driversList.push(bestCommandDrivers);
+                            }
+                        }
+                    }, options);
+                }
 			}, function(connector_ss, result_ss) {});
 		});
 		connector.connects(function(connector_s) {
@@ -149,7 +153,7 @@
 			connector_s.pipe(function(connector_ss) {
 				jslgEngine.log('ActionMind Finished');
 				
-				
+				console.log(new Date().getTime()-jslgEngine.now);
 				self._wasDone = true;
 				
 				connector_ss.resolve();

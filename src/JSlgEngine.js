@@ -892,6 +892,7 @@
 		 * @param {Number} level ログレベル
 		 **/
 		log : function(obj, level) {
+            //return;
 			var logLevel = level ? level : 0;
 			if(logLevel >= jslgEngine.config.logLevel) return;
 

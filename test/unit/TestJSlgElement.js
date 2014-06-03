@@ -78,7 +78,22 @@ testSettingAsSync("TestJSlgElement", {
 			obj : elementItem
 		}, options);
 		result = elementItem.getPath();
+		equal(result, ['owner', 'parent', 'human', 'item'].join(separator), name); 
+	testAsSync('子要素を取得', connector, function(name, connector_s) {
+        var elm = element.getChild({
+            key : 'item'
+        });
+		var result = elm.getPath();
 		equal(result, ['owner', 'parent', 'human', 'item'].join(separator), name);
+	});
+	testAsSync('子要素をクラス名で取得', connector, function(name, connector_s) {
+        elementItem.className = 'hogeItem';
+        var elm = element.getChild({
+            className : 'hogeItem'
+        });
+		var result = elm.getPath();
+		equal(result, ['owner', 'parent', 'human', 'item'].join(separator), name);
+	});
 	});
 	testAsSync('子要素に子要素の追加', connector, function(name, connector_s) {
 		elementParent2.setKey('parent2');

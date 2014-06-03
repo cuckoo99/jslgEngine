@@ -33,12 +33,12 @@ testSettingAsAsync("TestAction", {
 		}).pipe(function(connector_ss) {
 			data.localElements[jslgEngine.model.logic.keys.SELF] = null;
 			
-			action.run.apply(action, [connector_ss.resolve(), data_s, options_s]);
+			action.run.call(action, connector_ss.resolve(), data_s, options_s);
 		}).pipe(function(connector_ss) {
 			connector_ss.resolve();
 			callback(connector_ss, data_s);
 		}).pipe(function(connector_ss) {
-			action.restore.apply(action, [connector_ss.resolve(), data_s, options_s]);
+			action.restore.call(action, connector_ss.resolve(), data_s, options_s);
 		}).pipe(function(connector_ss) {
 			connector_ss.resolve();
 			callback_s(connector_ss, data_s);

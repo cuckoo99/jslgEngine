@@ -39,7 +39,7 @@
 	/**
 	 * Information of parent
      *
-	 * @name _categorized
+	 * @name _parents
 	 * @property
 	 * @type Object[]
 	 * @memberOf jslgEngine.controller.ElementBinder#
@@ -47,14 +47,34 @@
 	p._parents = null;
 
 	/**
-	 * Information of parent
+	 * chache of elements has location
      *
-	 * @name _categorizedContents
+	 * @name _elementsWithLocation
 	 * @property
 	 * @type Object[]
 	 * @memberOf jslgEngine.controller.ElementBinder#
 	 **/
-	p._categorizedContents = null;
+	p._elementsWithLocation = null;
+
+	/**
+	 * chache of elements has key
+     *
+	 * @name _elementsWithKey
+	 * @property
+	 * @type Object[]
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p._elementsWithKey = null;
+
+	/**
+	 * chache of elements has class name
+     *
+	 * @name _elementsWithClassName
+	 * @property
+	 * @type Object[]
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p._elementsWithClassName = null;
 
 	/**
 	 * Set up
@@ -69,6 +89,9 @@
 		self._contents = [];
         self._parents = [];
         self._categorizedContents = [];
+        self._elementsWithClassName = [];
+        self._elementsWithLocation = [];
+        self._elementsWithKey = [];
 	};
 
 	/**
@@ -136,8 +159,18 @@
 			self.remove(k);
 		} else {
 			self._contents[k] = element;
-            if(self._categorizedContents[element.className]) {
-                self._categorizedContents[element.className][k] = element;
+            if(element.className) {
+                if(!self._elementsWithClassName[element.className]) {
+                    self._elementsWithClassName[element.className] = [];
+                }
+                self._elementsWithClassName[element.className][k] = element;
+            }
+            var ekey = element.getKey();
+            if(ekey) {
+                if(!self._elementsWithKey[ekey]) {
+                    self._elementsWithKey[ekey] = [];
+                }
+                self._elementsWithKey[ekey][k] = element;
             }
 		}
 	};
@@ -160,6 +193,14 @@
 		
 		if(self._contents[k]) {
 			jslgEngine.log('Remove Binding : '+k);
+            var className = self._contents[k].className;
+            if(self._elementsWithClassName[className]) {
+                delete self._elementsWithClassName[className][k];
+            }
+            var ekey = self._contents[k].getKey();
+            if(self._elementsWithKey[ekey]) {
+                delete self._elementsWithKey[ekey][k];
+            }
 			delete self._contents[k];
 			delete self._parents[k];
 			return true;
@@ -176,7 +217,7 @@
 	 * @function
 	 * @memberOf jslgEngine.controller.ElementBinder#
 	 **/
-	p.makeCache = function(connector, data, options) {
+	p.setCache = function(connector, data, options) {
 		var self = this;
         var arr = [];
         var key;
@@ -218,87 +259,240 @@
 	 * @function
 	 * @memberOf jslgEngine.controller.ElementBinder#
 	 **/
+	p._replaceUselessKeywords = function(text, options) {
+        var key = text;
+        var sep = jslgEngine.config.elementSeparator;
+        //parent()の重複除去
+        for(var i = 0, len = key.length; i < len; i++) {
+            var ftxt = sep+'parent()';
+            var idx = key.indexOf(ftxt, i);
+            if(idx !== -1) {
+                var p_idx = key.lastIndexOf(sep, idx-1);
+                if(p_idx !== -1) {
+                    i = idx+ftxt.length;
+                    key = key.substring(0,p_idx)+key.substring(idx+ftxt.length);
+                    continue;
+                }
+            }
+            break;
+        }
+        return key;
+    };
+    
+	/**
+	 * search for elements in set elements
+     *
+	 * @name search
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
 	p.search = function(connector, data, options) {
 		var self = this;
-        var results = [];
 		
-        var keys, className, location;
-        className = data.className ? data.className : null;
-        var target = data.target||null;
-        for(var key in self._contents) {
-            var content = self._contents[key];
+		var logLevel = 2;
+        
+        var key, keys, className;
+        var target = data.target;
+        key = data.key;
+        className = data.className;
+        
+        var results = [];
+
+        if(key) {
+            //jslgEngine.log('find:'+key,logLevel);
+            var key = self._replaceUselessKeywords(key);
+            //パスを分解する。
+            keys = key.split(jslgEngine.config.elementSeparator);
             
-            var existInTarget = target ? (function(elm, tgt) {
-                    if(elm === tgt) {
-                        return true;
-                    }
-                    var p = self.getParent(self.getUniqueId(elm, options));
-                    if(p) {
-                        return arguments.callee(p, tgt);
-                    }
-                    return false;
-                })(content, target) : true;
-            if(existInTarget && (className ? content.equals({
-                    className : className
-                }) : true)) {
-                results.push(content);
+            var limit = 10;
+            //TODO: 該当する要素をキーで検索
+            var nwElms = [];
+            for(var i = 0, len = results.length; i < len; i++) {
+                nwElms.push({
+                    target : results[i],
+                    element : results[i]
+                });
             }
+            //キーの一致判定を順に行う
+            results = self.analyzeKeys(keys, nwElms, [], limit, options);
         }
-//        if(data.useCache) {
-//            for(var key in self._contents) {
-//                var content = self._contents[key];
-//                if(content.equals(data)) {
-//                    results.push(content);
-//                }
-//            }
-//        } else {
-//            // search for straight
-//            var keys, className, location;
-//            keys = data.key ? data.key.split(jslgEngine.config.elementSeparator) : [];
-//            className = data.className ? data.className : null;
-//            location = data.location ? [data.location.x,data.location.y,data.location.z] : null;
-//            
-//            for(var key in self._contents) {
-//                var content = self._contents[key];
-//                if(content.equals({
-//                    key : keys[0],
-//                    className : className,
-//                    location : location
-//                })) {
-//                    var nKeys = [].concat(keys).slice(1);
-//                    if(nKeys.length > 0) {
-//                        content = (function(elm, ks) {
-//                            var r;
-//                            var k = ks.shift();
-//                            if(k === 'parent()') {
-//                                r = self._parents[self.getUniqueId(elm)];
-//                            } else {
-//                                r = elm.getChild({
-//                                    key : k
-//                                });
-//                            }
-//                            if(r && ks.length > 0) {
-//                                return arguments.callee(r, ks);
-//                            }
-//                            return r;
-//                        })(content, nKeys);
-//                    }
-//                    if(content) {
-//                        //jslgEngine.log('get:'+content.getKey())
-//                        results.push(content);
-//                    }
-//                }
-//            }
-//        }
-//		
+        if(className) {
+            var nwResults = [];
+            if(!key) {
+                var caches = self._elementsWithClassName[className];
+                for(var k in caches) {
+                    nwResults.push({
+                        target : caches[k],
+                        element : caches[k]
+                    });
+                }
+            } else {
+                for(var i = 0, len = results.length; i < len; i++) {
+                    if(results[i].element.className === className) {
+                        nwResults.push(results[i]);
+                    }
+                }
+            }
+            results = nwResults;
+        }
+        //ターゲットが指定されている場合、ターゲット内の要素のみに絞り込む
+        if(target) {
+            var nwResults = [];
+            for(var i = 0, len = results.length; i < len; i++) {
+                if(self.existsInParent(results[i].element, target, options)) {
+                    nwResults.push(results[i]);
+                }
+            }
+            results = nwResults;
+        }
+        
+        var nwResults = [];
+        for(var i = 0, len = results.length; i < len; i++) {
+            nwResults.push(results[i].element);
+        }
+        results = nwResults;
+        
+        //jslgEngine.log('number of result:'+results.length,logLevel);
         if(connector) {
             connector.pipe(function(connector_s) {
                 connector_s.resolve(results);
             });
         }
 		return results;
-		
 	};
+    
+	/**
+	 * get element ID
+     *
+	 * @name analyzeKeys
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p.analyzeKeys = function(keys, elms, stk, lim, options) {
+        var self = this;
+
+        if(!lim) return elms;
+        var key = keys.shift();
+        var rs = [];
+        var idx;
+        var fstr = key.match(/find\((.*)\)/);
+        var isLastKey = (elms.length === 0);
+        
+        if(key === 'parent()') {
+            for(var i = 0, len = elms.length; i < len; i++) {
+                var elm = elms[i];
+                if(!elm.target) continue;
+                var p = elm.target.getParent(options);
+                rs.push({
+                    target : p,
+                    element : p
+                });
+            }
+        } else if(fstr) {
+            var className = RegExp.$1;
+            jslgEngine.log(className);
+            var caches = self._elementsWithClassName[className];
+            if(elms.length > 0) {
+                for(var i = 0, len = elms.length; i < len; i++) {
+                    var elm = elms[i];
+                    if(!elm.target) continue;
+                    for(var k in caches) {
+                        if(self.existsInParent(caches[k], elm.target, options)) {
+                            rs.push({
+                                target : caches[k],
+                                element : caches[k]
+                            });
+                        }
+                    }
+                }
+            } else {
+                for(var k in caches) {
+                    rs.push({
+                        target : caches[k],
+                        element : caches[k]
+                    });
+                }
+            }
+        } else {
+            var isLocation = (key.split(jslgEngine.config.locationSeparator).length === 3);
+            if(elms.length > 0) {
+                for(var i = 0, len = elms.length; i < len; i++) {
+                    var elm = elms[i];
+                    if(!elm.target) continue;
+                    var children = elm.target.getChildren();
+                    for(var j = 0, len2 = children.length; j < len2; j++) {
+                        if(children[j].equals({key : key})) {
+                            jslgEngine.log('Matched:'+key);
+                            rs.push({
+                                target : children[j],
+                                element : children[j]
+                            });
+                        }
+                    }
+                }
+            } else {
+                //TODO: 絶対パスとして検索しないなら、座標の検索は困難。
+                if(isLocation) {
+                    //jslgEngine.log('not available')
+                    var caches = self._contents;
+                    for(var k in caches) {
+                        if(caches[k].getGlobalLocation && caches[k].equals({key : key})) {
+                            rs.push({
+                                target : caches[k],
+                                element : caches[k]
+                            });
+                        }
+                    }
+                } else {
+                    var caches = self._elementsWithKey[key];
+                    for(var k in caches) {
+                        rs.push({
+                            target : caches[k],
+                            element : caches[k]
+                        });
+                    }
+                }
+            }
+        }
+        if(keys.length === 0 || rs.length === 0) {
+            return rs;
+        }
+        return self.analyzeKeys(keys, rs, stk, lim-1, options);
+    };
+    
+	/**
+	 * get element ID
+     *
+	 * @name existsInParent
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p.existsInParent = function(target, parent, options) {
+        var limit = 100;
+        
+        while(target && (limit--) > 0) {
+            if(target === parent) {
+                return true;
+            }
+            target = target.getParent(options);
+        }
+        return false;
+    };
+    
+	/**
+	 * get element ID
+     *
+	 * @name getUniqueId
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p.getSerializedLocation = function(location, size) {
+        return location.x+location.y*size.width+location.z*size.width*size.height;
+    };
     
 	/**
 	 * get element ID

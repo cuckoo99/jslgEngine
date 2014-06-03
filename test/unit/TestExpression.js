@@ -29,6 +29,16 @@ testSettingAsAsync("TestExpression", {
 		result = expression.getPolandStatement(code);
 		equal(result, '5 5+', name);
 	});
+        
+	testAsSync('', connector, function(name, connector_s) {
+		result = expression.getPolandArguments('$PEDING.obj');
+		expression._arguments = result;
+		expression.getElement(connector_s, data, options);
+		connector_s.connects(function(connector_ss, result_ss) {
+			result = result_ss[0].value;
+			equal(result, 10, name);
+		});
+    });
 	testAsSync('加算', connector, function(name, connector_s) {
 		result = expression.getPolandArguments('5+5');
 		expression._arguments = result;

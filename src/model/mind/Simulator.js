@@ -467,21 +467,6 @@
 		
 		return result;
 	};
-	    	
-	/**
-	 * イベントの結合テストを行う
-	 *
-	 * @name _testJoin
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.mind.Simulator#
-	 * @param {Object} options
-	 * <ul>
-	 * </ul>
-	 **/
-	p._testJoin = function(connector, data, options) {
-        //TODO: 結合テストが未完成
-    };
     
 	/**
 	 * 指定されたステータスを持つ要素を取り出す

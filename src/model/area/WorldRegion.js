@@ -52,6 +52,16 @@
 	p._keyCode = jslgEngine.model.stage.keys.WORLD_REGION;
 
 	/**
+	 * クラス名
+	 *
+	 * @name className
+	 * @property
+	 * @type String
+	 * @memberOf jslgEngine.model.area.WorldRegion#
+	 **/
+	p.className = 'WorldRegion';
+
+	/**
 	 * 座標を持つかどうか
 	 *
 	 * @name hasLocation

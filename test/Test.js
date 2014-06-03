@@ -7,6 +7,9 @@ var o = this.jslgEngine||{};
 
 o.stub = {};
 
+o.config = o.config||{};
+//o.config.logLevel = 0;
+
 var timeOutId;
 
 var testSettingAsSync = function(name, data, callback) {

@@ -1,11 +1,11 @@
 module('Mind');
 testSettingAsAsync("TestSimulator", {
-		mainData : {width:10,height:10},
-		timeOut : 10000,
-		
-		onDummyTicker : true //TODO
-	},
-	function(iconController, mainController, connector, options) {
+    mainData : {width:10,height:10},
+    timeOut : 10000,
+    
+    onDummyTicker : true //TODO
+},
+function(iconController, mainController, connector, options) {
 	var result;
 	
 	var separator = jslgEngine.config.elementSeparator;
@@ -261,4 +261,55 @@ testSettingAsAsync("TestSimulator", {
 	    	connector_s.resolve();
 	    });
 	});
+        
+    // 本当の単体テスト
+    // Simulator's unit test method
+    var result = [];
+    simulator._test(connector, {
+        command : null,
+        me : null,
+        family : null,
+        enemy : null,
+        innerFunc : null,
+        pendingCommands : [],
+        testIndex : 0
+    }, result, options);
+    
+    // Check calling array of Command test method
+    simulator._getCommandDriversByUnitTest(connector, {
+        commands : [],
+        me : null,
+        family : null,
+        enemy : null,
+        innerFunc : null,
+        driversList : [],
+        testIndex : 0
+    }, options);
+    
+    // Check test joining each results of unit test method.
+    simulator._testCommandDrivers();
+
+    simulator._getMostEffectiveCommandDriversList();
+
+    // Check if it would be done well if given joint count parameter.
+    simulator._calculatePatterns();
+    
+    // Check makin  list.
+    simulator._calculatePatterns();
+    
+    // Sort CommandDriver.
+    simulator._calculatePatterns();
+    
+    // Check if it correctly works order by preority.
+    simulator._sortCommandDriverOrderByEffect({
+        driversList : []
+    }, options);
+    
+    // Call review action.
+    // Test of resolving Issue object.
+    simulator._calculatePatterns();
+    simulator._resolveInTest();
+    
+    // Test of resolve.
+    simulator._checkInTest();
 });
