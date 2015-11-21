@@ -175,6 +175,66 @@
 	};
 
 	/**
+	 * 非同期処理を連結する。
+	 *
+	 * @name done
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.network.ConnectorOnline#
+	 * @param {Function} func 直列化するメソッド
+	 * @returns {jslgEngine.model.network.ConnectorOnline} メソッドチェーンのための自身のオブジェクト
+	 */
+	p.done = function(func) {
+		var self = this;
+
+		var e = self.$df.done(function(options) {
+			var data = self.options||{};
+			data.unresolved = true;
+			data.index = self._index + 1;
+			
+			var obj = new jslgEngine.model.network.ConnectorOnline(data);
+			
+			//第２引数に、引き継ぐ変数を渡す
+			var access = func(obj, options);
+			
+			return obj.$df.promise();
+		});
+
+		self.$df = e;
+		return this;
+	};
+
+	/**
+	 * 非同期処理を連結する。
+	 *
+	 * @name fail
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.network.ConnectorOnline#
+	 * @param {Function} func 直列化するメソッド
+	 * @returns {jslgEngine.model.network.ConnectorOnline} メソッドチェーンのための自身のオブジェクト
+	 */
+	p.fail = function(func) {
+		var self = this;
+
+		var e = self.$df.fail(function(options) {
+			var data = self.options||{};
+			data.unresolved = true;
+			data.index = self._index + 1;
+			
+			var obj = new jslgEngine.model.network.ConnectorOnline(data);
+			
+			//第２引数に、引き継ぐ変数を渡す
+			var access = func(obj, options);
+			
+			return obj.$df.promise();
+		});
+
+		self.$df = e;
+		return this;
+	};
+
+	/**
 	 * 処理を連結する。
 	 *
 	 * @name loop
@@ -257,7 +317,16 @@
 	 * @returns {jslgEngine.model.network.ConnectorOnline} メソッドチェーンのための自身のオブジェクト
 	 */
 	p.ajax = function(options) {
-		this._ajax.run(options);
+		var self = this;
+
+		self.pipe(function(connector_s) {
+			connector_s._ajax.run(options).done(function(result) {
+				connector_s.resolve(result);
+			}).fail(function(result) {
+				connector_s.reject(result);
+			});
+		});
+		return self;
 	};
 
 	/**

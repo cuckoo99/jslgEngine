@@ -31,10 +31,10 @@ jslgEngine.jslgModelAccessor = (function() {
             obj.size = size;
         },
         getParameters : function(obj) {
-            return obj._arguments;
+            return obj._parameters;
         },
         setParameters : function(obj, param) {
-            obj._arguments = param;
+            obj._parameters = param;
         },
         getStatus : function(obj, key) {
             if(!obj.getStatus) return '';

@@ -14,6 +14,20 @@
 	</size>
 	<element>
 		<className>Resource</className>
+		<key>online1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/connect_01.gif</value>
+		</element>
+	</element>
+	<element>
+		<className>Resource</className>
 		<key>map1</key>
 		<element>
 			<className>Status</className>
@@ -112,6 +126,24 @@
 		</element>
 	</element>
 	<element>
+		<className>User</className>
+		<key>r1</key>
+		<element>
+			<className>Status</className>
+			<key>member</key>
+			<value>player</value>
+		</element>
+	</element>
+	<element>
+		<className>User</className>
+		<key>enemy</key>
+		<element>
+			<className>Status</className>
+			<key>member</key>
+			<value>enemy</value>
+		</element>
+	</element>
+	<element>
 		<className>StageFrame</className>
 		<key>rs1</key>
 		<size>
@@ -136,10 +168,101 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
-				<argument>1</argument>
+				<argument>
+					<argument>grid1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>640</argument>
+					<argument>480</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+					</argument>
+				</argument>
 			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_default</key>
+			<value>default</value>
+		</element>
+		<element>
+			<className>ItemFrame</className>
+			<key>turnChange</key>
+			<element>
+				<className>Status</className>
+				<key>name</key>
+				<value>ターン終了</value>
+			</element>
+			<element>
+				<className>Command</className>
+				<key>onClick</key>
+				<element>
+					<className>ActionJSlgMenu</className>
+					<argument>null</argument>
+				</element>
+				<element>
+					<className>ActionMind</className>
+					<argument>
+						<memberKey>"enemy"</memberKey>
+						<usingCount>1</usingCount>
+					</argument>
+				</element>
+				<element>
+					<className>CommandBlockFOR</className>
+					<argument>
+						<variable>"$temp"</variable>
+						<target>w1.find(Item)</target>
+					</argument>
+					<element>
+						<className>CommandBlockIF</className>
+						<argument>
+							<target>$temp.parent().belongs=="player"</target>
+						</argument>
+						<element>
+							<className>ActionSet</className>
+							<argument>
+								<target>$temp</target>
+								<targetKey>"count"</targetKey>
+								<targetValue>$temp.$FRAME.count</targetValue>
+							</argument>
+						</element>
+					</element>
+				</element>
+			</element>
+		</element>
+		<element>
+			<className>ItemFrame</className>
+			<key>close</key>
+			<element>
+				<className>Status</className>
+				<key>name</key>
+				<value>
+					<text>閉じる</text>
+				</value>
+			</element>
+			<element>
+				<className>Command</className>
+				<key>onClick</key>
+				<element>
+					<className>ActionJSlgMenu</className>
+				</element>
+			</element>
+		</element>
+		<element>
+			<className>Command</className>
+			<key>onClick</key>
+			<element>
+				<className>ActionJSlgMenu</className>
+				<argument>
+					<target>$THIS.parent()</target>
+				</argument>
+			</element>
 		</element>
 	</element>
 	<element>
@@ -157,7 +280,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>map1</argument>
@@ -215,7 +338,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>map1</argument>
@@ -543,7 +666,7 @@
 		<key>rc1</key>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>human1</argument>
@@ -731,7 +854,7 @@
 		<key>rc2</key>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>monster1</argument>
@@ -2868,5 +2991,29 @@
 <key>g30_9_0</key>
 </element>
 
+	<element>
+		<className>NetworkButton</className>
+		<key>net1</key>
+		<element>
+			<className>Status</className>
+			<key>_graphics</key>
+			<value>
+				<argument>
+					<argument>online1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>64</argument>
+					<argument>64</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+					</argument>
+				</argument>
+			</value>
+		</element>
+	</element>
 	</element>
 </element>

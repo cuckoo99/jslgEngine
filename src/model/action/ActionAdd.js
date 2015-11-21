@@ -56,29 +56,27 @@
 		if(!self.isReadyToRun(connector, options)) return;
 		
 		connector.resolve();
-		
-		var target, key, addedElement;
 		self._readAllElements(connector, data, options);
 		connector.connects(function(connector_s, result_s) {
 			var target = result_s[0];
 			var key = result_s[1];
-			var addedElement = result_s[2];
+			var additions = result_s[2];
 			
-			if(target === null || key === null || addedElement === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+			if(target === null || key === null || additions === null) {
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 			
 			self._wasDone = true;
 			
 			target.addChild({
-				obj : addedElement.generate({ key : key.value }, options)
+				obj : additions.generate({ key : key.value }, options)
 			}, options);
 			
 			self.checkPending(connector, {
 				place : target,
 				key : key,
-				target : addedElement
+				target : additions
 			}, data, options);
 			
 			if(!self.runSubCommand(connector, 'onAdd', target, data, options)) {
@@ -112,21 +110,20 @@
 		connector.connects(function(connector_s, result_s) {
 			var target = result_s[0];
 			var key = result_s[1];
-			var addedElement;
+			var additions;
 		
-			if(target === null || addedElement === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+			if(target === null || additions === null) {
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 		
-	        addedElement = target.getChild({
+	        	additions = target.getChild({
 				key : key.value
 			});
 	
 			target.removeChild({
-				obj : addedElement
+				obj : additions
 			}, options);
-			connector_s.resolve();
 		});
 	};
 

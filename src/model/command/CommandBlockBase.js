@@ -135,6 +135,27 @@
 	 **/
 	p._isAsync = false;
 	
+	p.dispose = function() {
+		var self = this;
+
+		if(self._restoreData) {
+			self._restoreData = null;
+		}
+
+		if(!self._children) return;
+
+		var length = self._children.length;
+		for(var i = 0; i < length; i++) {
+			var child = self._children[i];
+
+			child.dispose();
+			child = null;
+			delete child
+		}
+		self._children = null;
+	};
+
+	/**
 	/**
 	 * 新規インスタンス生成時の設定
 	 *
@@ -221,13 +242,13 @@
 		
 		if(!self._expressions) {
 			//jslgEngine.log('find:'+self.className);
-			if(!self._arguments) {
+			if(!self._parameters) {
 				self._wasFound = true;
 			} else {
-				var expressions = self._makeExpressions(self._arguments, options, callback);
+				var expressions = self._makeExpressions(self._parameters, options, callback);
 				self._expressions = expressions instanceof Array ? expressions : [expressions];
 				
-				jslgEngine.log('found out arguments in '+self.className);
+				jslgEngine.log('found out parameters in '+self.className);
 				//TODO: 取得できていないのにフラグを変更している。
 				self._wasFound = true;
 			}
@@ -257,17 +278,17 @@
 	 * <li>{jslgEngine.controller.mainController} mainController</li>
 	 * </ul>
 	 */
-	p._makeExpressions = function(arguments, options, callback) {
+	p._makeExpressions = function(parameters, options, callback) {
 		var self = this;
 		var list = [];
 		var result = options.result||[];
 		var elementKeys = [];
 		var connector = options.connector;
 		
-		var length = arguments.length;
+		var length = parameters.length;
 		//jslgEngine.log('finding:'+self.className);
 		for(var i = 0; i < length; i++) {
-			var argument = arguments[i];
+			var argument = parameters[i];
 			if(argument instanceof Array) {
 				var expressions = self._makeExpressions(argument, options, callback);
 				list.push(expressions);
@@ -646,8 +667,8 @@
 			}
 		};
 		
-		if(self._arguments) {
-			params = getNestedProperties(0, self._arguments, 'argument');
+		if(self._parameters) {
+			params = getNestedProperties(0, self._parameters, 'argument');
 		}
 		
 		var childrenWords = [];

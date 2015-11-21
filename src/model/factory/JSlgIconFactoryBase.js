@@ -277,7 +277,7 @@ o = (o.factory = o.factory||{});
 						command = new jslgEngine.model.command.Command({}, options);
 						command.addChild({
 							obj : new jslgEngine.model.action.ActionJSlgScroll({
-								arguments : [[x,y,0]]
+								parameters : [[x,y,0]]
 							})
 						}, options);
 						connector.pipe(function(connector_s) {

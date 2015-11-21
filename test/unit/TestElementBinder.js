@@ -4,8 +4,20 @@ testSettingAsAsync("TestElementBinder", {
 	},
 function(iconController, mainController, connector, options) {
     
+
+	var connector = new jslgEngine.model.network.ConnectorOnline();
+	
 	var result;
     var elementBinder = mainController._elementBinder;
+	
+	var bindFunc = function(key_element, element, data) {
+		var key = elementBinder.getUniqueId(key_element);
+		elementBinder.set(key, key_element, {
+			mainController : mainController
+		});
+		
+		elementBinder.attachParent(key, element);
+	}
     
     var emptyElement = new jslgEngine.model.common.JSlgElement({
 		keyPathCodes : ['t', 'e'],
@@ -24,6 +36,7 @@ function(iconController, mainController, connector, options) {
     parentElement.addChild({
         obj : emptyElement
     }, options);
+    bindFunc(emptyElement, parentElement, null);
     
     var childElement = new jslgEngine.model.common.JSlgElement({
 		keyPathCodes : ['t', 'e', 'c'],
@@ -35,6 +48,7 @@ function(iconController, mainController, connector, options) {
     emptyElement.addChild({
         obj : childElement
     }, options);
+    bindFunc(childElement, emptyElement, null);
     
     var key = elementBinder.getUniqueId(emptyElement);
     // Add Element Relationship.
@@ -73,9 +87,11 @@ function(iconController, mainController, connector, options) {
     });
     
     //Search
-    options.mainController.getWorldRegion().addChild({
+    var worldRegion = options.mainController.getWorldRegion()
+    worldRegion.addChild({
         obj : parentElement
     }, options)
+    bindFunc(parentElement, worldRegion, null);
     
     //Get by single key
     elementBinder.search(connector, {

@@ -44,7 +44,7 @@ testSettingAsAsync("TestCommandBlock", {
 	});
 	testAsSync('ブロック：IF', connector, function(name, connector_s) {
 		commandBlock = new jslgEngine.model.command.CommandBlockIF({
-			arguments : '15+20>0',
+			parameters : '15+20>0',
 			children : []
 		});
 		testCommandBlock(connector_s, commandBlock, data, options, function(data_s) {
@@ -59,7 +59,7 @@ testSettingAsAsync("TestCommandBlock", {
 	});
 	testAsSync('ブロック：ElseIF', connector, function(name, connector_s) {
 		commandBlock = new jslgEngine.model.command.CommandBlockElseIF({
-			arguments : '15+20>0',
+			parameters : '15+20>0',
 			children : [],
 			mainController : mainController
 		});
@@ -75,30 +75,27 @@ testSettingAsAsync("TestCommandBlock", {
 	});
 	testAsSync('ブロック：FOR', connector, function(name, connector_s) {
 
+		var action = new jslgEngine.mock.Action({});
 		commandBlock = new jslgEngine.model.command.CommandBlockFOR({
-			arguments : ['"$temp"', ['w1.r1', 'w1.r1']],
-			children : [new jslgEngine.model.action.ActionSet({
-				statement : jslgEngine.model.action.keys.SET,
-				arguments : ['w1.r1.0_0_0','"for"','$temp.s1.width']
-			})],
+			parameters : ['"$temp"', ['w1.r1', 'w1.r1']],
+			children : [action],
 			mainController : mainController		
 		});
+		var loops = 2;
 		testCommandBlock(connector_s, commandBlock, data, options, function(connector_ss, data_s) {
-			mainController.findElements(connector_ss, {
-				key : 'w1.r1.0_0_0.for'
-			}, options);
-			connector_ss.connects(function(connector_ss, result_ss) {
-				element = result_ss[0];
-				equal(element ? element.value : null, 10, [name,textRun].join(textSeparator));
-			});
+			children = commandBlock.getChildren();
+			var isGreen = true;
+			for(var i = 0, len = children.length; i < len; i++) {
+				isGreen = children[i].wasDone() ? isGreen : false;
+				equal(children[i].wasDone(), true, [name,textRun].join(textSeparator)+i);
+			}
 		}, function(connector_ss, data_s) {
-			mainController.findElements(connector_ss, {
-				key : 'w1.r1.0_0_0.for'
-			}, options);
-			connector_ss.connects(function(connector_ss, result_ss) {
-				element = result_ss[0];
-				equal(element ? element.value : null, null, [name,textRestore].join(textSeparator));
-			});
+			children = commandBlock.getChildren();
+			var isGreen = true;
+			for(var i = 0, len = children.length; i < len; i++) {
+				isGreen = !children[i].wasDone() ? isGreen : false;
+				equal(children[i].wasDone(), false, [name,textRestore].join(textSeparator)+i);
+			}
 		});
 	});
 });

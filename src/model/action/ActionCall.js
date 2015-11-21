@@ -64,10 +64,10 @@
 			connector_s.resolve();
 			
 			var target = result_s[0];
-			var argumentsParameter = result_s[1];
+			var parametersParameter = result_s[1];
 			
 			if(target === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 	
@@ -80,18 +80,18 @@
 			
 			target = target.getRunnableCommand();
 			var nwData = {};
-			nwData.arguments = {};
+			nwData.parameters = {};
 			for(var dataKey in data) {
 				nwData[dataKey] = data[dataKey];
 			}
-			//set arguments
-			if(argumentsParameter instanceof Array) {
-				for(var i = 0; i < argumentsParameter.length; i++) {
-					if(argumentsParameter[i] instanceof Array) {
-						var key = argumentsParameter[i][0].value;
-						var value = argumentsParameter[i][1];
+			//set parameters
+			if(parametersParameter instanceof Array) {
+				for(var i = 0; i < parametersParameter.length; i++) {
+					if(parametersParameter[i] instanceof Array) {
+						var key = parametersParameter[i][0].value;
+						var value = parametersParameter[i][1];
 						
-						nwData.arguments[key] = value;
+						nwData.parameters[key] = value;
 					}
 				}
 			}
@@ -131,7 +131,7 @@
 			var target = result_s[0];
 			
 			if(target === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 			

@@ -30,12 +30,12 @@
 	 * ポーランド記法で分割されたデータ
 	 *
 	 * @private
-	 * @name _arguments
+	 * @name _parameters
 	 * @property
 	 * @type String[]
 	 * @memberOf jslgEngine.model.logic.Expression#
 	 **/
-	p._arguments = null; 
+	p._parameters = null; 
 
 	/**
 	 * イベントのキー
@@ -84,7 +84,7 @@
 		var code = options.code;
 		
 		//var code = self.getPolandStatement(options.code);
-		self._arguments = self.getFormattedArguments(code, options);
+		self._parameters = self.getFormattedArguments(code, options);
 		self._commandKey = options.commandKey;
 	};
 
@@ -133,9 +133,9 @@
 	p.getJSlgElements = function(options) {
 		var self = this;
 		var elements = [];
-		var length = self._arguments.length;
+		var length = self._parameters.length;
 		for(var i = 0; i < length; i++) {
-			var argument = self._arguments[i];
+			var argument = self._parameters[i];
 			if(argument.indexOf(jslgEngine.config.elementSeparator)) {
 				elements.push(argument);
 			}
@@ -214,7 +214,7 @@
 		var cIndex = 0; //括弧終端
 		var bracketName = null;
 		var cnt = 0;
-		var arguments = [];
+		var parameters = [];
 		var opStack = []; //演算子の蓄積リスト
 		var operatorsList = self._operatorsList;
 		
@@ -236,7 +236,7 @@
 						var childText = text.substring(cIndex, i);
 						var childArguments = this.getPolandArguments(childText);
 						for(var j = 0; j < childArguments.length; j++) {
-							arguments.push(childArguments[j]);
+							parameters.push(childArguments[j]);
 						}
 						cIndex = i+1;
 					}
@@ -266,13 +266,13 @@
 						//文字をパラメータとして追加
 						//複数文字の場合、インデックス位置を調整する。
 						var one = text.substring(cIndex, i);
-						arguments.push(one);
+						parameters.push(one);
 					}
 					
 					if(oldOp && operators[oldOp] >= priority) {
 						//現在の方が優先度が低いの場合、現在のものをスタックに積み、古い演算子を配列に追加する。
 						//(先に計算させる)
-						arguments.push(oldOp);
+						parameters.push(oldOp);
 					} else {
 						opStack.push(oldOp);
 					}
@@ -284,14 +284,14 @@
 			}
 		}
 		if(length-cIndex >= 0) {
-			arguments.push(text.substring(cIndex));
+			parameters.push(text.substring(cIndex));
 		}
 		var temp;
 		while((temp=opStack.pop())) {
-			arguments.push(temp);
+			parameters.push(temp);
 		}
 		
-		return arguments;
+		return parameters;
 	};
 	
 	/**
@@ -385,7 +385,7 @@
 		var stack = [];
 		
 		connector.loop({
-			elements : self._arguments,
+			elements : self._parameters,
 			limit : 20
 		}, function(connector_s, result_s) {
 			var argument = result_s;

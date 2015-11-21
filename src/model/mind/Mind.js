@@ -103,7 +103,7 @@
             
             //シミュレートし、最適なイベントドライバを得る。
             var simulator = new jslgEngine.model.mind.Simulator({
-                arguments : mindArguments
+                parameters : mindArguments
             }, options);
             
             simulator.run(connector_s, {

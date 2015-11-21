@@ -76,29 +76,29 @@
 		var self = this;
 
 		if(!self.isReadyToRun(connector, options)) return;
-		
+
 		connector.resolve();
-		
+
 		var requiredMessage;
 		var region = options.mainController.getWorldRegion();
 		var settings = [];
-		
+
 		var pendingVariableKey = jslgEngine.model.logic.keys.PENDING;
 		var pendingKey = jslgEngine.model.logic.keys.PEND_OBJ;
-		
+
 		self._readAllElements(connector, data, options);
 		connector.pipe(function(connector_s, result_s) {
-            self.validate(connector_s, {
-                parameters : result_s
-            }, options);
-        });
+			self.validate(connector_s, {
+				parameters : result_s
+			}, options);
+		});
 		connector.connects(function(connector_s, result_s) {
-            var messages = result_s;
-            
+			var messages = result_s;
+
 			var groupName = 'message';
 			if(!data.isTest) {
 				var removeKeys = options.iconController.getKeysByGroup(groupName);
-			
+
 				if(removeKeys.length > 0) {
 					for(var i = 0; i < removeKeys.length; i++) {
 						// 現在のメッセージを優先して表示
@@ -121,12 +121,12 @@
 								connector_ss.resolve();
 							}
 						}, options);
-						
+
 						options.mainController.ticker.unlockAnimation();
 					});
 				}
 			}
-			
+
 			requiredMessage = new jslgEngine.model.issue.RequiredMessage({
 				settings : messages
 			}, options);
@@ -135,20 +135,20 @@
 			key : [pendingVariableKey,pendingKey].join(jslgEngine.config.elementSeparator)
 		}, options);
 		connector.connects(function(connector_s, result_s) {
-            var pendingVariable = data.localElements[pendingVariableKey];
-            var pendingCommand = pendingVariable ? pendingVariable.getChild({ key : pendingKey }) : null;
-			
-            pendingCommand = pendingCommand||new jslgEngine.model.issue.PendingCommand({
+			var pendingVariable = data.localElements[pendingVariableKey];
+			var pendingCommand = pendingVariable ? pendingVariable.getChild({ key : pendingKey }) : null;
+
+			pendingCommand = pendingCommand||new jslgEngine.model.issue.PendingCommand({
 				key : jslgEngine.model.logic.keys.PEND_OBJ,
-				commandKey : options.commandKey,
-				callback : function() {
-				}
+				       commandKey : options.commandKey,
+				       callback : function() {
+				       }
 			}, options);
 			pendingCommand.addIssue(requiredMessage);
-			
+
 			var variable = new jslgEngine.model.common.JSlgElementVariable({
 				key : pendingVariableKey,
-				isArray : true
+			    isArray : true
 			}, options);
 			variable.addChild({
 				obj : pendingCommand

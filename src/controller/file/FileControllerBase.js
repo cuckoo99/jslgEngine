@@ -72,6 +72,12 @@
 		self._stock = [];
 	};
 
+	p.removeAll = function() {
+		var self = this;
+		jslgEngine.dispose(self._contents);
+		self.initialize();
+	};
+
 	/**
 	 * Get key.
 	 *

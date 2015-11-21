@@ -7,11 +7,6 @@
 		MYARCHIVES:
 		Games</title>
 
-	<link href="./favicon.ico" type="image/x-icon" rel="icon" />
-	<link href="./favicon.ico" type="image/x-icon" rel="shortcut icon" />
-	<link rel="stylesheet" type="text/css" href="./css/cake.generic.css" />
-	<link rel="stylesheet" type="text/css" href="./css/qunit.css" />
-
 	<script type="text/javascript" src="./src/JSlgEngine.js"></script>
 	<script type="text/javascript">
 		jslgEngine.workSpace = './src/';
@@ -22,11 +17,13 @@
 			"model/factory/JSlgIconFactory.js",
 			"controller/Ticker.js",
 		]);
+		//var h =new Worker('src/FindingElementsWorker.js');
 	</script>
   
 	<script type="text/javascript" src="./lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="./lib/jquery-ui/dist/jquery-ui.js"></script>
 	<script type="text/javascript" src="./lib/easeljs/build/output/easeljs-0.7.1.min.js"></script>
-	
+	<link rel="stylesheet" href="./lib/jquery-ui/themes/base/all.css" type="text/css" />	
 </head>
 
 <body style="background-color: gray">
@@ -34,6 +31,10 @@
   <canvas id="stage" width="600" height="480" style="width:600;height:480;background-color: white;"></canvas>
     <!-- <canvas id="stage" width="800" height="600" style="width:800;height:600;background-color: white"></canvas> -->
 
+  <div id='dialog' style='display: none'>
+  	<p class='message'>Please put text on this form</p>
+	<input type='text' value='' />
+  </div>
   <input id="file" name="file" type="file" />
   <div id="result"></div>
   <div>
@@ -94,7 +95,6 @@
 	  	});
 	  });
   </script>
-  <script type="text/javascript" src="./js/test/stub/Ajax.js"></script>
 
 </body>
 </html>

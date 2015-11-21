@@ -44,12 +44,12 @@
 	 * 要素
 	 *
 	 * @private
-	 * @name _arguments
+	 * @name _parameters
 	 * @property
 	 * @type String
 	 * @memberOf jslgEngine.model.command.CommandBlockFOR#
 	 **/
-	p._arguments = null;
+	p._parameters = null;
 
 	/**
 	 * 初期化
@@ -62,7 +62,7 @@
 	p.initialize = function(options) {
 		var self = this;
 		self._children = options.children||[];
-		self._arguments = options.arguments;
+		self._parameters = options.parameters;
 	};
 
 	/**
@@ -177,7 +177,7 @@
 				
 				//変数の宣言
 				var data = {
-					arguments : ['\"'+temporaryKey+'\"', element.getPath()]
+					parameters : ['\"'+temporaryKey+'\"', element.getPath()]
 				};
 				var variableAction = new jslgEngine.model.action.ActionVariable(data);
 				

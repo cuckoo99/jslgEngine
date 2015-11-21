@@ -65,12 +65,12 @@
 	 * 要素
 	 *
 	 * @private
-	 * @name _arguments
+	 * @name _parameters
 	 * @property
 	 * @type String
 	 * @memberOf jslgEngine.model.command.CommandBlockIF#
 	 **/
-	p._arguments = null;
+	p._parameters = null;
 
 	/**
 	 * 初期化
@@ -84,7 +84,7 @@
 		var self = this;
 		self._children = [];
 		
-		self._arguments = options.arguments;
+		self._parameters = options.parameters;
 		self._passingResult = options.passingResult||{ result : false, info : 'No Reference' };
 		if(!options.passingResult) {
 			jslgEngine.log('No given PassingResult for IF');
@@ -235,7 +235,7 @@
 				conditionResult = conditionResult[0].value;
 			}
 		
-			jslgEngine.log(self.className+' '+self._arguments[0]+' is '+conditionResult);
+			jslgEngine.log(self.className+' '+self._parameters[0]+' is '+conditionResult);
 			connector_s.resolve(conditionResult);
 		});
 	};

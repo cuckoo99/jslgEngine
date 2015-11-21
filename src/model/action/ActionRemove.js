@@ -65,7 +65,7 @@
 			var target = result_s[0];
 			
 			if(target === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 			
@@ -88,7 +88,7 @@
 			if(!data.isTest) {
 				//TODO:アニメーションを加えるかどうかは暫定
 				options.mainController.ticker.addAnimation({
-					key : target.getKey(),
+					key : target.getKeyData().getUniqueId(),
 					fadeType : jslgEngine.model.animation.keys.fadeType.FADE_OUT,
 				}, options);
 			}

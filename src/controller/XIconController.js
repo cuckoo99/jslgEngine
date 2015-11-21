@@ -195,38 +195,53 @@
 
 		if(!data) return false;
 
-		if(self._graphicResource.getChildByName(key) != null) {
+		if(self._graphicResource.getObjectByName(key) != null) {
 			jslgEngine.log(key + 'was already created.');
 			return false;
 		}
 		
 		//メッシュはインスタンスのようなものなので、メッシュ作成はここで行う。
 		if(data.type === 'Model') {
-			//モデル
-			var geometry = data.geometry;
-			var materials = data.materials;
+			var modelKey = data.modelKey;
 			
-			var faceMaterial = new THREE.MeshFaceMaterial( materials );
-			var mesh = new THREE.MorphAnimMesh( geometry, faceMaterial );
-			mesh.name = key;
+			mainController.load(connector, {
+				fileType : 'Model',
+				contentKeys : [modelKey],
+				callback : function(content) {
+					//モデル
+					var geometry = content.geometry;
+					var materials = content.materials;
 			
-			jslgEngine.log(key + 'add icon:'+geometry.name);
-			
-			if(geometry.animation && Object.keys(geometry.animation).length > 0) {
-				THREE.AnimationHandler.add(geometry.animation);
-				animation = new THREE.Animation(mesh, "ArmatureAction", THREE.AnimationHandler.CATMULLROM);
-				data.animation = animation;
-			}
-			
-			if(data.position) {
-				//y-zを入れ替え
-				data.position = self.getFlip(data.position);
+					//test
+					var randomColor = (Math.floor(Math.random() * 255) << 16) | (Math.floor(Math.random() * 255) << 8) | Math.floor(Math.random() * 255);
+					var faceMaterial = materials ? new THREE.MeshFaceMaterial( materials ) : new THREE.MeshBasicMaterial({ color :randomColor});
+					
+					//var mesh = new THREE.MorphAnimMesh( geometry, faceMaterial );
+					var mesh = new THREE.Mesh(geometry, faceMaterial);
+					// mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.01;
+
+					mesh.name = key;
+					
+					//jslgEngine.log(key + 'add icon:'+geometry.name);
+					
+					if(geometry.animation && Object.keys(geometry.animation).length > 0) {
+						THREE.AnimationHandler.add(geometry.animation);
+							animation = new THREE.Animation(mesh, "ArmatureAction", THREE.AnimationHandler.CATMULLROM);
+							data.animation = animation;
+					}
 				
-				mesh.position.set(data.position.x, data.position.y, data.position.z);
-			}
-			
-			//TODO: とりあえず拡大
-			mesh.scale.set(5,5,5);
+					if(data.position) {
+						//y-zを入れ替え
+						data.position = self.getFlip(data.position);
+							
+						mesh.position.set(data.position.x, data.position.y, data.position.z);
+					}
+				
+					//TODO: とりあえず拡大
+					mesh.scale.set(5,5,5);
+					self._graphicResource.add(mesh);
+				}
+			});
 		} else if(data.type === 'Plane') {
 			//平面モデル
 			var material = data.material;
@@ -240,6 +255,7 @@
 			//mesh.scale.set(50,50,1.0);
 			
 			jslgEngine.log(key + 'add icon:'+mesh.name);
+			self._graphicResource.add(mesh);
 		} else {
 			jslgEngine.log('Failed to make a Icon');
 			return false;
@@ -247,7 +263,6 @@
 		
 		self.addIconInformation(data);
 
-		self._graphicResource.add(mesh);
 		
 		//TODO: キャンバス上に設置できる座標か判定しなければならない。
 	};
@@ -268,7 +283,7 @@
 		var self = this;
 		var key = data.key;
 
-		var obj = self._graphicResource.getChildByName(key);
+		var obj = self._graphicResource.getObjectByName(key);
 		
 		if(obj) {
 			self._graphicResource.remove(obj);
@@ -277,6 +292,39 @@
 
 		return null;
 	};
+	
+	
+	p.getNegationList = function(list) {
+		var self = this;
+		var result = [];
+
+		//var children = self._graphicResource.children;
+		var icons = self._icons;
+		var children = icons.getChildren({});
+		
+		for(var i = 0, len = children.length; i < len; i++) {
+			var child = children[i];
+
+			var exists = false;
+			for(var j = 0, len2 = list.length; j < len2; j++) {
+				var key = list[j];
+
+				if(child.name === key) {
+					exists = true;
+					break;
+				}
+			}
+
+			if(exists) {
+				continue;
+			}
+
+			result.push(child.name);
+		}
+
+		return result;
+	}
+
 	
 	/**
 	 * update icon.
@@ -341,7 +389,7 @@
 	p.changeVisibility = function(key, is_visible, alpha) {
 		var self = this;
 		
-		var obj = self._graphicResource.getChildByName(key);
+		var obj = self._graphicResource.getObjectByName(key);
 		
 		if(!obj) {
 			jslgEngine.log(key + ' icon was not found');
@@ -367,7 +415,7 @@
 	 **/
 	p.isVisible = function(key) {
 		var self = this;
-		var obj = self._graphicResource.getChildByName(key);
+		var obj = self._graphicResource.getObjectByName(key);
 		return obj ? obj.visible : false;
 	};
 	
@@ -383,7 +431,7 @@
 	 **/
 	p.hasKey = function(key) {
 		var self = this;
-		return self._graphicResource.getChildByName(key) ? true : false;
+		return self._graphicResource.getObjectByName(key) ? true : false;
 	};
 	
 	/**
@@ -461,7 +509,7 @@
 	p.getIconSize = function(key) {
 		var self = this;
 		
-		var obj = self._graphicResource.getChildByName(key);
+		var obj = self._graphicResource.getObjectByName(key);
 		
 		return obj ? {
 			x : obj.x,
@@ -508,10 +556,10 @@
 			return x;
 		};
 		
-		var drawingOptions = data.element.getStatus(jslgEngine.model.common.keys.DRAWING_OPTIONS).value;
+		var _graphics = data.element.getStatus(jslgEngine.model.common.keys.DRAWING_OPTIONS).value;
 		//TODO: キーで管理したい。
 		//第１引数、モデルの情報
-		var iconModelArgugemnts = drawingOptions[2];
+		var iconModelArgugemnts = _graphics[2];
 		var modelKey = iconModelArgugemnts[0];
 		
 		var model = options.mainController.getController('Model').get(options.mainController.connector, {

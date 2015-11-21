@@ -211,46 +211,35 @@
 	 */
 	p.update = function(connector, data, options) {
 		var self = this;
-		
+
 		connector.resolve();
-        
-        // 強制アップデートが指定された場合、何も描画処理を行わない。
-        if(data.wasSolved === false) return;
-        
+
+		// 強制アップデートが指定された場合、何も描画処理を行わない。
+		if(data.wasSolved === false) return;
+
 		connector.pipe(function(connector_s) {
-            self._removeMessages$(connector_s, options);
-        });
+			self._removeMessages$(connector_s, options);
+		});
 		connector.connects(function(connector_s) {
-            if(self.wasResolved()) {
-                return;
-            }
-            
-            var animationKey;
-            var region = options.mainController.getWorldRegion();
-            var settings = self._settings[self._currentIndex];
-            
-            var slgIconFactory = options.iconController.iconFactory;
-            
-            var text = settings.message;
-            var imageData = settings.imageData;
-            var selection = settings.selection;
-            self._makeMessageElement(connector, selection, data, options);
-            
-            slgIconFactory.makeMessageBoard(connector_s, {
-                position : [0,0],
-                text : text,
-                image : imageData ? {
-                    key : imageData.key,
-                    regX : imageData.regX,
-                    regY : imageData.regY,
-                    width : imageData.width,
-                    height : imageData.height
-                } : null,
-                selection : selection
-            }, options);
-            
-            options.mainController.ticker.unlockAnimation();
-        });
+			if(self.wasResolved()) {
+				return;
+			}
+
+			var animationKey;
+			var region = options.mainController.getWorldRegion();
+			var settings = self._settings[self._currentIndex];
+
+			var slgIconFactory = options.iconController.iconFactory;
+
+			data.text = settings.message;
+			data.imageData = settings.imageData;
+			data.selection = settings.selection;
+		
+			self._makeMessageElement(connector, data, options);
+
+			options.mainController.updateIconsAll(connector_s, {}, options);
+			//options.mainController.ticker.unlockAnimation();
+		});
 	};
 	
 	
@@ -288,11 +277,20 @@
 							key : removeKeys[i]
 						});
 					}
+
+					var name = jslgEngine.ui.keys.MESSAGE_BOARD;
+					var region = options.mainController.getWorldRegion();
+					var obj = region.getChild({
+						key : name
+					});
+					region.removeChild({
+						obj : obj
+					}, options);
 					connector.resolve();
 				}
 			}, options);
 			
-			options.mainController.ticker.unlockAnimation();
+			options.mainController.ticker.unlockAnimation(options);
 		} else {
             connector.resolve();
         }
@@ -324,27 +322,30 @@
 		
 		var passed;
 		
-        //即席で要素を作成する。
-        var settings = self._settings[self._currentIndex];
-        var selection = settings.selection;
-        self._makeMessageElement(connector, selection, data, options);
+		//即席で要素を作成する。
+		var settings = self._settings[self._currentIndex];
+		var selection = settings.selection;
+		self._makeMessageElement(connector, {
+			text : settings.selection,
+			imageData : settings.imageData,
+			selection : settings.selection
+		}, options);
         
 		var messageElement = self._getMessageElement(connector, data, options);
-		var selectionItems = messageElement.getChildren();
-		for(var j = 0; j < selectionItems.length; j++) {
-			if(selectionItems[j].className !== 'Icon') {
-				selectionItems.splice(j, 1);
-				j--;
+		var children = messageElement.getChildren();
+		var selectionItems = [];
+		for(var i = 0; i < children.length; i++) {
+			if(children[i].className === 'MessageSelectionItem') {
+				selectionItems.push(children[i]);
 			}
 		}
 		
 		if(selectionItems.length > 0) {
 			
-			selectionItemsLength = selectionItems.length;
-			for(var j = 0; j < selectionItemsLength; j++) {
+			for(var j = 0, len = selectionItems.length; j < len; j++) {
 				var point = count;
 				
-				requiredMessage.apply(connector, selectionItems[j], options);
+				requiredMessage.apply(connector, selectionItems[j], {}, options);
 				
 				if(!requiredMessage.next()) {
 					if(result.length<numberOfResult || getAll) {
@@ -358,12 +359,12 @@
 						result.push(cloneRequireMessage);
 					}
 				} else {
-					result = self.getPatterns(point, data, options);
+					result = self.getPatterns(connector, point, data, options);
 					requiredMessage.back();
 				}
 			}
 		}
-        return result;
+        	return result;
 	};
 	
 	/**
@@ -378,19 +379,20 @@
 	 * @param {Object} options
 	 **/
 	p.makeElement = function(connector, data, options) {
-        var self = this;
-        
-        if(self.wasResolved()) {
-            return;
-        }
-        
-        var settings = self._settings[self._currentIndex];
-        var text = settings.message;
-        var imageData = settings.imageData;
-        var selection = settings.selection;
-        
-        self._makeMessageElement(connector, selection, data, options);
-    };
+		var self = this;
+
+		if(self.wasResolved()) {
+			return;
+		}
+
+		var settings = self._settings[self._currentIndex];
+
+		self._makeMessageElement(connector, {
+			text : settings.selection,
+			imageData : settings.imageData,
+			selection : settings.selection
+		}, options);
+	};
     
 	/**
      * Get message information as JSlg element.
@@ -403,8 +405,12 @@
 	 * @param {Object} data
 	 * @param {Object} options
 	 **/
-	p._makeMessageElement = function(connector, selection, data, options) {
+	p._makeMessageElement = function(connector, data, options) {
 		var self = this;
+
+		var text = data.text;
+		var imageData = data.imageData;
+		var selection = data.selection;
 		
 		//入力要素を構築
 		var name = jslgEngine.ui.keys.MESSAGE_BOARD;
@@ -412,30 +418,42 @@
 		var region = options.mainController.getWorldRegion();
 		var messageElement = self._getMessageElement(connector, data, options);
 		if(!messageElement) {
-			messageElement = new jslgEngine.model.stage.Icon({
+			messageElement = new jslgEngine.model.stage.Message({
 				key : name
 			}, options);
 			region.addChild({
 				obj : messageElement
 			}, options);
 		}
-		for(var i = 0; i < selection.length; i++) {
-			var selectionKey = [self._uniqueId,selectionName,i].join('');
-			var selectionItem = messageElement.getChild({
-				key : selectionKey
-			});
-			if(!selectionItem) {
-				selectionItem = new jslgEngine.model.stage.Icon({
-					key : selectionKey
-				}, options);
-				messageElement.addChild({
-					obj : selectionItem
+		var img = imageData;
+		messageElement.setStatus('_graphics', img ? [[img.key,img.regX,img.regY,img.width,img.height],[]] : null);
+		messageElement.setStatus('text', text);
+		
+		selection.unshift({
+			text : 'Selection:',
+			colors : ["rgba(216, 0, 0, 0.5)", "rgba(157, 0, 0, 0.5)"]
+		});
+
+		var children = messageElement.getChildren();
+		for(var i = 0; i < children.length; i++) {
+			var child = children[i];
+			if(child.className === 'MessageSelectionItem') {
+				messageElement.removeChild({
+					obj : child
 				}, options);
 			}
-			selectionItem.setStatus(self.answerStatusName, selection[i].text);
 		}
-		if(selection.length == 0) {
-			messageElement.clearChildren({});
+		for(var i = 0; i < selection.length; i++) {
+			var selectionKey = 'selectionItem'+i;
+			var selectionItem = new jslgEngine.model.stage.MessageSelectionItem({
+				key : selectionKey
+			}, options);
+			selectionItem.setStatus('number', i);
+			selectionItem.setStatus('colors', selection[i].colors);
+			selectionItem.setStatus(self.answerStatusName, selection[i].text);
+			messageElement.addChild({
+				obj : selectionItem
+			}, options);
 		}
 		
 		return messageElement;

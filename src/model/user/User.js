@@ -23,14 +23,14 @@
 		function(options) {
 			this.initialize(options);
 			
-			var memberStatus = options.memberStatus;
-			
-			this.key = options.key;
-			this.isAuto = options.isAuto;
-			this.memberStatus = {
-				key : memberStatus.key,
-				value : memberStatus.value
-			};
+			// var memberStatus = options.memberStatus;
+			// 	
+			// this.key = options.key;
+			// this.isAuto = options.isAuto;
+			// this.memberStatus = {
+			// 	key : memberStatus.key,
+			// 	value : memberStatus.value
+			// };
 		}
 	);
 	/**
@@ -38,6 +38,15 @@
 	 */
 	var p = User.prototype;
 
+	/**
+	 * クラス名
+	 *
+	 * @name className
+	 * @property
+	 * @type String
+	 * @memberOf jslgEngine.model.user.User#
+	 **/
+	p.className = 'User';
 	/**
 	 * キー
 	 * 
@@ -80,6 +89,19 @@
 	 **/
 	p._memberStatus = null;
 
+	p.getMemberKey = function() {
+		return 'belongs';
+	};
+
+	p.getMemberName = function() {
+		var stt = this.getStatus('member');
+		return stt ? stt.value : null;
+	};
+	
+	p.getAlias = function() {
+		return this.getKey();
+	};
+
 	/**
 	 * 各Mindから最適なイベントドライバを取り出す。
 	 *
@@ -114,8 +136,8 @@
 	 **/
 	p.chooseCommandDrivers = function(connector, options) {
 		var self = this;
-		var memberKey = self._memberStatus.key;
-		var memberValue = self._memberStatus.value;
+		var memberKey = self.getMemberKey();
+		var memberValue = self.getMemberName();
 		//実行回数
 		var count = 1;
 		var limit = 100;

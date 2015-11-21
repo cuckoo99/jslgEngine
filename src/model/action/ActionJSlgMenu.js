@@ -64,87 +64,67 @@
 		
 		connector.resolve();
 		
-		var target;
-		
 		self._readAllElements(connector, data, options);
 		connector.connects(function(connector_s, result_s) {
-			target = result_s[0];
+			var target = result_s[0];
 			var isClose = result_s[1] ? result_s[1].value : null;
-			
-			var removeKeys = options.iconController.getKeysByGroup(iconGroupName);
-			if(removeKeys.length > 0) {
-				for(var i = 0; i < removeKeys.length; i++) {
-					options.mainController.ticker.addAnimation({
-						key : removeKeys[i],
-						fadeType : jslgEngine.model.animation.keys.fadeType.FADE_OUT,
-						group : 'menu'
-					}, options);
-				}
-				connector_s.pipe(function(connector_ss) {
-					options.mainController.ticker.addAnimationGroup({
-						key : 'menuGroup',
-						groupKeys : removeKeys,
-						callback : function() {
-							for(var i = 0; i < removeKeys.length; i++) {
-								options.iconController.remove({
-									key : removeKeys[i]
-								});
-							}
-							connector_ss.resolve();
-						}
-					});
-					
-					options.mainController.ticker.unlockAnimation();
-				}, options);
-			}
-		});
-		connector.connects(function(connector_s, result_s) {
-			//開くメニューが指定されている場合
-			if(target != null) {
-				//TODO: これは一時的な対策
-				target = target.value != null ? target.value : target;
-				
-				//現時点で制約を排除したら、イベントの場合に描画座標が必要になった。
-				if(	//true
-					target.className === 'Cast' ||
-					target.className === 'Item' ||
-					target.className === 'Icon'
-					) {
-					connector_s.pipe(function(connector_ss) {
-						var children = target.getChildren();
-						var menuItems = [];
-						
-						for(var i = 0; i < children.length; i++) {
-							var child = children[i];
-									
-							if(	child.className === 'Icon' ||
-								child.className === 'Item') {
-								var count = child.getStatus('count');
-								if(!count || count.value > 0) {
-									menuItems.push({
-										view : child.getStatus('name').value,
-										obj : child
-									});
-								}
-							}
-						}
-						
-						var slgIconFactory = options.iconController.iconFactory;
-							
-						slgIconFactory.makeMenu({
-							position : target.getPosition({
-								stageViewOffset : options.iconController.stageViewOffset
-							}, options),
-							menuItems : menuItems,
-							cast : target
-						}, options);
-						
-						connector_ss.resolve();
-					});
-				}
-			}
-		});
 		
+			// first, remove elements.
+			// it has parameters, then make elements.
+			// finally, update all icons.
+
+			options.mainController.findElements(connector_s, {
+				className : 'Menu'
+			}, options);
+			connector_s.connects(function(connector_ss, result_ss) {
+				var elements = result_ss;
+
+				for(var i = 0, len = elements.length; i < len; i++) {
+					element = elements[i];
+
+					var p = element.getParent(options);
+
+					p.removeChild({
+						obj : element
+					});
+				}
+			})
+			connector_s.connects(function(connector_ss) {
+				if(target !== null && !isClose) {
+					var children = target.getChildren();
+
+					var menuCount = 0;
+					for(var i = 0, len = children.length; i < len; i++) {
+						var child = children[i];
+						
+						if(child.className === 'Item') {
+							var count = child.getStatus('count');
+
+							if(count && count.value === 0) {
+								continue;
+							}
+
+							var name = child.getStatus('name');
+							name = name ? name.value : '';
+
+							var menu = new jslgEngine.model.stage.Menu({
+								key : target.getKey()+i
+							}, options);
+							menu.setStatus('number', menuCount++, options);
+							menu.setStatus('text', name, options);
+							var target_id = child.getKeyData().getUniqueId();
+							menu.setStatus('target', target_id, options);
+							
+							target.addChild({
+								obj : menu
+							}, options);
+						}
+					}
+				}
+				
+				options.mainController.updateIconsAll(connector_ss, {}, options);
+			});
+		});
 	};
 
 	/**

@@ -152,13 +152,13 @@
 		//フレームを参照できるようにしておく
 		var frame = new jslgEngine.model.common.JSlgElementVariable({
 			key : '$FRAME'
-		});
+		}, options);
 		frame.addChild({
 			obj : self
-		});
+		}, options);
 		obj.addChild({
 			obj : frame
-		});
+		}, options);
 		
 		return obj;
 	};
@@ -218,14 +218,14 @@
 		var self = this;
 		
 		var drawingKey = jslgEngine.model.common.keys.DRAWING_OPTIONS;
-		var drawingOptions = self.getStatus(drawingKey);
-		drawingOptions = drawingOptions ? drawingOptions.value : null;
+		var _graphics = self.getStatus(drawingKey);
+		_graphics = _graphics ? _graphics.value : null;
 		
-		var key = drawingOptions ? drawingOptions[0][0] : null;
-		var regX = drawingOptions ? drawingOptions[0][1] : 0;
-		var regY = drawingOptions ? drawingOptions[0][2] : 0;
-		var width = drawingOptions ? drawingOptions[0][3] : 0;
-		var height = drawingOptions ? drawingOptions[0][4] : 0;
+		var key = _graphics ? _graphics[0][0] : null;
+		var regX = _graphics ? _graphics[0][1] : 0;
+		var regY = _graphics ? _graphics[0][2] : 0;
+		var width = _graphics ? _graphics[0][3] : 0;
+		var height = _graphics ? _graphics[0][4] : 0;
 		
 		return {
             key : key,

@@ -41,6 +41,7 @@
 		var keyCode = self._keyCode||baseOptions.keyCode;
 		var keyPathCodes = self._keyPathCodes||baseOptions.keyPathCodes;
 		self._key = new jslgEngine.model.common.JSlgKey({
+			id : baseOptions.id,
 			keyCode : keyCode,
 			keys : keyPathCodes
 		}, options);
@@ -121,7 +122,34 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
 	 **/
 	p._children = null;
-   
+
+	/**
+	 * changed online mode, then it was rewrited change to true.
+	 * when check all elements property if these were false,
+	 * it would be removed because the server has no it.
+	 *
+	 * @private
+	 * @name wasRewrited
+	 * @property
+	 * @type boolean
+	 * @memberOf jslgEngine.model.common.JSlgElementBase#
+	 **/
+	p.wasRewrited = false;
+	
+	p.dispose = function() {
+		var self = this;
+
+		if(!self._children) return;
+
+		for(var i = 0; i < self._children.length; i++) {
+			var child = self._children[i];
+			child.dispose();
+			child = null;
+			delete child;
+		}
+		self._children = null;
+	};
+
 	/**
 	 * メインイベントの実行
 	 *
@@ -190,9 +218,9 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
 	 * @param {jslgEngine.model.common.JSlgElementBase} element キー書き換え元要素
 	 */
-	p.resetKey = function(element) {
+	p.resetKey = function(element, options) {
 		var self = this;
-		self._resetKey(element);
+		self._resetKey(element, options);
 	};
 
 	/**
@@ -207,7 +235,7 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementBase#
 	 * @param {jslgEngine.model.common.JSlgElementBase} element キー書き換え元要素
 	 */
-	p._resetKey = function(element) {
+	p._resetKey = function(element, options) {
 		var self = this;
 		
 		if(self._isFloat) {
@@ -236,7 +264,7 @@
 			//子要素に対して同様の処理を行う。
 			var length = self._children.length;
 			for(var i = 0; i < length; i++) {
-				self._children[i].resetKey(self);
+				self._children[i].resetKey(self, options);
 			}
 		}
 	};
@@ -441,7 +469,7 @@
 		}
 		
 		//追加する要素のパスコードを親要素のパスコードで書き換える。
-		data.obj.resetKey(self);
+		data.obj.resetKey(self, options);
 		self._children.push(data.obj);
 		if(options) {
 			options.mainController.bindElement(data.obj, self);
@@ -561,26 +589,12 @@
 	p.findElements = function(connector, data, options) {
 		var self = this;
 		if(connector) {
-//            connector.pipe(function(connector_s) {
-//                var base = options.mainController.getWorldRegion();
-//                var parent = self.getParent(options);
-//                if(parent) {
-//                    var fullpath = parent.getAbsolutePath(connector_s, data, options);
-//                    if(data.key) {
-//                        //親が存在する場合、親の取得が考えられるので完全パスを取得
-//                        data.key = [fullpath,data.key].join(jslgEngine.config.elementSeparator);
-//                    }
-//                } else {
-//                    base = self;
-//                }
-//                connector_s.resolve(base._findElements(null, data, options));
-//            });
-            if(data.className) {
-                data.target = self;
-                options.mainController.searchElements(connector, data, options);
-            } else {
-                self._findElementsByWorkers(connector, data, options);
-            }
+			if(data.className) {
+				data.target = self;
+				options.mainController.searchElements(connector, data, options);
+			} else {
+				self._findElementsByWorkers(connector, data, options);
+			}
 		} else {
 			return self._findElements(connector, data, options);
 		}
@@ -779,6 +793,13 @@
 					className : data.className
 				}
 			});
+		} else if(data.id) {
+			obj.push({
+				type : 'find',
+				data : {
+					id : data.id,
+				}
+			});
 		} else if(data.key) {
 			var keys = data.key.split(jslgEngine.config.elementSeparator);
 			
@@ -836,12 +857,13 @@
 	 */
 	p.equals = function(data, options) {
 		var self = this;
+		var id = data.id;
 		var key = data.key;
-		var location = data.key ? data.key.split(jslgEngine.config.locationSeparator) : null;
+		var location = typeof(key) === 'string' ? key.split(jslgEngine.config.locationSeparator) : null;
 		location = location && location.length === 3 ? { x : location[0],  y : location[1], z : location[2] } : null;
 		var index = data.index;
 		var className = data.className;
-		
+
 		if(key && self.getKey() !== key) {
 			if(!location || (location && !self.exists(location))) {
 				if(!index || (index && key !== index)) {
@@ -852,8 +874,11 @@
 		if(className && self.className !== className) {
 			return false;
 		}
+		if((id != null) && self.getKeyData().getUniqueId() !== id) {
+			return false;
+		}
 		
-		return (key||location||index||className);
+		return (key||location||index||className||(id != null));
 	};
 	
 	/**
@@ -896,9 +921,12 @@
 		var length = self._children.length;
 		for(var i = 0; i < length; i++) {
 			var child = self._children[i];
-			var wasMatchedPath = (data.obj ? child.getPath() === data.obj.getPath() : false);
-			if(wasMatchedPath || (key && child.getKey() === key)) {
-				data.obj.resetKey(null);
+			var wasMatchedUid = (data.obj ? child.getKeyData().getUniqueId() === data.obj.getKeyData().getUniqueId() : false);
+			if(wasMatchedUid || (key && child.getKey() === key)) {
+			//var wasMatchedPath = (data.obj ? child.getPath() === data.obj.getPath() : false);
+			//if(wasMatchedPath || (key && child.getKey() === key)) {
+				data.obj.resetKey(null, options);
+				jslgEngine.log(child.className);
 				self._children.splice(i, 1);
 				if(options) {
 					options.mainController.bindElement(data.obj, null);
@@ -960,7 +988,7 @@
 				key : key,
 				value : value,
 				parent : self
-			});
+			}, options);
 
 			optionsStatus.obj = status;
 			self.addChild(optionsStatus, options);
@@ -1124,6 +1152,8 @@
 		var key = data.key||self.getKey();
 		keys.push(key);
 		element['index'] = data.index != null ? data.index : null;
+		element['id'] = self.getKeyData().getUniqueId();
+		//jslgEngine.log(element['id']);
 		element['key'] = key;
 		element['keys'] = keys;
 		element['location'] = self.getGlobalLocation ? self.getGlobalLocation() : null;
@@ -1198,8 +1228,8 @@
 			}
 		};
 		
-		if(self._arguments) {
-			params = getNestedProperties(0, self._arguments, 'argument');
+		if(self._parameters) {
+			params = getNestedProperties(0, self._parameters, 'argument');
 		}
 		var value = '';
 		if(self.value) {
@@ -1284,5 +1314,64 @@
 		return result;
 	};
 	
+	p.createIcon = function(connector, data, options) {
+	};
+
+	p.updateIcon = function(connector, data, options) {
+		var self = this;
+		var key = self.getKeyData().getUniqueId();
+
+		var onlineManager = options.mainController.getOnlineManager();
+		if(onlineManager.isOnline && !self.wasRewrited) {
+			self.remove(connector, data, options);
+			return;
+		}
+
+		var children = [].concat(self._children);
+
+		if(children) {
+			var child;
+			while(child = children.shift()) {
+				child.updateIcon(connector, data, options);
+			}
+		}
+	};
+
+	p.remove = function(connector, data, options) {
+		var self = this;
+	
+		jslgEngine.log('remove'+self.getKey());
+
+		var p = self.getParent(options);
+		
+		if(!p) return;
+
+		self.wasRewrited = false;
+		p.removeChild({
+			obj : p
+		}, options);
+		self.removeIcon(connector, data, options);
+	};
+
+	p.removeIcon = function(connector, data, options) {
+	};
+
+	p.tree = function(n) {
+		var self = this;
+		var nest = ':'+(n ? n : '');
+
+		jslgEngine.log(nest+self.className);
+		var children = self.getChildren();
+		if(children) {
+			for(var i = 0; i < children.length; i++) {
+				var child = children[i];
+				if(child.tree) {
+					child.tree(nest);
+				}
+			}
+		}
+		
+	}
+
 	o.JSlgElementBase = JSlgElementBase;
 }());

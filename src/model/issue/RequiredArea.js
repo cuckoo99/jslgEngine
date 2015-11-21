@@ -267,7 +267,7 @@
 	        backGroundWorker.add(JSON.stringify(obj), function(obj) {
 	        	for(var i = 0; i < obj.length; i++) {
 	        		data.result.push(obj[i]);
-				}
+			}
 	        	connector_s.resolve();
 	        });
 		});
@@ -490,7 +490,7 @@
 								
 								if(animationKey) {
 									options.mainController.ticker.addAnimation({
-										key : element.getKey(),
+										key : element.getKeyData().getUniqueId(),
 										animeKey : animationKey.value,
 										stopAnimation : data.stopAnimation !== undefined ? data.stopAnimation : true
 									}, options);
@@ -593,7 +593,7 @@
 				//TODO: Groundに依存する事は避けたい。
 				var elementClassNames = requiredArea.elementClassNames.length>0 ? requiredArea.elementClassNames : ['Ground'];
 
-                //TODO: 現状対応する抽出要素はひとつのみ
+                		//TODO: 現状対応する抽出要素はひとつのみ
 				options.mainController.findElements(connector, {
 					key : location.join(jslgEngine.config.locationSeparator),
 					className : elementClassNames[0]
@@ -684,18 +684,18 @@
 	 * @param {Object} data
 	 * @param {Object} options
 	 **/
-	p.getDistance = function(target, distination, on_astar, options) {
+	p.getDistance = function(target, destination, on_astar, options) {
 		if(on_astar) {
 			var route = options.mainController.logic.getRouteByAstar(target,
-				distination, {
+				destination, {
 					element : options.mainController.getWorldRegion()
 				});
 			return route.length;
 		}
 		
-		return 	Math.abs(target.x - distination.x) +
-				Math.abs(target.y - distination.y) +
-				Math.abs(target.z - distination.z);
+		return 	Math.abs(target.x - destination.x) +
+				Math.abs(target.y - destination.y) +
+				Math.abs(target.z - destination.z);
 	};
 	
 	/**

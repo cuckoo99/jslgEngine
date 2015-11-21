@@ -57,7 +57,11 @@
 			self._keyCode = data.keyCode;
 		}
 		if(options) {
-			self._uniqueId = options.mainController.getUniqueId();
+			var uniqueId = data.id ? data.id : options.mainController.getUniqueId();
+			self._uniqueId = uniqueId;
+		} else {
+			//console.trace();
+			//jslgEngine.log('failed to attach unique id');
 		}
 	};
 
@@ -205,16 +209,19 @@
 	p.setKey = function(key_code, key) {
 		var self = this;
 
-		if(typeof key !== 'string') {
-			jslgEngine.log('キーの設定、失敗：文字列ではありません。');
-			return;
-		}
+		// if(typeof key !== 'string') {
+		// 	jslgEngine.log('キーの設定、失敗：文字列ではありません。');
+		// 	return;
+		// }
 
-		self._keyElements[key_code] = key;
+		//TODO: もし、数値も処理するが問題があれば修正する必要がある。
+		self._keyElements[key_code] = ''+key;
 	};
 
 	/**
-	 * 一意IDの取得
+	 * ユニークIDの書き換え
+	 * コマンドはクローンを作成して、ユニークIDを書き換える必要があるため
+	 * 挙動を変える必要がある。
 	 *
 	 * @name resetUniqueId
 	 * @method
@@ -225,6 +232,7 @@
 	p.resetUniqueId = function(options) {
 		var self = this;
 
+		//jslgEngine.log('!!!it does not rewrite object binder.');
 		self._uniqueId = options.mainController.getUniqueId();
 	};
 
@@ -241,6 +249,21 @@
 		var self = this;
 
 		return self._uniqueId;
+	};
+
+	/**
+	 * 一意IDの設定
+	 *
+	 * @name setUniqueId
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgKey#
+	 * @param {String} key_code 対象キーコード
+	 */
+	p.setUniqueId = function(id) {
+		var self = this;
+
+		self._uniqueId = id;
 	};
 
 	/**

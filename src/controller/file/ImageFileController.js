@@ -58,6 +58,7 @@
 		
 		for(var i = 0; i < contentKeys.length; i++) {
 			var key = contentKeys[i];
+			var wasGot = false;
 			for(var j = 0; j < self._stock.length; j++) {
 				if(self._stock[j].key == key) {
 					//読み込み待機中の画像リストと一致するなら追加する。
@@ -65,8 +66,10 @@
 						key : key,
 						url : self._stock[j].url
 					});
+					wasGot = true;
 				}
 			}
+			if(!wasGot) jslgEngine.log(key+' image key was not found.');
 		}
 		//もしも、読み込むキーが未指定なら、待機している画像を全て読み込み
 		loadImages = (contentKeys.length === 0 ? self._stock : loadImages);
@@ -85,12 +88,13 @@
 				callback : callback
 			});
 			
-			var image = self._contents[key];
+			var image = self._contents[loadImage.key];
 
 			if (image != null) {
 				images.pop();
 				callback(image);
 			} else {
+				//jslgEngine.log('ready to load image:'+key);
 				connector.pipe(function(connector_s) {
 					var options_s = connector_s.options;
 					var data = images.pop();

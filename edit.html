@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -11,80 +11,12 @@
 
 <script type="text/javascript" src="./src/JSlgEngine.js"></script>
 <script type="text/javascript">
-	jslgEngine.workSpace = '';
-	var list = [
-			"./src/Utility.js",
-			"./src/model/common/SerialRunner.js",
-			"./src/model/common/JSlgKey.js",
-			"./src/model/common/JSlgElementBase.js",
-			"./src/model/common/JSlgElementFrame.js",
-			"./src/model/common/JSlgElement.js",
-			"./src/model/common/JSlgElementStatus.js",
-			"./src/model/common/JSlgElementCommand.js",
-			"./src/model/common/JSlgElementVariable.js",
-			"./src/model/common/JSlgElementFinder.js",
-			"./src/model/common/ResourceElement.js",
-			"./src/model/command/Command.js",
-			"./src/model/command/CommandBlockBase.js",
-			"./src/model/command/CommandBlockCode.js",
-			"./src/model/command/CommandBlockIF.js",
-			"./src/model/command/CommandBlockElseIF.js",
-			"./src/model/command/CommandBlockFOR.js",
-			"./src/model/command/CommandDriver.js",
-			"./src/model/action/ActionBase.js",
-			"./src/model/action/ActionLog.js",
-			"./src/model/action/ActionCall.js",
-			"./src/model/action/ActionAdd.js",
-			"./src/model/action/ActionAddFrame.js",
-			"./src/model/action/ActionAudio.js",
-			"./src/model/action/ActionAnime.js",
-			"./src/model/action/ActionPending.js",
-			"./src/model/action/ActionSet.js",
-			"./src/model/action/ActionMind.js",
-			"./src/model/action/ActionRemove.js",
-			"./src/model/action/ActionRequireArea.js",
-			"./src/model/action/ActionUpdate.js",
-			"./src/model/action/ActionVariable.js",
-			"./src/model/action/ActionIcon.js",
-			"./src/model/action/ActionJSlgMenu.js",
-			"./src/model/action/ActionJSlgScroll.js",
-			"./src/model/action/ActionJSlgMessage.js",
-			"./src/model/action/ActionJSlgUpdateArea.js",
-			"./src/model/action/ActionJSlgMove.js",
-			"./src/model/action/ActionJSlgText.js",
-			"./src/model/action/ActionJSlgProfile.js",
-			"./src/model/action/ActionJSlgEffect.js",
-			"./src/model/area/Region.js",
-			"./src/model/area/Area.js",
-			"./src/model/area/Location.js",
-			"./src/model/area/Size.js",
-			"./src/model/area/LocalRegion.js",
-			"./src/model/area/WorldRegion.js",
-			"./src/model/mind/MindFrame.js",
-			"./src/model/mind/Mind.js",
-			"./src/model/stage/ItemFrame.js",
-			"./src/model/stage/CastFrame.js",
-			"./src/model/stage/GroundFrame.js",
-			"./src/model/stage/StageFrame.js",
-			"./src/model/stage/Item.js",
-			"./src/model/stage/Cast.js",
-			"./src/model/stage/Ground.js",
-			"./src/model/stage/Stage.js",
-			"./src/model/stage/Icon.js",
-			"./src/model/logic/Converter.js",
-			"./src/model/logic/Logic.js",
-			"./src/model/network/ConnectorBase.js",
-			"./src/model/network/ConnectorOnline.js",
-			"./src/model/network/Ajax.js",
-			"./src/controller/Ticker.js",
-			"./src/controller/ElementBinder.js",
-			"./src/controller/BackGroundWorker.js",
-			"./src/controller/file/FileControllerBase.js",
-			"./src/controller/file/ImageFileController.js",
-			"./src/controller/file/AudioFileController.js",
-			"./src/controller/MainController.js"
-	];
-	jslgEngine.loadJs(list);
+	jslgEngine.workSpace = './src/';
+	jslgEngine.loadJs([
+		'controller/file/ImageFileController.js',
+		'controller/MainController.js',
+		'controller/Ticker.js'
+	]);
 </script>
 
 <script type="text/javascript" src="./sample/sample.js"></script>
@@ -94,6 +26,7 @@
 <script type="text/javascript" src="./src/etc/jslg_picker.js"></script>
 <script type="text/javascript">
 $(function() {
+	
 	$.jslgPicker.loadElements({
 		url : '',
         fileControllers : [

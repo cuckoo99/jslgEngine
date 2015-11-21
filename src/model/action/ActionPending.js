@@ -96,7 +96,8 @@
 		}
 		
         pendingCommand.removeResolvedIssues();
-        
+       
+		//TODO: 分岐がごちゃごちゃしてわかりづらい。
 		if(data.resolveFunc) {
 			//即時に要求要素を解決するメソッドが用意されている場合。
 			var issues;
@@ -288,7 +289,7 @@
 					doneTest = true;
 					
 					command = command.getRunnableCommand();
-					command.test(connector, data, options);
+					command.test(connector, data, [], options);
 					connector.connects(function(connector_s) {
 						jslgEngine.dispose(command);
 					});

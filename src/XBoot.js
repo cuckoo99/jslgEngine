@@ -6,7 +6,9 @@ var o = this.jslgEngine = this.jslgEngine||{};
 
 jslgEngine.boot = function(data) {
 	if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-	
+
+	var innerWidth = 640, innerHeight = 480;
+
 	var exData = data||{};
 	var xml = exData.xml;
 
@@ -16,12 +18,12 @@ jslgEngine.boot = function(data) {
 	
 	var controls;
 	
-	var projector = new THREE.Projector();
+	//var projector = new THREE.Projector();
 	var container, stats;
 	var camera, scene, renderer, objects, loader;
 	var particleLight, pointLight;
-	var windowHalfX = window.innerWidth / 2;
-	var windowHalfY = window.innerHeight / 2;
+	var windowHalfX = innerWidth / 2;
+	var windowHalfY = innerHeight / 2;
 	var clock = new THREE.Clock();
 	var mouseX = 0, mouseY = 0;
 
@@ -33,8 +35,9 @@ jslgEngine.boot = function(data) {
 	scene = new THREE.Scene();
 	
 	//カメラなど環境設定	
-	camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 20000 );
-	camera.position.set( 2, 4, 5 );
+	camera = new THREE.PerspectiveCamera( 50, innerWidth / innerHeight, 0.1, 20000 );
+	camera.position.set( 2, 10, 100 );
+	//camera.position.set( 2, 4, 5 );
 	
 	scene.fog = new THREE.FogExp2( 0x000000, 0.005 );
 
@@ -47,16 +50,17 @@ jslgEngine.boot = function(data) {
 	xTextureController = new jslgEngine.controller.TextureFileController({
 		loader : new THREE.TextureLoader()
 	});
+	mainController = new jslgEngine.controller.MainController({
+		fileControllers : [xModelController, xTextureController]
+	});
 	iconController = new jslgEngine.controller.XIconController({
 		camera : camera,
 		mainController : mainController,
 		iconFactory : new jslgEngine.model.factory.JSlgXIconFactory(),
 		commandFactory : new jslgEngine.model.factory.JSlgCommandFactory(),
 		scene : scene,
-		container : container
-	});
-	mainController = new jslgEngine.controller.MainController({
-		fileControllers : [xModelController, xTextureController]
+		container : container,
+		stageViewOffset : {x:0,y:0,z:0}
 	});
 	converter = iconController.converter;
 	connector = mainController.connector;
@@ -92,8 +96,10 @@ jslgEngine.boot = function(data) {
 			}, options);
 		}
 		connector_s.resolve();
-		jslgEngine.build(connector_s, {}, options);
+		//TODO: Making ScrollButtons
+		//jslgEngine.build(connector_s, {}, options);
 		
+		mainController.updateIconsAll(connector, {}, options);
 		mainController.ticker.unlockAnimation();
 
 		//光の追加
@@ -122,7 +128,7 @@ jslgEngine.boot = function(data) {
 	
 		//レンダラの設定
 		renderer = new THREE.WebGLRenderer();
-		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setSize(innerWidth, innerHeight);
 		container.appendChild(renderer.domElement);
 	
 		//画面ステータスの設定
@@ -152,10 +158,19 @@ jslgEngine.boot = function(data) {
 	 **/
 	function checkIntersect(vector) {
 		var self = this;
-		
-		projector.unprojectVector( vector, camera );
+	
+		// alternate projector
+		//projector.unprojectVector( vector, camera );
 
-		var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+		//var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+
+		//mouse.x = (event.clientX / render.domElement.width) * 2 - 1;
+		//mouse.y = - (event.clientY / render.domElement.height) * 2 + 1;
+		mouse.x = vector.x;
+		mouse.y = vector.y;
+		raycaster.setFromCamera(mouse, camera);
 
 		var intersects = raycaster.intersectObjects( scene.children );
 
@@ -163,27 +178,9 @@ jslgEngine.boot = function(data) {
 			var name = intersects[0].object.name;
 			jslgEngine.log('kicked : '+name);
 			
-			iconController.get({
-				key : name,
-				callback : function(icon) {
-					if(icon) {
-						icon.info.onClick({
-							target : {
-								name : name
-							}
-						}, options);
-						mainController.kick({
-							key : name,
-							x : location.x,
-							y : location.y,
-							z : location.z
-						}, options);
-					} else {
-						jslgEngine.log(name+' icon is not found');
-					}
-				}
-			});
-			
+			mainController.kick({
+				key : name
+			}, options);	
 			//intersects[0].object.material.color.setHex( Math.random() * 0xffffff );
 
 			// var particle = new THREE.Particle( particleMaterial );
@@ -194,28 +191,34 @@ jslgEngine.boot = function(data) {
 	};
 	
 	function onWindowResize( command ) {
-		windowHalfX = window.innerWidth / 2;
-		windowHalfY = window.innerHeight / 2;
+		windowHalfX = innerWidth / 2;
+		windowHalfY = innerHeight / 2;
 
-		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.aspect = innerWidth / innerHeight;
 		camera.updateProjectionMatrix();
 
-		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.setSize( innerWidth, innerHeight );
 	}
 
 	function animate() {
-    	controls.update();
+    		controls.update();
 		requestAnimationFrame( animate );
 		render();
 		stats.update();
 	}
 	
-	function onDocumentMouseDown( command ) {
+	function onDocumentMouseDown( e ) {
 
-		command.prcommandDefault();
+		e.preventDefault();
 
-		var vector = new THREE.Vector3( ( command.clientX / window.innerWidth ) * 2 - 1, - ( command.clientY / window.innerHeight ) * 2 + 1, 0.5 );
-		
+		// 中心からの距離プラスマイナス1
+		var vector = new THREE.Vector3( ( e.clientX / innerWidth ) * 2 - 1, - ( e.clientY / innerHeight ) * 2 + 1, 0.5 );
+
+		// test
+		console.log('hoge'+vector.x);
+		camera.position.x += vector.x*100;
+		camera.position.y += vector.y*100;
+
 		checkIntersect(vector);
 	}
 
@@ -230,8 +233,8 @@ jslgEngine.boot = function(data) {
 
 		var timer = Date.now() * 0.0005;
 
-		camera.position.set( 2, 30, 100 );
-		camera.rotation.set( -0.4, 0, 0 );
+		// camera.position.set( 2, 30, 100 );
+		// camera.rotation.set( -0.4, 0, 0 );
 
 		// camera.position.x += ( mouseX - camera.position.x ) * .05;
 		// camera.position.y += ( - mouseY - camera.position.y ) * .05;

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name='keywords' content='programming,computer graphics,physical computing' />
+	<meta name='description' content='This website provides some contents like computer programming, webservice, web design, 3DCG, Arduino, and any others.' />
+<title>
+		MYARCHIVES:
+		Games</title>
+
+	<script type="text/javascript" src="./src/JSlgEngine.js"></script>
+	<script type="text/javascript">
+		jslgEngine.workSpace = './src/';
+		jslgEngine.loadJs([
+			"model/common/XJSlgElement.js",
+			"model/stage/XGroundFrame.js",
+			"model/stage/XCastFrame.js",
+			"model/stage/XGround.js",
+			"model/stage/XCast.js",
+			"model/stage/XScrollButton.js",
+			"controller/MainController.js",
+			"controller/XIconController.js",
+			"controller/file/ImageFileController.js",
+			"controller/file/JSONModelFileController.js",
+			"controller/file/TextureFileController.js",
+			"model/factory/JSlgXIconFactory.js",
+			"controller/Ticker.js",
+		]);
+		//var h =new Worker('src/FindingElementsWorker.js');
+	</script>
+  
+	<script type="text/javascript" src="./lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="./lib/jquery-ui/dist/jquery-ui.js"></script>
+	<script type="text/javascript" src="./lib/threejs/build/three.js"></script>
+	<script type="text/javascript" src="./lib/threejs/examples/js/controls/OrbitControls.js"></script>
+	<script type="text/javascript" src="./lib/threejs/examples/js/libs/stats.min.js"></script>
+	<script type="text/javascript" src="./lib/threejs/examples/js/MorphAnimMesh.js"></script>
+	<script type="text/javascript" src="./lib/threejs/examples/js/Detector.js"></script>
+	<link rel="stylesheet" href="./lib/jquery-ui/themes/base/all.css" type="text/css" />	
+</head>
+
+<body style="background-color: gray">
+  <input id="file" name="file" type="file" />
+  <!-- <input id="Zoom In" name="zoom_in" type="button" /> -->
+  <!-- <input id="Zoom Out" name="zoom_out" type="button" /> -->
+  <div id="result"></div>
+  <script type="text/javascript" src="./src/XBoot.js"></script>
+  <script type="text/javascript">
+	  window.addEventListener('DOMContentLoaded', function() {
+	  document.querySelector("#file").addEventListener('change', function(e) {
+	      if (window.File) {
+	        var input = document.querySelector('#file').files[0];
+	        if(input) {
+	        	var reader = new FileReader();
+		        reader.addEventListener('load', function(e) {
+		          jslgEngine.boot({
+		          	xml : reader.result
+		          });
+		        }, true);
+		        reader.readAsText(input, 'UTF-8');
+	        }
+	      }
+	    }, true);
+	  
+	  	  var element = document.querySelector("#file");
+	  	  //element.dispatchEvent(element.onclick);
+  
+		var evt = document.createEvent( "MouseEvents" ); // マウスイベント作成
+		evt.initEvent( "change", false, true ); // イベントの設定
+		element.dispatchEvent( evt ); // イベントを強制的に発生
+	  });
+	  
+	  // document.querySelector("#zoom_in").addEventListener('click', function(e) {
+		//   camera.position.z += 1;
+	  // });
+	  //
+	  // document.querySelector("#zoom_out").addEventListener('click', function(e) {
+		//   camera.position.z -= 1;
+	  // });
+
+	  $(function() {
+	  	//サンプルデータの取得
+	  	$(document).on('click','#download',function() {
+	  		var result = [];
+	  		//サンプルデータの取得
+	  		$.ajax({},
+  			function() {
+  				var result;
+				//リスト列挙
+				$('#tmpl_download_list').tmpl({
+					list : result
+				}).appendTo($('#download_list'));
+  			});
+	  	});
+	  	//サンプルリストのクリック
+	  	$(document).on('click','#download_list',function() {
+	  		//非同期取得
+	  		$.ajax({},
+  			function() {
+  				var result;
+  				
+  				//ブート
+				jslgEngine.boot({
+					xml : reader.result
+				});
+  			});
+	  	});
+	  });
+  </script>
+
+</body>
+</html>

@@ -75,12 +75,17 @@
 				'ActionJSlgText' : jslgEngine.model.action.ActionJSlgText,
 				'ActionJSlgProfile' : jslgEngine.model.action.ActionJSlgProfile,
 				'ActionJSlgEffect' : jslgEngine.model.action.ActionJSlgEffect,
+				'ActionJSlgCustomize' : jslgEngine.model.action.ActionJSlgCustomize,
 				'Status' : jslgEngine.model.common.JSlgElementStatus,
 				'Stage' : jslgEngine.model.stage.Stage,
 				'Ground' : isThree ? jslgEngine.model.stage.XGround : jslgEngine.model.stage.Ground,
 				'Cast' : isThree ? jslgEngine.model.stage.XCast : jslgEngine.model.stage.Cast,
 				'Item' : jslgEngine.model.stage.Item,
 				'Mind' : jslgEngine.model.mind.Mind,
+				'User' : jslgEngine.model.user.User,
+				'Menu' : jslgEngine.model.stage.Menu,
+				'ScrollButton' : isThree ? jslgEngine.model.stage.XScrollButton : jslgEngine.model.stage.ScrollButton,
+				'NetworkButton' : jslgEngine.model.stage.NetworkButton,
 				'LocalRegion' : jslgEngine.model.area.LocalRegion
 			}
 		};
@@ -413,8 +418,8 @@
 		data.parent = options.element;
 		data.mainController = options.mainController;
 
-		//TODO: arguments must be changed parameters
-		data.arguments = data.parameters||data.arguments;
+		//TODO: parameters must be changed parameters
+		data.parameters = data.parameters||data.parameters;
 		
 		obj = self.getModel({
 			property : data,
@@ -433,7 +438,7 @@
 					mainController : options.mainController
 				});
 	
-                if(!child) continue;
+                		if(!child) continue;
 			
 				obj.addChild({
 					obj : child
@@ -464,7 +469,7 @@
 		var obj;
 
 		var property = {};
-		var arguments = [];
+		var parameters = [];
 		var children = [];
 
 		var childNodes = node.childNodes;
@@ -536,8 +541,8 @@
 					break;
 				}
 				case 'argument': {
-					arguments.push(self._getArrayOfArguments(childNode));
-					//arguments.push(childNode.textContent);
+					parameters.push(self._getArrayOfArguments(childNode));
+					//parameters.push(childNode.textContent);
 					break;
 				}
 				case 'element': {
@@ -552,7 +557,7 @@
 			}
 		}
 		
-		property.arguments = arguments;
+		property.parameters = parameters;
 		property.parent = options.element;
 		property.mainController = options.mainController;
 

@@ -95,7 +95,8 @@
 							var element = elements_s[j];
 							
 							//一意キーが前提となる
-							if(element.getKey() === keys[i]) {
+							var uId = element.getKeyData().getUniqueId();
+							if(''+uId === keys[i]) {
 								list.push(element);
 							}
 						}
@@ -139,7 +140,8 @@
 						stageViewOffset : afterStageOffset
 					}, options);
 					
-					var key = element.getKey();
+					//var key = element.getKey();
+					var key = element.getKeyData().getUniqueId();
 					var fadeType = null;
 					var space = {width:0,height:0,depth:0};
 					space = null;

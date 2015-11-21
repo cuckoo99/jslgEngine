@@ -65,7 +65,7 @@
 			var animationKey = result_s[1];
 			
 			if(keyObj === null || animationKey === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 	
@@ -73,7 +73,7 @@
 			
 			if(!data.isTest) {
 				options.mainController.ticker.addAnimation({
-					key : keyObj.getKey(),
+					key : keyObj.getKeyData().getUniqueId(),
 					animeKey : animationKey.value,
 					stopAnimation : false
 				}, options);

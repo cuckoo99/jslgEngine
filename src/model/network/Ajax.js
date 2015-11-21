@@ -52,19 +52,7 @@
 	 * </ul>
 	 **/
 	p.run = function(options) {
-		// $.ajax({
-		  // type: "GET",
-		  // url: "test.js",
-		  // dataType: "script",
-		  // success : function() {
-			// options.callback(options);
-		  // }
-		// });
-		setTimeout(function() {
-		options.callback({
-			data : jslgEngine.sampleJson
-		});
-		},10);
+		return $.ajax(options);
 	};
 
 	o.Ajax = Ajax;

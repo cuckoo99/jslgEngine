@@ -137,7 +137,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>1</argument>
 			</value>
@@ -158,7 +158,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>map1</argument>
@@ -216,7 +216,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>map1</argument>
@@ -482,7 +482,7 @@
 		<key>rc1</key>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>human1</argument>
@@ -670,7 +670,7 @@
 		<key>rc2</key>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>monster1</argument>

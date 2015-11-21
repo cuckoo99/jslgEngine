@@ -126,5 +126,19 @@
 		return localRegions;
 	};
 
+	p.updateIcon = function(connector, data, options) {
+		var self = this;
+		var key = self.getKeyData().getUniqueId();
+
+		var children = [].concat(self._children);
+
+		if(children) {
+			var child;
+			while(child = children.shift()) {
+				child.updateIcon(connector, data, options);
+			}
+		}
+	};
+
 	o.WorldRegion = WorldRegion;
 }());

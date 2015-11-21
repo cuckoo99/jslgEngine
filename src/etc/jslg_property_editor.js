@@ -559,7 +559,7 @@
                     property : {
                         type : 'Element',
                         className : className,
-                        arguments : parameters
+                        parameters : parameters
                     }
                 });
                 var $properties = $tgt.find('.action_property:first:has(ul li)');

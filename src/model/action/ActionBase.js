@@ -40,7 +40,7 @@
 	p.initialize = function(options) {
 		var self = this;
         
-		self._arguments = options.arguments;
+		self._parameters = options.parameters;
 		self._wasDone = false;
 	};
 
@@ -67,12 +67,12 @@
 	/**
 	 * parameters
 	 *
-	 * @name arguments
+	 * @name parameters
 	 * @property
 	 * @type String[]
 	 * @memberOf jslgEngine.model.action.ActionBase#
 	 **/
-	p._arguments = null;
+	p._parameters = null;
 
 	/**
 	 * information for restoration.
@@ -145,7 +145,7 @@
 			}
 			return false;
 		}
-		jslgEngine.log('Run Action: '+self.className+'('+self._arguments.join(',')+')');
+		jslgEngine.log('Run Action: '+self.className+'('+self._parameters.join(',')+')');
 		return true;
 	};
 	
@@ -165,13 +165,13 @@
 		var wasDone = self.wasDone();
 		if(isNotReady||!wasDone) {
 //			jslgEngine.log('Cannot Restore Action: '+self.className+
-//					(isNotReady?',has unknown arguments':'')+(wasDone?',wasDone':'')+'('+self._arguments.join(',')+')');
+//					(isNotReady?',has unknown parameters':'')+(wasDone?',wasDone':'')+'('+self._parameters.join(',')+')');
 			if(self.restore$) {
 				connector.resolve();
 			}
 			return false;
 		}
-		jslgEngine.log('Restore Action: '+self.className+'('+self._arguments.join(',')+')');
+		jslgEngine.log('Restore Action: '+self.className+'('+self._parameters.join(',')+')');
 		return true;
 	};
 	

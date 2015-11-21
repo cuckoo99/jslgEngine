@@ -83,42 +83,32 @@
 			
 			self._wasDone = true;
 			
-			if(to instanceof jslgEngine.model.issue.PendingCommand) {
+			if(to.className === 'PendingCommand') {
 				var issue = to.getCurrentIssue();
-				to = issue.getCurrentAppliedLocation();
+				to = issue.getCurrentAppliedElement();
 			} else if(to instanceof jslgEngine.model.common.JSlgElement) {
-				to = to.getGlobalLocation();
+				//to = to.getGlobalLocation();
 			}
 			
-			var keyPathCodes = jslgEngine.getElementPathCodes(jslgEngine.model.stage.keys.GROUND);
+			if(target.className !== 'Cast') {
+				jslgEngine.log('target is not Cast element.');
+				connector_s.reject();
+			}
 			
-			castPath = target.getPath(jslgEngine.model.stage.Cast.prototype._keyPathCodes);
-			path = target.getPath(keyPathCodes);
+			if(to.className !== 'Ground') {
+				jslgEngine.log('destination is not Ground element.');
+				connector_s.reject();
+			}
+
+			path = target.getPath();
+
+			// get ground and cast paths.
+			ground = target.getParent(options);
+			var castPath = target.getPath();
+			cast = target;
+			lastGround = to;
+
 			lastLocationKey = [to.x,to.y,to.z].join(jslgEngine.config.locationSeparator);
-			
-			connector_s.resolve();
-			
-			options.mainController.findElements(connector_s, {
-				key : path
-			}, options);
-			connector_s.pipe(function(connector_ss, result_ss) {
-				ground = result_ss[0];
-				connector_ss.resolve();
-			});
-			options.mainController.findElements(connector_s, {
-				key : castPath
-			}, options);
-			connector_s.pipe(function(connector_ss, result_ss) {
-				cast = result_ss[0];
-				connector_ss.resolve();
-			});
-			options.mainController.findElements(connector_s, {
-				key : lastLocationKey,
-				className : 'Ground'
-			}, options);
-		});
-		connector.pipe(function(connector_s, result_s) {
-			var lastGround = result_s[0];
 			
 			var animeKey = target.getStatus('walk');
 			
@@ -169,14 +159,14 @@
 					
 					var obj = {
 						type : 'Route',
-						from : ground.getLocation(),
-						to : to,
+						from : target.getGlobalLocation(),
+						to : to.getGlobalLocation(),
 						effectsMap : effectsMap
 					};
 					
 					backGroundWorker.add(JSON.stringify(obj), function(obj) {
-			        	connector_ss.resolve(obj);
-			        });
+			        		connector_ss.resolve(obj);
+			        	});
 				}).pipe(function(connector_ss, result_ss) {
 		        	var route = result_ss;
 					var positions = [];
@@ -194,8 +184,10 @@
 						positions.push(position);
 					}
 		
+					var castKey = cast.getKeyData().getUniqueId();
+
 					options.mainController.ticker.addAnimation({
-						key : cast.getKey(),
+						key : castKey,
 						animeKey : animeKey ? animeKey.value : null,
 						partitions : 4,
 						positions : positions.reverse()
@@ -203,7 +195,7 @@
 					
 					options.mainController.ticker.addAnimationGroup({
 						key : 'moveGroup',
-						groupKeys : [cast.getKey()],
+						groupKeys : [castKey],
 						callback : function() {
 							ground.removeChild({
 								obj : cast
@@ -281,40 +273,6 @@
 	 */
 	p.expand = function(options) {};
 
-	/**
-	 * Pendingに対して参照があれば評価を行う
-	 *
-	 * @name checkPending
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.action.ActionJSlgMove#
-	 * @param {Object} options
-	 * <ul>
-	 * <li>{jslgEngine.controller.IconController} iconController</li>
-	 * <li>{jslgEngine.controller.mainController} mainController</li>
-	 * </ul>
-	 */
-	p.checkPending = function(connector, target_data, data, options) {
-		var self = this;
-		
-		var pendingStack = connector.getProperty(jslgEngine.model.command.keys.PENDING_STACK);
-		
-		if(data.checkFunc && pendingStack) {
-			if(pendingStack.length == 0) {
-				jslgEngine.log('no issue');
-				return false;
-			}
-			
-			var pending = pendingStack[pendingStack.length - 1];
-			
-			
-			//レビューというメソッドで修正値を評価する。
-			data.checkFunc(pending, target_data, data, self.review);
-			
-		}
-		return false;
-	};
-	
 	/**
 	 * Pendingに対して参照があれば評価を行う
 	 *

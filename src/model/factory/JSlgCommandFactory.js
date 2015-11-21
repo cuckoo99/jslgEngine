@@ -54,7 +54,7 @@ o = (o.factory = o.factory||{});
 		
 		var template = self.getCommandTemplate(data);
 		
-		converter.getFromTextOfXml(connector, template, options);
+		options.iconController.converter.getFromTextOfXml(connector, template, options);
 	};
 
 	/**
@@ -134,15 +134,15 @@ o = (o.factory = o.factory||{});
 	 **/
 	p.getActionTemplate = function(data, options) {
 		var self = this;
-		// var arguments = data.arguments ? ['<argument>',self._getArgumentTemplate(data.arguments),
+		// var parameters = data.parameters ? ['<argument>',self._getArgumentTemplate(data.parameters),
 			// '</argument>'].join('') : '';
-		var arguments = data.arguments ? self._getArgumentTemplate(data.arguments) : '';
+		var parameters = data.parameters ? self._getArgumentTemplate(data.parameters) : '';
 		var children = data.children ? data.children.join('\n') : '';
 		
 		var code = ['<element>',
 			'<type>Element</type>',
 			['<className>',data.className,'</className>'].join(''),
-			arguments,
+			parameters,
 			children,
 			'</element>'].join('\n');
 		return code;
@@ -160,18 +160,18 @@ o = (o.factory = o.factory||{});
 	 * <li>{jslgEngine.controller.IconManager} iconManager</li>
 	 * </ul>
 	 **/
-	p._getArgumentTemplate = function(arguments, options) {
+	p._getArgumentTemplate = function(parameters, options) {
 		var self = this;
 		var text;
-		if(arguments instanceof Array) {
+		if(parameters instanceof Array) {
 			var words = [];
-			for(var i = 0; i < arguments.length; i++) {
-				words.push(self._getArgumentTemplate(arguments[i], options));
+			for(var i = 0; i < parameters.length; i++) {
+				words.push(self._getArgumentTemplate(parameters[i], options));
 			}
 			text = ['<argument>',words.join('</argument><argument>'),'</argument>'].join('');
 		} else {
-			text = typeof(arguments) === 'string' ?
-				arguments.replace('<','&lt;').replace('>','&gt;') : arguments;
+			text = typeof(parameters) === 'string' ?
+				parameters.replace('<','&lt;').replace('>','&gt;') : parameters;
 		}
 		return text;
 	};
@@ -212,18 +212,18 @@ o = (o.factory = o.factory||{});
 			children : [
 				self.getActionTemplate({
 					className : 'ActionRequireArea',
-					arguments : [[0,0,0],[[1,'_THIS._CAST.moving',2,[[0,3,0]],0, [90,0]]]]
+					parameters : [[0,0,0],[[1,'_THIS._CAST.moving',2,[[0,3,0]],0, [90,0]]]]
 				}),
 				self.getActionTemplate({
 					className : 'ActionPending'
 				}),
 				self.getActionTemplate({
 					className : 'ActionRemove',
-					arguments : ['_THIS._CAST']
+					parameters : ['_THIS._CAST']
 				}),
 				self.getActionTemplate({
 					className : 'ActionAdd',
-					arguments : ['_AREA','_THIS']
+					parameters : ['_AREA','_THIS']
 				})
 			]
 		});
@@ -252,11 +252,11 @@ o = (o.factory = o.factory||{});
 			children : [
 				self.getCommandBlockTemplate({
 					className : 'CommandBlockIF',
-					arguments : ['$THIS._VALUE >= $THIS._FRAME.VALUE'],
+					parameters : ['$THIS._VALUE >= $THIS._FRAME.VALUE'],
 					children : [
 						self.getActionTemplate({
 							className : 'ActionSet',
-							arguments : ['_THIS._VALUE','_THIS._FRAME.VALUE']
+							parameters : ['_THIS._VALUE','_THIS._FRAME.VALUE']
 						})
 					]
 				})
@@ -287,15 +287,15 @@ o = (o.factory = o.factory||{});
 			children : [
 				self.getActionTemplate({
 					className : 'ActionLog',
-					arguments : ['"消去イベント"']
+					parameters : ['"消去イベント"']
 				}),
 				self.getCommandBlockTemplate({
 					className : 'CommandBlockIF',
-					arguments : ['$THIS.parent().life<1'],
+					parameters : ['$THIS.parent().life<1'],
 					children : [
 						self.getActionTemplate({
 							className : 'ActionRemove',
-							arguments : ['$THIS.parent()']
+							parameters : ['$THIS.parent()']
 						})
 					]
 				})
@@ -386,33 +386,33 @@ o = (o.factory = o.factory||{});
 			children : [
 				self.getActionTemplate({
 					className : 'ActionVariable',
-					arguments : ['w1', '"$lose"', 'true']
+					parameters : ['w1', '"$lose"', 'true']
 				}),
 				self.getActionTemplate({
 					className : 'ActionVariable',
-					arguments : ['w1', '"$won"', 'true']
+					parameters : ['w1', '"$won"', 'true']
 				}),
 				self.getCommandBlockTemplate({
 					className : 'CommandBlockFOR',
-					arguments : ['"$temp"', 'w1.find(Cast)'],
+					parameters : ['"$temp"', 'w1.find(Cast)'],
 					children : [
 						self.getCommandBlockTemplate({
 							className : 'CommandBlockIF',
-							arguments : ['w1.$temp.belongs=="enemy"'],
+							parameters : ['w1.$temp.belongs=="enemy"'],
 							children : [
 								self.getActionTemplate({
 									className : 'ActionSet',
-									arguments : ['w1', '"$won"', 'false']
+									parameters : ['w1', '"$won"', 'false']
 								})
 							]
 						}),
 						self.getCommandBlockTemplate({
 							className : 'CommandBlockIF',
-							arguments : ['w1.$temp.belongs=="player"'],
+							parameters : ['w1.$temp.belongs=="player"'],
 							children : [
 								self.getActionTemplate({
 									className : 'ActionSet',
-									arguments : ['w1', '"$lose"', 'false']
+									parameters : ['w1', '"$lose"', 'false']
 								})
 							]
 						})
@@ -420,21 +420,21 @@ o = (o.factory = o.factory||{});
 				}),
 				self.getCommandBlockTemplate({
 					className : 'CommandBlockIF',
-					arguments : ['w1.$won==true'],
+					parameters : ['w1.$won==true'],
 					children : [
 						self.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"You Won"']
+							parameters : ['"You Won"']
 						})
 					]
 				}),
 				self.getCommandBlockTemplate({
 					className : 'CommandBlockElseIF',
-					arguments : ['w1.$lose==true'],
+					parameters : ['w1.$lose==true'],
 					children : [
 						self.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"You Lose"']
+							parameters : ['"You Lose"']
 						})
 					]
 				})
@@ -527,28 +527,28 @@ o = (o.factory = o.factory||{});
 		self.makeMenuItem(connector, 'ms1', 'ターン終了',
 					[self.getActionTemplate({
 						className : 'ActionLog',
-						arguments : ['"ターン終了"']
+						parameters : ['"ターン終了"']
 					}),self.getActionTemplate({
 						className : 'ActionJSlgMenu',
-						arguments : ['null']
+						parameters : ['null']
 					}),self.getActionTemplate({
 						className : 'ActionMind',
-						arguments : ['"enemy"', 1]
+						parameters : ['"enemy"', 1]
 					}),self.getActionTemplate({
 						className : 'ActionLog',
-						arguments : ['w1.r1.s1.g0_0_0.c1.Kill']
+						parameters : ['w1.r1.s1.g0_0_0.c1.Kill']
 					}),
 					self.getCommandBlockTemplate({
 						className : 'CommandBlockFOR',
-						arguments : ['"$temp"', 'w1.find(Item)'],
+						parameters : ['"$temp"', 'w1.find(Item)'],
 						children : [
 							self.getCommandBlockTemplate({
 								className : 'CommandBlockIF',
-								arguments : ['$temp.parent().belongs=="player"'],
+								parameters : ['$temp.parent().belongs=="player"'],
 								children : [
 									self.getActionTemplate({
 										className : 'ActionSet',
-										arguments : ['$temp', '"count"', '$temp.$FRAME.count']
+										parameters : ['$temp', '"count"', '$temp.$FRAME.count']
 									})
 								]
 							})
@@ -558,17 +558,17 @@ o = (o.factory = o.factory||{});
 		self.makeMenuItem(connector, 'ms2', '閉じる',
 					[self.getActionTemplate({
 						className : 'ActionLog',
-						arguments : ['"閉じる"']
+						parameters : ['"閉じる"']
 					}),self.getActionTemplate({
 						className : 'ActionJSlgMenu',
-						arguments : ['null']
+						parameters : ['null']
 					})], menuItemScreen, options);
 		self.getCommand(connector, options.converter, {
 			key : 'onClick',
 			children : [
 				self.getActionTemplate({
 					className : 'ActionJSlgMenu',
-					arguments : ['$THIS.parent()']
+					parameters : ['$THIS.parent()']
 				})
 			]
 		}, options);
@@ -603,7 +603,7 @@ o = (o.factory = o.factory||{});
 					children : [
 						self.getActionTemplate({
 							className : 'ActionScroll',
-							arguments : [[0,0,0]]
+							parameters : [[0,0,0]]
 						})
 					]
 				}, options);
@@ -628,7 +628,7 @@ o = (o.factory = o.factory||{});
 			children : [
 				self.getActionTemplate({
 					className : 'ActionScroll',
-					arguments : [[0,0,0]]
+					parameters : [[0,0,0]]
 				})
 			]
 		}, options);

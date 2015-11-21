@@ -75,6 +75,39 @@
 	p._animationGroups = null;
 
 	/**
+	 * state of waiting fetching elements.
+	 *
+	 * @private
+	 * @name _isIdlingTime
+	 * @property
+	 * @type jslgEngine.model.animation.AnimationGroups[]
+	 * @memberOf jslgEngine.controller.Ticker#
+	 **/
+	p._isIdlingTime = false;
+
+	/**
+	 * count of dilay.
+	 *
+	 * @private
+	 * @name _updateIdleTime
+	 * @property
+	 * @type jslgEngine.model.animation.AnimationGroups[]
+	 * @memberOf jslgEngine.controller.Ticker#
+	 **/
+	p._idleTimeCount = 0;
+
+	/**
+	 * delay of fetching elements
+	 *
+	 * @private
+	 * @name _updateIdleTime
+	 * @property
+	 * @type jslgEngine.model.animation.AnimationGroups[]
+	 * @memberOf jslgEngine.controller.Ticker#
+	 **/
+	p._updateIdleTime = 1000;
+
+	/**
 	 * run
 	 *
 	 * @name tick
@@ -91,6 +124,24 @@
 		var itemKey = null;
 		var ui = options.ui;
 	
+		if(options.mainController.isOnline()) {
+			if(!self._isIdlingTime && (self._idleTimeCount++) > self._updateIdleTime) {
+				self._isIdlingTime = true;
+				self._idleTimeCount = 0;
+			
+				var connector = new jslgEngine.model.network.ConnectorOnline();
+				// if online mode was enabled, rewrites elements frequently.
+				var onlineManager = options.mainController.getOnlineManager();
+				onlineManager.fetchElements(connector, {
+					
+				}, options);
+				onlineManager = null;
+				connector.pipe(function(connector_s) {
+					self._isIdlingTime = false;
+				});
+			}
+		}
+		
 		if(self.wasFinished()) {
 			if(self._callbacks && self._callbacks.length > 0) {
 				var callbackList = self._callbacks.reverse();

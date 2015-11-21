@@ -66,7 +66,7 @@
 			var setElement = result_s[2];
 			
 			if(target === null || key === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 			
@@ -186,7 +186,7 @@
 			var setElement = self._restoreData.setElement;
 			
 			if(target === null || key === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 		

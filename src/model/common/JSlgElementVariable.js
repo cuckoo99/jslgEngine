@@ -71,6 +71,12 @@
 	 **/
 	p._isArray = true;
 
+	p.dispose = function() {
+		var self = this;
+
+		self._children = null;
+	}
+
 	/**
 	 * 子要素の取得
 	 *
@@ -186,7 +192,7 @@
 			if(data.obj._isFloat) {
 				data.obj.setKeyPathCodes(self);
 			}
-			data.obj.resetKey(self);
+			data.obj.resetKey(self, options);
 		}
 		self._children.push(data.obj);
 	};
@@ -217,7 +223,7 @@
 			if(wasMatchedPath || (key && child.getKey() === key)) {
 				//子要素が変数でない場合を除いて、キーの書き換えは行わない
 				if((data.obj instanceof jslgEngine.model.common.JSlgElementVariable)) {
-					data.obj.resetKey(null);
+					data.obj.resetKey(null, options);
 				}
 				self._children.splice(i, 1);
 				length = self._children.length;
@@ -254,7 +260,7 @@
 	 * @memberOf jslgEngine.model.common.JSlgElementVariable#
 	 * @param {jslgEngine.model.common.JSlgElementBase} element キー書き換え元要素
 	 */
-	p.resetKey = function(element) {
+	p.resetKey = function(element, options) {
 		var self = this;
 		
 		if(self._isFloat) {
@@ -285,7 +291,7 @@
 			for(var i = 0; i < length; i++) {
 				var child = self._children[i];
 				if((child instanceof jslgEngine.model.common.JSlgElementVariable)) {
-					child.resetKey(self);
+					child.resetKey(self, options);
 				}
 			}
 		}

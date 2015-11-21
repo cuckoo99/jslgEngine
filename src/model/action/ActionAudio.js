@@ -70,7 +70,7 @@
 			var wait = result_s[2]||{};
 			
 			if(audioKey === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 	

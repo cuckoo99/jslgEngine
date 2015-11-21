@@ -298,7 +298,7 @@
 				
 				//最も距離が近いことの期待できるパターンを幾つか取得
 				requiredArea.getPatterns(0, {
-					positiveLocations : data.distinations,
+					positiveLocations : data.destinations,
 					negativeLocations : null,
 					getAll : false,
 					useForce : true,

@@ -19,7 +19,7 @@
 	 * @constructor
 	 */
 	var XGround = jslgEngine.extend(
-		jslgEngine.model.common.JSlgElement,
+		jslgEngine.model.common.XJSlgElement,
 		function(data, options) {
 			this.initialize(data, options);
 		}
@@ -153,5 +153,35 @@
 				 z : parentsPosition.z + position.z };
 	};
 	
+	p.createIcon = function(connector, data, options) {
+		var self = this;
+
+		var iconInfo = self.getIconInfo({
+			group : 'ground'
+		}, options);
+		
+		options.iconController.add(connector, iconInfo);
+	};
+
+	p.updateIcon = function(connector, data, options) {
+		var self = this;
+		var position = self.getPosition({}, options);
+		var key = self.getKeyData().getUniqueId();
+
+		var onlineManager = options.mainController.getOnlineManager();
+		if(onlineManager.isOnline && !self.wasRewrited) {
+			self.remove(connector, data, options);
+			return;
+		}
+		
+		if(!options.iconController.hasKey(key)) {
+			self.createIcon(connector, data, options);
+		}
+
+		if(data.groupKeys) {
+			data.groupKeys.push(key);
+		}
+	};
+
 	o.XGround = XGround;
 }());

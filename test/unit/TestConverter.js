@@ -1,6 +1,6 @@
 module('Element');
 
-testSettingAsAsync("TestConverter", {
+testSettingAsSync("TestConverter", {
 		mainData : {width:10,height:10}
 	},
 	function(iconController, mainController, connector, options) {

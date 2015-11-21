@@ -138,9 +138,9 @@
 		
 		var offset = self.offset;
 		var globalLocation = self.getGlobalLocation();
-		self.setStatus(xKey, globalLocation.x);
-		self.setStatus(yKey, globalLocation.y);
-		self.setStatus(zKey, globalLocation.z);
+		self.setStatus(xKey, globalLocation.x, options);
+		self.setStatus(yKey, globalLocation.y, options);
+		self.setStatus(zKey, globalLocation.z, options);
 	};
 	
 	/**
@@ -182,12 +182,12 @@
 	 * @memberOf jslgEngine.model.common.JSlgElement#
 	 * @param {jslgEngine.model.common.JSlgElementBase} element キー書き換え元要素
 	 */
-	p.resetKey = function(element) {
+	p.resetKey = function(element, options) {
 		var self = this;
 		self._resetOffset(element);
-		self._refreshLocation();
+		self._refreshLocation(options);
 		self.resetCanvasOffset(element);
-		self._resetKey(element);
+		self._resetKey(element, options);
 	};
 	
 	/**
@@ -369,6 +369,77 @@
 		}
 		//self.parentCanvasOffset = element.canvasOffset;
 	};
+
+	/**
+	 * get information about icon.
+	 *
+	 * @name getIconInfo
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.common.JSlgElement#
+	 * @param {JSON} options
+	 * <ul>
+	 * </ul>
+	 **/
+	p.getIconInfo = function(data, options) {
+		var self = this;
+
+		var group = data.group;
+		var alpha = data.alpha;
+		var visibility = data.visibility;
+
+		var key = self.getKeyData().getUniqueId();
+		var drawingKey = jslgEngine.model.common.keys.DRAWING_OPTIONS;
+		var graphics = self.getStatus(drawingKey);
+		graphics = graphics ? graphics.value : null;
+
+		if(graphics === null) {
+			return null;
+		}
 	
+		var position = self.getPosition(data, options);
+
+		//第１引数、画像の情報
+		var iconImageArgugemnts = graphics[0];
+		var imageKey = iconImageArgugemnts[0];
+		var frames = {
+			regX : iconImageArgugemnts[1],
+			regY : iconImageArgugemnts[2],
+			width : iconImageArgugemnts[3],
+			height : iconImageArgugemnts[4]
+		};
+		//第２引数、アニメーション画像の情報
+		var iconAnimationArgugemnts = graphics[1];
+		var animations = {};
+		for(var i = 0; i < iconAnimationArgugemnts.length; i++) {
+			var animation = iconAnimationArgugemnts[i];
+			animations[animation[0]] = [
+				animation[1], animation[2], animation[0]
+			];
+		}
+
+		return {
+			key : key,
+			imageKey : imageKey,
+			group : group,
+			position : position,
+			alpha : alpha,
+			visibility : visibility,
+			graphics : null,
+			sprite : {
+				frames : frames,
+				animations : animations,
+				onClick : self.onClick||function(e, options_s) {
+					var key = e.target.name;
+
+					options_s.mainController.kick({
+						key : key
+					}, options_s);
+				},
+				onMouseMove : self.onMouseMove
+			}
+		};
+	};
+
 	o.JSlgElement = JSlgElement;
 }());

@@ -200,7 +200,7 @@ sample.elements = {
 			value : '0'
 		}, {
 			className : 'Status',
-			key : 'drawingOptions',
+			key : '_graphics',
 			value : [
 				['map1','0','0','160','160'],
 				[['default','0','0'],['area0','4','5'],['area1','8','8']]
@@ -223,7 +223,7 @@ sample.elements = {
 			value : '8'
 		}, {
 			className : 'Status',
-			key : 'drawingOptions',
+			key : '_graphics',
 			value : [
 				['human1','0','0','160','160'],
 				[['default','0','0'],['area0','4','5'],['area1','8','8']]
@@ -257,7 +257,7 @@ sample.elements = {
 			value : '10'
 		}, {
 			className : 'Status',
-			key : 'drawingOptions',
+			key : '_graphics',
 			value : [
 				['monster1','0','0','160','160'],
 				[['default','0','0'],['area0','4','5'],['area1','8','8']]

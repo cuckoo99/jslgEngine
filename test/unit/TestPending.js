@@ -2,7 +2,7 @@ module('Mind');
 
 asyncTest("TestPending", function() {
 	var result;
-	var code, action, arguments, mainController, iconCOntroller, data, actionData;
+	var code, action, parameters, mainController, iconCOntroller, data, actionData;
 	var mainController = new jslgEngine.stub.MainController();
 	var iconController = new jslgEngine.stub.IconController({
 		mainController : mainController
@@ -25,8 +25,8 @@ asyncTest("TestPending", function() {
 	var count = 0;
 	
 	code = 'pending()';
-	arguments = [];
-	actionData = {arguments : arguments};
+	parameters = [];
+	actionData = {parameters : parameters};
 	action = new jslgEngine.model.action.ActionPending(actionData);
 	
 	connector.pipe(function(connector_s) {

@@ -1,5 +1,5 @@
 module('Element');
-testSettingAsAsync("TestRegion", {
+testSettingAsSync("TestRegion", {
 		mainData : {width:10,height:10}
 	},
 	function(iconController, mainController, connector, options) {
@@ -25,14 +25,18 @@ testSettingAsAsync("TestRegion", {
 	
 	var findElements = function(connector_s, data_s, callback) {
 		var target = data_s.target||mainController;
-		target.findElements(connector_s, {
+		var ret = target.findElements(connector_s, {
 			key : data_s.elementPath,
 			obj : data_s.obj
 		}, options);
-		connector_s.connects(function(connector_ss, result_ss) {
-			var element = result_ss;
-			callback(element);
-		});
+		if(connector_s) {
+			connector_s.connects(function(connector_ss, result_ss) {
+				var element = result_ss;
+				callback(element);
+			});
+		} else {
+			return ret;
+		}
 	};
 	
 	testAsSync('ワールド空間作成・ローカル空間作成', connector, function(name, connector_s) {
@@ -170,75 +174,42 @@ testSettingAsAsync("TestRegion", {
 		equal(result, true, name);
 	});
 	testAsSync('座標による取得。', connector, function(name, connector_s) {
-		findElements(connector_s, {
+		var result_s = findElements(null, {
 			target : localRegion,
 			elementPath : 'r1' + eSeparator + ['3', '3', '1'].join(lSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, false, name);
 		});
+
+		equal(result_s[0] instanceof jslgEngine.model.stage.Ground, false, name);
 	});
 	testAsSync('座標による取得２。', connector, function(name, connector_s) {
-		findElements(connector_s, {
+		var result_s = findElements(null, {
 			target : localRegion,
 			elementPath : 'r1' + eSeparator + ['1', '1', '0'].join(lSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Stage, true, name);
 		});
+
+		equal(result_s[0] instanceof jslgEngine.model.stage.Stage, true, name);
 	});
 	testAsSync('階層の深い取得。', connector, function(name, connector_s) {
-		findElements(connector_s, {
+		var result_s = findElements(null, {
 			target : localRegion,
 			elementPath : ['r1', 's1', 'g1', 'c1', 'i1'].join(eSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Item, true, name);
 		});
+		equal(result_s[0] instanceof jslgEngine.model.stage.Item, true, name);
 	});
 	testAsSync('取得。', connector, function(name, connector_s) {
-		findElements(connector_s, {
+		var result_s = findElements(null, {
 			target : localRegion,
 			elementPath : ['r1', ['1', '1', '0'].join(lSeparator), ['3', '3', '1'].join(lSeparator)].join(eSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
 		});
+			
+		equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
 	});
-	testAsSync('取得２。', connector, function(name, connector_s) {
-		findElements(connector_s, {
-			target : localRegion,
-			elementPath : ['r1', ['1', '1', '0'].join(lSeparator), ['3', '3', '1'].join(lSeparator)].join(eSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
-		});
-	});
-	testAsSync('取得３。', connector, function(name, connector_s) {
-		findElements(connector_s, {
+	testAsSync('取得2', connector, function(name, connector_s) {
+		var result_s = findElements(null, {
 			elementPath : ['w1', 'r1', 's1', 'g1'].join(eSeparator)
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
 		});
-	});
-	testAsSync('親要素の取得', connector, function(name, connector_s) {
-		//TODO: 限定要素絞込みをparent取得に変更すべき。
-		findElements(connector_s, {
-			obj : [toFind('w1'), toFind('r1'), toFind('s1'), toFind(null, 'parent'), toFind('s1')]
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Stage, true, name);
-		});
-	});
-	testAsSync('親要素の取得２', connector, function(name, connector_s) {
-		findElements(connector_s, {
-			obj : [toFind('w1'), toFind('r1'), toFind('s1'), toFind(null, 'parent'), toFind(['1', '1', '0'].join(lSeparator)), toFind(['3', '3', '1'].join(lSeparator))]
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
-		});
-	});
-	testAsSync('親要素の取得３', connector, function(name, connector_s) {
-		findElements(connector_s, {
-			//target : localRegion,
-			elementPath : 'w1.r1.s1.parent().1_1_0.3_3_1'
-			//obj : [toFind('r1'), toFind('s1'), toFind(null, 'parent'), toFind(['1', '1', '0'].join(lSeparator)), toFind(['3', '3', '1'].join(lSeparator))]
-		}, function(result_s) {
-			equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
-		});
+
+		equal(result_s[0] instanceof jslgEngine.model.stage.Ground, true, name);
 	});
 	var v,vv,wKey,vKey,vvKey;
 	testAsSync('変数のテスト', connector, function(name, connector_s) {

@@ -83,5 +83,85 @@
 	 **/
 	p.hasSize = true;
 
+	p.createIcon = function(connector, data, options) {
+		var self = this;
+
+		var iconInfo = self.getIconInfo({
+			group : 'stage'
+		}, options);
+	
+		if(!iconInfo) return null;
+
+		options.iconController.add(connector, iconInfo);
+	};
+
+	p.updateIcon = function(connector, data, options) {
+		var self = this;
+		var key = self.getKeyData().getUniqueId();
+
+		var onlineManager = options.mainController.getOnlineManager();
+		if(onlineManager.isOnline && !self.wasRewrited) {
+			self.remove(connector, data, options);
+			return;
+		}
+
+		if(!options.iconController.hasKey(key)) {
+			self.createIcon(connector, data, options);
+		}
+
+		if(data.groupKeys) {
+			data.groupKeys.push(key);
+		}
+
+		var children = [].concat(self._children);
+
+		var size = self.getSize();
+
+		if(children) {
+			var grounds = [];
+			var casts = [];
+			var others = [];
+
+			var child;
+			while(child = children.shift()) {
+			
+				if(child.className !== 'Ground') {
+					others.push(child);
+					continue;
+				}
+
+				grounds.push(child);
+
+				var subChildren = child.getChildren();
+				for(var j = 0, len2 = subChildren.length; j < len2; j++) {
+					var sub = subChildren[j];
+					
+					if(sub.className === 'Cast') {
+						casts.push(sub);
+					}
+				}
+			}
+
+			var grounds = options.mainController.sortBySecondDimension(grounds, size.width, size.height);
+		
+			var ground;
+			while(ground = grounds.shift()) {
+				ground.updateIcon(connector, data, options);
+			}
+
+			var casts = options.mainController.sortBySecondDimension(casts, size.width, size.height);
+		
+			var cast;
+			while(cast = casts.shift()) {
+				cast.updateIcon(connector, data, options);
+			}
+		
+			var other;
+			while(other = others.shift()) {
+				other.updateIcon(connector, data, options);
+			}
+		}
+	};
+
 	o.Stage = Stage;
 }());

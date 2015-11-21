@@ -113,7 +113,7 @@
 					X_KEY : '_X',
 					Y_KEY : '_Y',
 					Z_KEY : '_Z',
-					DRAWING_OPTIONS : 'drawingOptions'
+					DRAWING_OPTIONS : '_graphics'
 				}
 			},
 			/**
@@ -194,14 +194,6 @@
 					LOOP_VARIABLE_KEY : '_L', // ループ一時格納配列
 					SEPARATOR_KEY: '-'
 				}
-			},
-			/**
-			 * 数学
-			 * @namespace
-			 * @memberOf jslgEngine.model
-			 */
-			math : {
-				
 			},
 			/**
 			 * 人工知能
@@ -295,18 +287,6 @@
 				BELONGS_ENEMY : 'enemy'
 			}
 		},
-		/**
-		 * ユーティリティ
-		 * @namespace
-		 * @memberOf jslgEngine
-		 */
-		utility : {},
-		/**
-		 * エラーメッセージ
-		 * @namespace
-		 * @memberOf jslgEngine
-		 */
-		errorMessage : {},
 		/**
 		 * 環境設定
 		 *
@@ -415,353 +395,7 @@
 			 * @type String
 			 * @memberOf jslgEngine.config
 			 **/
-			findElementsWorkerURL : 'FindingElementsWorker.js'
-		},
-		/**
-		 * SLGENGINEのシステムを構築。
-		 *
-		 * @name build
-		 * @function
-		 * @static
-		 * @memberOf jslgEngine
-		 **/
-		build : function(connector, data, options) {
-			var width, height, depth;
-	
-			var mainController = options.mainController;
-			var iconController = options.iconController;
-			var converter = iconController.converter;
-			var slgIconFactory = iconController.iconFactory;
-			var slgCommandFactory = iconController.commandFactory;
-			var elements, locationOrders;
-			var separator = jslgEngine.config.locationSeparator;
-			
-			var drawingKey = jslgEngine.model.common.keys.DRAWING_OPTIONS;
-			
-			var viewOptions;
-			
-			mainController.findElements(connector, {
-				className : 'Stage'
-			}, options);
-			connector.connects(function(connector_s, result_s) {
-				elements = result_s;
-				
-				var stage = elements[0];
-				var size = stage.getSize();
-				width = size.width;
-				height = size.height;
-				depth = size.depth;
-				
-				viewOptions = {
-					stageViewOffset : {x:0,y:0,z:0}
-				};
-				iconController.stageViewOffset = viewOptions.stageViewOffset;
-				
-				//スクリーン生成
-				//ステージメニュー作成
-				slgCommandFactory.makeScreenMenu(connector_s, converter, options);
-				connector_s.connects(function(connector_ss, result_ss) {
-					var screenCommand = result_ss;
-					stage.addChild({
-						obj : screenCommand
-					}, options);
-					
-					slgIconFactory.makeScreen(connector_ss, {
-						screenCommandKey : screenCommand.getPath()
-					}, options);
-				});
-			});
-			//マップ土台生成
-			mainController.findElements(connector, {
-				className : 'Ground'
-			}, options);
-			connector.connects(function(connector_s, result_s) {
-				var elements = result_s;
-				locationOrders = {};
-				for(var i = 0; i < elements.length; i++) {
-					var element = elements[i];
-					var location = element.getGlobalLocation();
-					var locationKey = [location.x,location.y,location.z].join(separator);
-					locationOrders[locationKey] = element;
-				}
-				mainController.sortSecondDimension(width, height, function(pt, location) {
-					var locationKey = [location.x,location.y,0].join(separator);
-					
-					var element = locationOrders[locationKey];
-					if(element) {
-						var position = element.getPosition(viewOptions, options);
-						var drawingOptions = element.getStatus(drawingKey);
-						
-						//マップ土台
-						slgIconFactory.makeGround({
-							//key : 'g'+locationKey,
-							key : element.getKey(),
-							position : position,
-							drawingOptions : drawingOptions.value
-						}, options);
-					}
-				});
-			});
-			//キャスト生成
-			mainController.findElements(connector, {
-				className : 'Cast'
-			}, options);
-			connector.connects(function(connector_s, result_s) {
-				var elements = result_s;
-				locationOrders = {};
-				for(var i = 0; i < elements.length; i++) {
-					var element = elements[i];
-					var location = element.getGlobalLocation();
-					var locationKey = [location.x,location.y,location.z].join(separator);
-					locationOrders[locationKey] = element;
-				}
-				mainController.sortSecondDimension(width, height, function(pt, location) {
-					var locationKey = [location.x,location.y,0].join(separator);
-					
-					var element = locationOrders[locationKey];
-					if(element) {
-						var position = element.getPosition(viewOptions, options);
-						var drawingOptions = element.getStatus(drawingKey);
-						
-						//キャスト
-						slgIconFactory.makeCast({
-							key : element.getKey(),
-							position : position,
-							drawingOptions : drawingOptions.value
-						}, options);
-					}
-				});
-				
-				//スクロールボタン生成
-				slgIconFactory.makeScrollButtons({}, options);
-			});
-		},
-		
-		/**
-		 * SLGENGINEのサンプル要素を作成。
-		 *
-		 * @name makeSampleElements
-		 * @function
-		 * @static
-		 * @memberOf jslgEngine
-		 **/
-		makeSampleElements : function(data, options) {
-			var width = data.width;
-			var height = data.height;
-			var depth = data.depth;
-			var viewOptions = data.viewOptions;
-			
-			var iconController = options.iconController;
-			var mainController = options.mainController;
-			var converter = iconController.converter;
-			
-			var slgIconFactory = options.slgIconFactory;
-			var slgCommandFactory = options.slgCommandFactory;
-			
-			var stateCommand = slgCommandFactory.makeWinningCommand(connector, converter, options);
-			
-			var worldRegion = mainController.getWorldRegion();
-			worldRegion.setKey('w1');
-			
-			var localRegion = new jslgEngine.model.area.LocalRegion();
-			localRegion.setKey('r1');
-			worldRegion.addChild({ obj : localRegion }, options);
-			
-			var stageFrame = new jslgEngine.model.stage.StageFrame();
-			stageFrame.setKey('rs1');
-			stageFrame.setStatus('width', width);
-			stageFrame.setStatus('height', height);
-			stageFrame.setStatus('depth', depth);
-			
-			var groundFrame1 = new jslgEngine.model.stage.GroundFrame();
-			groundFrame1.setKey('rg1');
-			groundFrame1.setStatus('type', 'grass');
-			groundFrame1.setStatus('effect', 1);
-			
-			var groundFrame2 = new jslgEngine.model.stage.GroundFrame();
-			groundFrame2.setKey('rg2');
-			groundFrame2.setStatus('type', 'pond');
-			groundFrame2.setStatus('effect', 2);
-			
-			var castFrame = new jslgEngine.model.stage.CastFrame();
-			castFrame.setKey('rc1');
-			castFrame.setStatus('type', 'human');
-			castFrame.setStatus('effect', 3);
-			
-			var itemFrame = new jslgEngine.model.stage.ItemFrame();
-			itemFrame.setKey('ri1');
-			itemFrame.setStatus('type', 'weapon');
-			itemFrame.setStatus('effect', 4);
-			
-			localRegion.addChild({ obj : stageFrame }, options);
-			localRegion.addChild({ obj : groundFrame1 }, options);
-			localRegion.addChild({ obj : groundFrame2 }, options);
-			localRegion.addChild({ obj : castFrame }, options);
-			localRegion.addChild({ obj : itemFrame }, options);
-			
-			//ステージ
-			var stage = stageFrame.generate({
-				key : 's1',
-				location : new jslgEngine.model.area.Location({x:0,y:0,z:0}),
-				size : new jslgEngine.model.area.Size({width:1,height:1,depth:1})
-			}, options);
-			localRegion.addChild({ obj : stage }, options);
-			
-			//マップ土台
-			mainController.sortSecondDimension(width, height, function(pt, location) {
-				var i = location.x;
-				var j = location.y;
-				
-				var separator = jslgEngine.config.locationSeparator;
-				var key = [i,j,0].join(separator);
-				
-				//マップ土台
-				var ground = groundFrame1.generate({
-						location : new jslgEngine.model.area.Location({ x : i, y : j, z : 0}),
-						key : 'g'+key
-				}, options);
-				ground.setStatus('anime_show','area0');
-				ground.setStatus('anime_default','default');
-				stage.addChild({ obj : ground }, options);
-			});
-			
-			//味方１
-			var cast = castFrame.generate({ key : 'c1'}, options);
-			var item = itemFrame.generate({ key : 'i1'}, options);
-			cast.addChild({ obj : item }, options);
-			cast.setStatus('belongs', 'player');
-			cast.setStatus('life', 10);
-			cast.addChild({
-				obj : new jslgEngine.model.mind.Mind({
-					key : 'mind1',
-					decreasedKeys : ['life'],
-					increasedKeys : [],
-					memberKey : 'belongs',
-					familyMemberNames : ['player'],
-					enemyMemberNames : ['enemy']
-				})
-			}, options);
-			
-			//敵１
-			var cast2 = castFrame.generate({ key : 'c2'}, options);
-			cast2.setStatus('belongs', 'enemy');
-			cast2.setStatus('life', 8);
-			cast2.addChild({
-				obj : slgCommandFactory.getCommand(converter, {
-					key : 'move',
-					children : [
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"移動X"']
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMenu',
-							arguments : ['null']
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionRequireArea',
-							arguments : [[0,0,0],[[1,5,2,[[0,3,0]],0,[90,0]]]]
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionPending'
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMove',
-							arguments : ['$THIS.parent()','$PENDING']
-						})
-					]
-				}, options)
-			}, options);
-			cast2.addChild({
-				obj : slgCommandFactory.getCommand(converter, {
-					key : 'kill',
-					children : [
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"攻撃X"']
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMenu',
-							arguments : ['null']
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionRequireArea',
-							arguments : [[0,0,0],[[1,2,2,[[0,3,0]],0,[90,0]],[1,0,0,[[0,1,0],[0,2,0],[0,3,0]],0,[90,0]]],['"Cast"']]
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionPending'
-						}),
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionSet',
-							arguments : ['$PENDING.obj','"life"','$PENDING.obj.life-5']
-						})
-					]
-				}, options)
-			}, options);
-			var menuItem1 = slgCommandFactory.makeMenuItem('m1', '移動',
-						[slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"移動"']
-						}),slgCommandFactory.getActionTemplate({
-							className : 'ActionCall',
-							arguments : ['$THIS.parent().parent().move']
-						})], cast2, options);
-			var menuItem2 = slgCommandFactory.makeMenuItem('m2', 'アイテム',
-						[slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"アイテム"']
-						}),slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMenu',
-							arguments : ['$THIS.parent()']
-						})], cast2, options);
-			var menuItem2_1 = slgCommandFactory.makeMenuItem('m2_1', '攻撃',
-						[slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"攻撃"']
-						}),slgCommandFactory.getActionTemplate({
-							className : 'ActionCall',
-							arguments : ['$THIS.parent().parent().parent().kill']
-						})], menuItem2, options);
-			var menuItem3 = slgCommandFactory.makeMenuItem('m3', '閉じる',
-						[slgCommandFactory.getActionTemplate({
-							className : 'ActionLog',
-							arguments : ['"閉じる"']
-						}),slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMenu',
-							arguments : ['null']
-						})], cast2, options);
-			cast2.addChild({
-				obj : slgCommandFactory.getCommand(converter, {
-					key : 'onClick',
-					children : [
-						slgCommandFactory.getActionTemplate({
-							className : 'ActionJSlgMenu',
-							arguments : ['$THIS.parent()']
-						})
-					]
-				}, options)
-			}, options);
-			cast2.addChild({
-				obj : new jslgEngine.model.mind.Mind({
-					key : 'mind2',
-					decreasedKeys : ['life'],
-					increasedKeys : [],
-					memberKey : 'belongs',
-					familyMemberNames : ['enemy'],
-					enemyMemberNames : ['player']
-				})
-			}, options);
-			
-			//キャスト配置１
-			var gLocation = [2,2,0].join('_');
-			var ground = stage.getChild({ key : gLocation});
-			ground.addChild({ obj : cast }, options);
-			
-			//キャスト配置２
-			gLocation = [3,3,0].join('_');
-			ground = stage.getChild({ key : gLocation});
-			ground.addChild({ obj : cast2 }, options);
-			
+			findElementsWorkerURL : 'FindingElementsWorker.js',
 		},
 		
 		/**
@@ -780,7 +414,7 @@
 			jslgEngineTemporay.prototype = s.prototype;
 			c.prototype = new jslgEngineTemporay();
 			c.prototype.__super__ = s.prototype;
-		    c.prototype.__super__.constructor = s;
+			c.prototype.__super__.constructor = s;
 			c.prototype.constructor = c;
 			return c;
 		},
@@ -821,7 +455,7 @@
 			
 			return arr;
 		},
-		
+	
 		/**
 		 * 要素かどうかチェックする
 		 *
@@ -842,44 +476,43 @@
 		 * @memberOf jslgEngine.model.common.JSlgElementBase#
 		 * @param {Object} options
 		 */
-		dispose : function(element) {
-			// if(element instanceof Array) {
-				// for(var i = 0; i < element.length; i++) {
-					// var child = element[i];
-					// jslgEngine.dispose(child);
-					// delete child;
-				// }
-			// } else if(typeof element == 'object') {
-				// for ( var key in element ) {
-					// jslgEngine.dispose(element[key]);
-					// delete element[key];
-				// }
-			// }　else {
-				// element = null;
-			// }
-			for ( var key in element ) {
-				var obj = self[key];
-				
-				// if(obj instanceof jslgEngine.model.common.JSlgElementBase) {
-					// obj.dispose();
-					// delete obj;
-				// }
-				if(obj instanceof Array) {
-					for(var i = 0; i < obj.length; i++) {
-						var child = obj[i];
-						jslgEngine.dispose(child);
-						delete child;
+		dispose : function(element, limit) {
+			console.log('dispose');
+			if(limit === 1) return;
+			//循環参照が発生したら止まる。
+			var lim = limit||15;
+			if(typeof element === 'object' && element != null) {
+				console.log('dis'+lim);
+				if(element.className) {
+					console.log(element.className);
+					if(element._key && element._key.getKeyCode != null) {
+						console.log(element.getPath());
+						console.log(element.getKey());
 					}
-				} else if(obj instanceof Object) {
-					for ( var oKey in obj ) {
-						jslgEngine.dispose(obj[oKey]);
-						delete obj;
-					}
-				} else {
-					obj = null;
 				}
 			}
-			delete element;
+			if(element == null) {
+				//undefined or null
+				delete element;
+			} else if(element instanceof Array) {
+				for(var i = 0; i < element.length; i++) {
+					var child = element[i];
+					jslgEngine.dispose(child, lim-1);
+					delete child;
+				}
+			} else if(typeof element == 'object') {
+				if(element.dispose && typeof element.dispose === 'function') {
+					element.dispose();
+				} else {
+					for ( var key in element ) {
+						jslgEngine.dispose(element[key], lim-1);
+						delete element;
+					}
+				}
+			}　else {
+				element = null;
+				delete element;
+			}
 		},
 		/**
 		 * ログ出力
@@ -909,72 +542,21 @@
 				console.log(strip);
 			}
 		},
-		/**
-		 * 要素のパスを取得する。
-		 * （移動可能要素のパスは固定じゃないので取得不可能）
-		 * 
-		 * @name getElementPathCodes
-		 * @function
-		 * @static
-		 * @memberOf jslgEngine
-		 **/
-		getElementPathCodes : function(class_name) {
-			var className = class_name;
-			
-			switch(className) {
-				case jslgEngine.model.stage.keys.STAGE_FRAME:
-					return jslgEngine.model.stage.StageFrame.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.GROUND_FRAME:
-					return jslgEngine.model.stage.GroundFrame.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.CAST_FRAME:
-					return jslgEngine.model.stage.CastFrame.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.ITEM_FRAME:
-					return jslgEngine.model.stage.ItemFrame.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.STAGE:
-					return jslgEngine.model.stage.Stage.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.GROUND:
-					return jslgEngine.model.stage.Ground.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.CAST:
-					return jslgEngine.model.stage.Cast.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.ITEM:
-					return jslgEngine.model.stage.Item.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.ICON:
-					return jslgEngine.model.stage.Icon.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.STATUS:
-					return jslgEngine.model.common.JSlgElementStatus.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.EVENT:
-					return jslgEngine.model.command.Command.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.PENDING_EVENT:
-					return jslgEngine.model.issue.PendingCommand.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.LOCAL_REGION:
-					return jslgEngine.model.area.LocalRegion.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.WORLD_REGION:
-					return jslgEngine.model.area.WorldRegion.prototype._keyPathCodes;
-				case jslgEngine.model.stage.keys.VARIABLE:
-					return jslgEngine.model.common.JSlgElementVariable.prototype._keyPathCodes;
-			}
-		},
 		loadJs : function(append_files) {
-			var self = this;
-	        var scripts = self.jsFiles;
-	        
-	        if(append_files) {
-		        scripts = scripts.concat(append_files);
-	        } else {
-		        scripts = scripts.concat([
-		        	"controller/MainController.js",
-					"controller/IconController.js",
-					"controller/ImageFileController.js",
-					"controller/Ticker.js"]);
-	        }
+			 var self = this;
+			 var scripts = self.jsFiles;
 
-	        for (var i=0; i<scripts.length; i++) {
-	        	document.write('<script type=\"text/javascript\" src=\"'+self.workSpace +scripts[i] +'\"></script>');
-	        }
+			 scripts = append_files ? scripts.concat(append_files) : scripts.concat([
+					 "controller/MainController.js",
+					 "controller/IconController.js",
+					 "controller/file/ImageFileController.js",
+					 "controller/Ticker.js"]);
+
+			 for (var i = 0, len = scripts.length; i < len; i++) {
+				 document.write('<script type=\"text/javascript\" src=\"'+self.workSpace +scripts[i] +'\"></script>');
+			 }
 		},
-		
 		jsFiles : [
-			"ErrorMessage.js",
 			"Utility.js",
 			"model/common/SerialRunner.js",
 			"model/common/JSlgKey.js",
@@ -999,6 +581,7 @@
 			"model/issue/Issue.js",
 			"model/issue/RequiredArea.js",
 			"model/issue/RequiredMessage.js",
+			"model/issue/RequiredCustomize.js",
 			"model/issue/PendingCommand.js",
 			"model/command/Command.js",
 			"model/command/CommandBlockBase.js",
@@ -1010,7 +593,6 @@
 			"model/action/ActionLog.js",
 			"model/action/ActionCall.js",
 			"model/action/ActionAdd.js",
-			"model/action/ActionAddFrame.js",
 			"model/action/ActionAudio.js",
 			"model/action/ActionAnime.js",
 			"model/action/ActionPending.js",
@@ -1029,6 +611,7 @@
 			"model/action/ActionJSlgText.js",
 			"model/action/ActionJSlgProfile.js",
 			"model/action/ActionJSlgEffect.js",
+			"model/action/ActionJSlgCustomize.js",
 			"model/stage/ItemFrame.js",
 			"model/stage/CastFrame.js",
 			"model/stage/GroundFrame.js",
@@ -1038,6 +621,12 @@
 			"model/stage/Ground.js",
 			"model/stage/Stage.js",
 			"model/stage/Icon.js",
+			"model/stage/Menu.js",
+			"model/stage/Message.js",
+			"model/stage/MessageSelectionItem.js",
+			"model/stage/Customize.js",
+			"model/stage/ScrollButton.js",
+			"model/stage/NetworkButton.js",
 			"model/user/User.js",
 			"model/animation/Animation.js",
 			"model/animation/AnimationGroup.js",
@@ -1049,10 +638,10 @@
 			"model/mind/Mind.js",
 			"model/mind/Simulator.js",
 			"model/factory/JSlgCommandFactory.js",
-			"ui/UI.js",
 			"controller/ElementBinder.js",
 			"controller/BackGroundWorker.js",
 			"controller/IconControllerBase.js",
+			"controller/OnlineManager.js",
 			"controller/file/FileControllerBase.js",
 			"controller/file/AudioFileController.js"
 		]

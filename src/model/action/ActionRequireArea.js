@@ -56,7 +56,7 @@
 		
 		// 引数：（[オフセット]、[[複数選択可能か、量、距離、[適用座標]]...]、内側のマスク領域、[平面座標上の角度,立体座標上の角度]）
 		var offset = {}, areaSettings = [];
-		var base, arguments, elementClassNames;
+		var base, parameters, elementClassNames;
 		
 		var requiredArea;
 		var pendingVariableKey = jslgEngine.model.logic.keys.PENDING;
@@ -67,25 +67,25 @@
 		self._readAllElements(connector, data, options);
 		connector.connects(function(connector_s, result_s) {
 			base = result_s[0];
-			var arguments = [result_s[1], result_s[2]];
+			var parameters = [result_s[1], result_s[2]];
 			elementClassNames = result_s[3];
 			
-			if(arguments === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+			if(parameters === null) {
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 	
 			self._wasDone = true;
 			
-			if(!arguments[0] instanceof Array || !arguments[0] instanceof Array) {
+			if(!parameters[0] instanceof Array || !parameters[0] instanceof Array) {
 				jslgEngine.log(self.className + 'has illegal object.');
 				return;
 			}
-			offset.x = arguments[0][0].value;
-			offset.y = arguments[0][1].value;
-			offset.z = arguments[0][2].value;
-			for(var i = 0; i < arguments[1].length; i++) {
-				var argument = arguments[1][i];
+			offset.x = parameters[0][0].value;
+			offset.y = parameters[0][1].value;
+			offset.z = parameters[0][2].value;
+			for(var i = 0; i < parameters[1].length; i++) {
+				var argument = parameters[1][i];
 				var positions = [];
 				for(var j = 0; j < argument[3].length; j++) {
 					positions.push({
@@ -153,7 +153,7 @@
 						requiredArea.resolve(connector_s, targetApplied, {}, options);
 						break;
 					}
-                    targetApplied = targetApplied.getParent(options);
+					targetApplied = targetApplied.getParent(options);
 				}
 			} else {
 				jslgEngine.log('Not Found Self Element: cound not apply location in RequiredArea');

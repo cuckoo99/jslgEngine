@@ -33,57 +33,57 @@ function(iconController, mainController, connector, options) {
 			children : [
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionLog',
-					arguments : ['"攻撃＆移動"']
+					parameters : ['"攻撃＆移動"']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionRequireArea',
-					arguments : [[0,0,0],[[1,1,2,[[0,3,0]],0,[90,0]]]]
+					parameters : [[0,0,0],[[1,1,2,[[0,3,0]],0,[90,0]]]]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionPending'
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionJSlgMove',
-					arguments : ['$THIS.parent()','$PENDING.obj']
+					parameters : ['$THIS.parent()','$PENDING.obj']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionLog',
-					arguments : ['"移動Next"']
+					parameters : ['"移動Next"']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionRequireArea',
-					arguments : [[0,0,0],[[1,1,2,[[0,3,0]],0,[0,0]]],['"Cast"']]
+					parameters : [[0,0,0],[[1,1,2,[[0,3,0]],0,[0,0]]],['"Cast"']]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionPending'
 				}),
 				slgCommandFactory.getCommandBlockTemplate({
 					className : 'CommandBlockIF',
-					arguments : ['$PENDING.obj.life>0'],
+					parameters : ['$PENDING.obj.life>0'],
 					children : [
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"攻撃実行Next"']
+							parameters : ['"攻撃実行Next"']
 						}),
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionSet',
-							arguments : ['$PENDING.obj','"life"','$PENDING.obj.life-3']
+							parameters : ['$PENDING.obj','"life"','$PENDING.obj.life-3']
 						})
 					]
 				}),
 				slgCommandFactory.getCommandBlockTemplate({
 					className : 'CommandBlockElseIF',
-					arguments : ['true==true'],
+					parameters : ['true==true'],
 					children : [
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"攻撃実キャンセル"']
+							parameters : ['"攻撃実キャンセル"']
 						})
 					]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionSet',
-					arguments : ['$THIS','"_ENABLE"','false']
+					parameters : ['$THIS','"_ENABLE"','false']
 				})
 			]
 		});
@@ -99,22 +99,22 @@ function(iconController, mainController, connector, options) {
 			children : [
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionLog',
-					arguments : ['"移動"']
+					parameters : ['"移動"']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionRequireArea',
-					arguments : [[0,0,0],[[1,1,2,[[0,3,0]],0,[90,0]]]]
+					parameters : [[0,0,0],[[1,1,2,[[0,3,0]],0,[90,0]]]]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionPending'
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionJSlgMove',
-					arguments : ['$THIS.parent()','$PENDING.obj']
+					parameters : ['$THIS.parent()','$PENDING.obj']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionSet',
-					arguments : ['$THIS','"_ENABLE"','false']
+					parameters : ['$THIS','"_ENABLE"','false']
 				})
 			]
 		});
@@ -130,42 +130,42 @@ function(iconController, mainController, connector, options) {
 			children : [
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionLog',
-					arguments : ['"攻撃"']
+					parameters : ['"攻撃"']
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionRequireArea',
-					arguments : [[0,0,0],[[1,1,2,[[0,3,0]],0,[0,0]]],['"Cast"']]
+					parameters : [[0,0,0],[[1,1,2,[[0,3,0]],0,[0,0]]],['"Cast"']]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionPending'
 				}),
 				slgCommandFactory.getCommandBlockTemplate({
 					className : 'CommandBlockIF',
-					arguments : ['$PENDING.obj.life>0'],
+					parameters : ['$PENDING.obj.life>0'],
 					children : [
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"攻撃実行Next"']
+							parameters : ['"攻撃実行Next"']
 						}),
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionSet',
-							arguments : ['$PENDING.obj','"life"','$PENDING.obj.life-10']
+							parameters : ['$PENDING.obj','"life"','$PENDING.obj.life-10']
 						})
 					]
 				}),
 				slgCommandFactory.getCommandBlockTemplate({
 					className : 'CommandBlockElseIF',
-					arguments : ['true==true'],
+					parameters : ['true==true'],
 					children : [
 						slgCommandFactory.getActionTemplate({
 							className : 'ActionLog',
-							arguments : ['"攻撃実キャンセル"']
+							parameters : ['"攻撃実キャンセル"']
 						})
 					]
 				}),
 				slgCommandFactory.getActionTemplate({
 					className : 'ActionSet',
-					arguments : ['$THIS','"_ENABLE"','false']
+					parameters : ['$THIS','"_ENABLE"','false']
 				})
 			]
 		});
@@ -196,21 +196,21 @@ function(iconController, mainController, connector, options) {
 			obj : command3
 		}, options);
 		
-	    var arguments = {
+	    var parameters = {
 	        status : {
 	            member : {},
 	            command : {}
 	        }
 	    };
-	    arguments.status.decreasedKeys = ['life'];
-	    arguments.status.increasedKeys = [];
-	    arguments.status.member.key = 'belongs';
-	    arguments.status.member.familyMemberNames = ['player'];
-	    arguments.status.member.enemyMemberNames = ['enemy'];
-	    arguments.status.command.key = null;
-	    arguments.status.command.value = null;
+	    parameters.status.decreasedKeys = ['life'];
+	    parameters.status.increasedKeys = [];
+	    parameters.status.member.key = 'belongs';
+	    parameters.status.member.familyMemberNames = ['player'];
+	    parameters.status.member.enemyMemberNames = ['enemy'];
+	    parameters.status.command.key = null;
+	    parameters.status.command.value = null;
 	    var simulator = new jslgEngine.model.mind.Simulator({
-	        arguments : arguments
+	        parameters : parameters
 	    });
 	    
 		var drivers = [];

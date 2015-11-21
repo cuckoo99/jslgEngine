@@ -8,7 +8,7 @@ testSettingAsAsync("TestCommand", {
 		
 	var result;
 	var command, command2, command3;
-    var action = new jslgEngine.stub.Action();
+    var action = new jslgEngine.mock.Action({});
 	var region = mainController.getWorldRegion();
 	var converter = iconController.converter;
 	var slgCommandFactory = new jslgEngine.model.factory.JSlgCommandFactory();
@@ -53,7 +53,7 @@ testSettingAsAsync("TestCommand", {
         key : 'hoge'
     });
     commandFrame.addChild({
-        obj : new jslgEngine.stub.Action({
+        obj : new jslgEngine.mock.Action({
             run : function(connector, data, options) {
                 var it = data.localElements[jslgEngine.model.logic.keys.SELF];
                 this.selfElement = it;

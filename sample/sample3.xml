@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <element>
 	<className>LocalRegion</className>
-	<key>l1</key>
+	<key>r1</key>
 	<location>
 	<x>0</x>
 	<y>0</y>
@@ -12,6 +12,20 @@
 	<height>10</height>
 	<depth>10</depth>
 	</size>
+	<element>
+		<className>Resource</className>
+		<key>online1</key>
+		<element>
+			<className>Status</className>
+			<key>fileType</key>
+			<value>Image</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>url</key>
+			<value>./sample/images/connect_01.gif</value>
+		</element>
+	</element>
 	<element>
 		<className>Resource</className>
 		<key>map1</key>
@@ -86,6 +100,24 @@
 			<className>Status</className>
 			<key>url</key>
 			<value>./sample/images/grid1.jpg</value>
+		</element>
+	</element>
+	<element>
+		<className>User</className>
+		<key>r1</key>
+		<element>
+			<className>Status</className>
+			<key>member</key>
+			<value>player</value>
+		</element>
+	</element>
+	<element>
+		<className>User</className>
+		<key>enemy</key>
+		<element>
+			<className>Status</className>
+			<key>member</key>
+			<value>enemy</value>
 		</element>
 	</element>
 	<element>
@@ -203,6 +235,40 @@
 		</element>
 	</element>
 	<element>
+		<className>Command</className>
+		<key>init</key>
+		<element>
+			<className>ActionLog</className>
+			<argument>"初期化"</argument>
+		</element>
+		<element>
+			<className>ActionJSlgMessage2</className>
+			<argument>
+				<argument>"モンスターが出現しました"</argument>
+				<argument></argument>
+				<argument>
+					<argument>"▼"</argument>
+				</argument>
+			</argument>
+			<argument>
+				<argument>"わあ、どうしよう。"</argument>
+				<argument>
+					<argument>"human1"</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>128</argument>
+					<argument>128</argument>
+				</argument>
+				<argument>
+					<argument>"▼"</argument>
+				</argument>
+			</argument>
+		</element>
+		<element>
+			<className>ActionPending2</className>
+		</element>
+	</element>
+	<element>
 		<className>StageFrame</className>
 		<key>stgf1</key>
 		<size>
@@ -225,6 +291,31 @@
 			<key>effect</key>
 			<value>0</value>
 		</element>
+		<element>
+			<className>Status</className>
+			<key>_graphics</key>
+			<value>
+				<argument>
+					<argument>grid1</argument>
+					<argument>0</argument>
+					<argument>0</argument>
+					<argument>800</argument>
+					<argument>600</argument>
+				</argument>
+				<argument>
+					<argument>
+						<argument>default</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+					</argument>
+				</argument>
+			</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_default</key>
+			<value>default</value>
+		</element>
 	</element>
 	<element>
 		<className>GroundFrame</className>
@@ -246,7 +337,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>map1</argument>
@@ -274,6 +365,16 @@
 				</argument>
 			</value>
 		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_show</key>
+			<value>area0</value>
+		</element>
+		<element>
+			<className>Status</className>
+			<key>anime_default</key>
+			<value>default</value>
+		</element>
 	</element>
 	<element>
 		<className>CastFrame</className>
@@ -295,7 +396,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>human1</argument>
@@ -358,7 +459,7 @@
 		</element>
 		<element>
 			<className>Status</className>
-			<key>drawingOptions</key>
+			<key>_graphics</key>
 			<value>
 				<argument>
 					<argument>monster1</argument>
@@ -450,6 +551,7 @@
 	</element>
 	<element>
 		<className>Stage</className>
+		<source>stgf1</source>
 		<key>stg1</key>
 		<location>
 		<x>0</x>
@@ -465,6 +567,35 @@
 			<className>Status</className>
 			<key>thumbnail</key>
 			<value>./sample/images/stage_01.gif</value>
+		</element>
+		<element>
+			<className>NetworkButton</className>
+			<key>nb1</key>
+			<element>
+				<className>Status</className>
+				<key>thumbnail</key>
+				<value>./sample/images/map_03.gif</value>
+			</element>
+			<element>
+				<className>Status</className>
+				<key>_graphics</key>
+				<value>
+					<argument>
+						<argument>online1</argument>
+						<argument>0</argument>
+						<argument>0</argument>
+						<argument>64</argument>
+						<argument>64</argument>
+					</argument>
+					<argument>
+						<argument>
+							<argument>default</argument>
+							<argument>0</argument>
+							<argument>0</argument>
+						</argument>
+					</argument>
+				</value>
+			</element>
 		</element>
 		<element>
 			<className>Ground</className>

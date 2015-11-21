@@ -10,3 +10,6 @@
 [submodule "lib/jquery-ui"]
 	path = lib/jquery-ui
 	url = git://github.com/jquery/jquery-ui
+[submodule "lib/threejs"]
+	path = lib/threejs
+	url = https://github.com/mrdoob/three.js.git

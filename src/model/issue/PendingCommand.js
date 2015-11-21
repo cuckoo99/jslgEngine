@@ -134,6 +134,12 @@
 	 **/
 	p.reputations = null;
 
+	p.dispose = function() {
+		var self = this;
+		self.issues = null;
+		delete self.issues;
+	};
+
 	/**
 	 * 子要素の取得
 	 *
@@ -249,6 +255,11 @@
 		var self = this;
 		
 		if (self._issues.length - 1 > self._currentIndex) {
+			var issue = self.getCurrentIssue();
+			if(!issue.wasResolved()) {
+				return false;
+			}
+
 			self._currentIndex++;
 			return self._currentIndex;
 		}

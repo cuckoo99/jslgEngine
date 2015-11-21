@@ -203,108 +203,6 @@ o = (o.factory = o.factory||{});
 	 **/
 	p.makeScrollButtons = function(data, options) {
 		var self = this;
-	
-		var buttonName = 'allow';
-	
-		var iconController = options.iconController;
-		var ui = data.ui;
-	
-		var canvasSize = iconController.canvasSize;
-	
-		var cWidth = canvasSize.width;
-		var cHeight = canvasSize.height;
-	
-		var positions = [ [ 100, 100 ], [ cWidth - 100, 100 ],
-				[ 100, cHeight - 100 ], [ cWidth - 100, cHeight - 100 ] ];
-		var shifts = [ [ -1, -1 ], [ 1, -1 ], [ -1, 1 ], [ 1, 1 ] ];
-		var curves = [ [ 0, 0 ], [ 50, 0 ], [ 50, -30 ], [ 0, 0 ] ];
-		var offsets = {};
-		offsets[buttonName+'0'] = { x : 0, y : -0.1, z :0 };
-		offsets[buttonName+'1'] = { x : 0.1, y : 0,  z : 0 };
-		offsets[buttonName+'2'] = { x : -0.1, y : 0, z : 0 };
-		offsets[buttonName+'3'] = { x : 0, y : 0.1, z : 0 };
-	
-		for ( var i = 0; i < positions.length; i++) {
-			var position = positions[i];
-	
-			var g = new createjs.Graphics();
-			g.beginFill(createjs.Graphics.getRGB(127, 0, 0));
-			g.setStrokeStyle(10, 1, 1);
-			g.moveTo(position[0], position[1]);
-			
-			var before = null;
-			for ( var j = 0; j < curves.length; j++) {
-				var curve = curves[j];
-				if (before != null) {
-					var beforePosition = [ before[0] * shifts[i][0],
-							before[1] * shifts[i][1] ];
-					var lastPosition = [ curve[0] * shifts[i][0],
-							curve[1] * shifts[i][1] ];
-	
-					g.lineTo(position[0] + beforePosition[0], position[1]
-							+ beforePosition[1]);
-				}
-				before = curve;
-			}
-			g.closePath();
-	
-			options.iconController.add(options.mainController.connector, {
-				key : buttonName + i,
-				graphics : {
-					data : g,
-					onClick : function(e, obj) {
-						var name = e.target.name;
-						
-						var mainController = obj.mainController;
-						var iconController = obj.iconController;
-						var connector = mainController.connector;
-						
-						var stageViewOffset = iconController.stageViewOffset;
-						var x = 0, y = 0;
-						
-						switch(name) {
-						case buttonName+'0':
-							y = -1;
-							break;
-						case buttonName+'1':
-							x = 1;
-							break;
-						case buttonName+'2':
-							x = -1;
-							break;
-						case buttonName+'3':
-							y = 1;
-							break;
-						}
-						x = stageViewOffset.x+x;
-						y = stageViewOffset.y+y;
-						
-						if(x < 0 || y < 0) return;
-						jslgEngine.log('to:'+x+','+y);
-						
-						command = new jslgEngine.model.command.Command({}, options);
-						command.addChild({
-							obj : new jslgEngine.model.action.ActionJSlgScroll({
-								arguments : [[x,y,0]]
-							})
-						}, options);
-						connector.pipe(function(connector_s) {
-							jslgEngine.log('scroll run');
-							command.run(connector_s.resolve(), {}, {
-								mainController : mainController,
-								iconController : iconController
-							});
-							return connector_s;
-						}).pipe(function(connector_s) {
-							jslgEngine.log('scroll finished');
-							return connector_s.resolve();
-						});
-					}
-				},
-				position : { x:0, y:0, z:0 },
-				alpha : data.alpha
-			});
-		}
 	};
 
 	/**
@@ -491,152 +389,6 @@ o = (o.factory = o.factory||{});
 	 * </ul>
 	 **/
 	p.makeMessageBoard = function(connector, data, options) {
-		var self = this;
-		var region = options.mainController.getWorldRegion();
-		var regionKey = region.getKey();
-
-		var text = data.text;
-		var image = data.image;
-		var selection = [].concat(data.selection);
-		var groupKey = 'message';
-
-		var canvasSize = options.iconController.canvasSize;
-	
-		var name = jslgEngine.ui.keys.MESSAGE_BOARD;
-		var imageName = jslgEngine.ui.keys.MESSAGE_BOARD_IMAGE;
-		var selectionName = jslgEngine.ui.keys.MESSAGE_BOARD_SELECTION;
-		var textName = self.textName;
-	
-		var position = { x : 0, y : 0, z : 0};
-		
-		var messageRect = {
-			x : 10,
-			y : canvasSize.height/5*3,
-			width : canvasSize.width - 20,
-			height : canvasSize.height/5*2 - 10,
-			round : 5
-		};
-		
-		//画像
-		if(image) {
-			var isReflected = data.isReflected;
-			
-			var imageRect = {
-				x : messageRect.x,
-				y : messageRect.y-image.height/2,
-				width : image.width,
-				height : image.height,
-				round : 5
-			};
-		
-			options.iconController.add(connector, {
-				key : imageName,
-				imageKey : image.key,
-				group : groupKey,
-				position : { x : imageRect.x,  y : imageRect.y,  z : 0 },
-				sprite : {
-					frames : {
-						width : imageRect.width,
-						height : imageRect.height,
-						regX : image.regX,
-						regY : image.regY
-					},
-					animations : { 'default' : [ 0, 0, "default" ] }
-				}
-			});
-		}
-		
-		var g = self._getGraphicsOfGradientRect(messageRect);
-		//メインボード
-		options.iconController.add(connector, {
-			key : [regionKey,name]
-					.join(jslgEngine.config.elementSeparator),
-			group : groupKey,
-			graphics : {
-				data : g,
-				onClick : function(e, obj) {
-				}
-			},
-			position : position
-		});
-		//テキスト
-		options.iconController.add(connector, {
-			key : [regionKey,name+textName]
-					.join(jslgEngine.config.elementSeparator),
-			group : groupKey,
-			position : {
-				x : messageRect.x+10,
-				y : messageRect.y+10,
-				z : 0
-			},
-			text : {
-				textValue : text,
-				color : '#f0dbd8',
-				font : "24px impact"
-			}
-		});
-		
-		var color = '#f0dbd8';
-		var font = "24px impact";
-		var offset = 5;
-		var textHeight = self._getTextSize({
-			text : selectionText,
-			font : font
-		}).height+offset*2;
-		
-		selection.unshift({
-			text : 'Selection:',
-			colors : ["rgba(216, 0, 0, 0.5)", "rgba(157, 0, 0, 0.5)"]
-		});
-		var selectionHeight = textHeight * selection.length;
-		
-		for(var i = 0; i < selection.length; i++) {
-			var selectionKey = selection[i].key||[selectionName,'_ex',i].join('');
-			var selectionText = selection[i].text;
-			var selectionColors = selection[i].colors;
-			var selectionOffset = i*canvasSize.height/5*2;
-			
-			var selectionRect = {
-				x : canvasSize.width/10*1,
-				y : canvasSize.height/2 - selectionHeight/2 + textHeight*i,
-				width : canvasSize.width/10*8,
-				height : textHeight,
-				colors : selectionColors,
-				round : 5
-			};
-			
-			var g2 = self._getGraphicsOfGradientRect(selectionRect);
-		
-			//選択肢ボード
-			options.iconController.add(connector, {
-				key : [regionKey,name,selectionKey]
-					.join(jslgEngine.config.elementSeparator),
-				group : groupKey,
-				graphics : {
-					data : g2,
-					onClick : self._getClickDefault({ className : null })
-				},
-				position : position,
-				alpha : 1
-			});
-			
-			//選択肢テキスト
-			options.iconController.add(connector, {
-				key : [regionKey,name,selectionKey+textName]
-					.join(jslgEngine.config.elementSeparator),
-				group : groupKey,
-				position : {
-					x : selectionRect.x+offset,
-					y : selectionRect.y+offset,
-					z : 0
-				},
-				text : {
-					textValue : selectionText,
-					color : color,
-					font : font
-				}
-			});
-		}
 	};
 
 	/**
@@ -699,6 +451,63 @@ o = (o.factory = o.factory||{});
 			key : name,
 			group : groupKey,
 			position : position,
+			text : {
+				textValue : text,
+				color : color,
+				font : font
+			}
+		});
+	};
+
+	/**
+	 * meke a connection with network.
+	 * when click this button, all elements refresh.
+	 *
+	 * @name makeOnlineButton
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.model.factory.JSlgIconFactory#
+	 * @param {JSON} options
+	 * <ul>
+	 * </ul>
+	 **/
+	p.makeOnlineButton = function(connector, data, options) {	
+		var self = this;
+		
+		var name = data.key;
+		var position = data.position||{ x : 0, y : 0, z : 0};
+		var groupKey = 'buttons';
+	
+		options.iconController.add(connector, {
+			key : name,
+			position : position,
+			imageKey : 'online1',
+			group : groupKey,
+			sprite : {
+				frames : {
+					width : 64,
+					height : 64,
+					regX : 0,
+					regY : 0
+				},
+				animations : {
+					'default' : [ 0, 0, "default" ]
+				},
+				onClick : function(data) {
+					var connector = new jslgEngine.model.network.ConnectorOnline();
+
+					var onlineManager = options.mainController.getOnlineManager();
+
+					onlineManager.changeNetworkingMode(connector, {
+						isOnline : true
+					}, options);
+				}
+			}
+		});
+	};
+
+	/**
+	 * アイコン作成・ステータス
 			text : {
 				textValue : text,
 				color : color,
@@ -852,55 +661,6 @@ o = (o.factory = o.factory||{});
 				mainController.showArea(lastArea.locations, lastArea.objName);
 			} else {
 				requiredArea.setLastCacheByLocation(location);
-			}
-		};
-	};
-	/**
-	 * アイコン作成・ステージ配置モード切替
-	 *
-	 * @name _getIconData
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.factory.JSlgIconFactory#
-	 * @param {JSON} options
-	 * <ul>
-	 * </ul>
-	 **/
-	p._getIconData = function(data) {
-		if(!data.drawingOptions) {
-			return null;
-		}
-		
-		//第１引数、画像の情報
-		var iconImageArgugemnts = data.drawingOptions[0];
-		var imageKey = iconImageArgugemnts[0];
-		var frames = {
-			regX : iconImageArgugemnts[1],
-			regY : iconImageArgugemnts[2],
-			width : iconImageArgugemnts[3],
-			height : iconImageArgugemnts[4]
-		};
-		//第２引数、アニメーション画像の情報
-		var iconAnimationArgugemnts = data.drawingOptions[1];
-		var animations = {};
-		for(var i = 0; i < iconAnimationArgugemnts.length; i++) {
-			var animation = iconAnimationArgugemnts[i];
-			animations[animation[0]] = [
-				animation[1], animation[2], animation[0]
-			];
-		}
-		return {
-			key : data.key,
-			imageKey : imageKey,
-			group : data.group,
-			position : data.position,
-			alpha : data.alpha,
-			visibility : data.visibility,
-			sprite : {
-				frames : frames,
-				animations : animations,
-				onClick : data.onClick,
-				onMouseMove : data.onMouseMove
 			}
 		};
 	};

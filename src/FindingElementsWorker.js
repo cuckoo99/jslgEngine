@@ -2,30 +2,34 @@ onmessage = function(dt) {
     var results;
     var data = dt.data;
     
-    if(data) {
-    	var obj = JSON.parse(data);
-    	
-    	if(obj) {
-    		var result = [];
-    		var data = {
-    			obj : obj.findTargets,
-                getOne : data.getOne,
-    			result : result
-    		};
-    		var options = {
-    		};
-    		
-    		findElements(obj.elements, data, options);
-    		
-	    	results = data.result;
-    	} else {
-    		jslgEngine.log('failed to parse JSON in FindingElementsWorker.');
-    	}
-    } else {
-    	jslgEngine.log('No Worker Parameters.');
+    if(!data) {
+    	postMessage('not found data');
+	return;
     }
+
+    var obj = JSON.parse(data);
+    
+    if(!obj) {
+    	postMessage('parse error');
+	return;
+    }
+    
+    var data = {
+	    obj : obj.findTargets,
+	    getOne : data.getOne,
+	    result : []
+    };
+
+    findElements(obj.elements, data, {});
+
+    results = data.result;
+
+    //results = log;
+
     postMessage(results);
 };
+
+var log = '';
 
 var locationSeparator = '_';
 
@@ -33,7 +37,6 @@ var findElements = function(element, data, options) {
 	var self = element;
 	var child = null;
 
-	if(!data) return false;
 	data.result = data.result||[];
 	var parents = data.parents||[];
 	
@@ -78,11 +81,11 @@ var findElements = function(element, data, options) {
 		}
 	}
 	
-	for(var i = 0; i < children.length; i++) {
-		var child = children[i];
+	if(target.type === 'find') {
 		
-		if(target.type === 'find') {
-			
+		for(var i = 0; i < children.length; i++) {
+			var child = children[i];
+
 			findElements(child, {
 				index : i,
 				obj : [].concat(target).concat(obj),
@@ -118,11 +121,13 @@ var _getElementFromParentKey = function(element, data, options) {
 
 var isMatched = function(element, data, options) {
 	var self = element;
+	var id = data.id != null ? data.id : null;
 	var key = data.key;
 	var location = data.key ? data.key : null;
 	var index = data.index;
 	var className = data.className;
 	
+	log = id;
 	if(key && self.key !== key) {
 		if(location && !exists(self, location)) {
 			if(!index || (index && key !== index)) {
@@ -133,8 +138,11 @@ var isMatched = function(element, data, options) {
 	if(className && self.className !== className) {
 		return false;
 	}
+	if((id != null) && self.id !== id) {
+		return false;
+	}
 	
-	return (key||location||index||className);
+	return (key||location||index||className||(id != null));
 };
 
 var exists = function(element, location) {

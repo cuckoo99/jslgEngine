@@ -179,7 +179,7 @@
 	 **/
 	p.divide = function(magnitude) {
         var self = this;
-		if (magnitude != 0.0f) {
+		if (magnitude != 0.0) {
 			self.x /= magnitude;
 			self.y /= magnitude;
 			self.z /= magnitude;
@@ -209,7 +209,7 @@
 	 * @function
 	 * @memberOf jslgEngine.model.math.Vector3#
 	 **/
-	p.dot = function(Vector3 other) {
+	p.dot = function(other) {
 		return (x * other.x) + (y * other.y) + (z * other.z);
 	};
 	
@@ -294,7 +294,7 @@
 	p.normalize = function() {
         var self = this;
 		var magnitude = self.length();
-		if (magnitude != 0.0f) {
+		if (magnitude != 0.0) {
 			self.x /= magnitude;
 			self.y /= magnitude;
 			self.z /= magnitude;

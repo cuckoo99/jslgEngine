@@ -83,45 +83,6 @@
 	p.canvasOffset = jslgEngine.config.groundOffset;
 
 	/**
-	 * アイコンを作成する
-	 *
-	 * @name makeIcon
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.model.stage.Ground#
-	 */
-	p.makeIcon = function(factory, options) {
-		var self = this;
-		var imageKey = self.getStatus('imageKey').value;
-		
-		//TODO: フレームとアニメーションは暫定。ステータスに設定すべきだが、配列で格納しなければならない。
-		factory.makeGround({
-			iconController : options.iconController,
-			mainController : options.mainController,
-			key : self.getPath(),
-			imageKey : imageKey,
-			position : self.getPosition({
-				stageViewOffset : options.iconController.stageViewOffset,
-			}, options),
-			sprite : {
-				frames : {
-					width : 160,
-					height : 160,
-					regX : 0,
-					regY : 0
-				},
-				animations : {
-					'default' : [ 0, 0, "default" ],
-					'area0' : [ 4, 5, "area0" ],
-					'area1' : [ 8, 8, "area1" ]
-				}
-			},
-			stage : null,
-			ground : self
-		});
-	};
-
-	/**
 	 * 実体要素取得
 	 *
 	 * @name getPosition
@@ -143,7 +104,7 @@
 		var offset = jslgEngine.config.groundOffset;
 		
 		var parent = self.getParent(options)||{};
-		var parentsPosition = parent.getPosition(data, options)||{x:0,y:0,z:0};
+		var parentsPosition = parent.getPosition ? parent.getPosition(data, options) : {x:0,y:0,z:0};
 		var scale;
 		
 		var rad = -Math.PI / 24 * 6.5;
@@ -179,11 +140,11 @@
 		var self = this;
 		
 		var drawingKey = jslgEngine.model.common.keys.DRAWING_OPTIONS;
-		var drawingOptions = self.getStatus(drawingKey);
-		drawingOptions = drawingOptions ? drawingOptions.value : null;
+		var _graphics = self.getStatus(drawingKey);
+		_graphics = _graphics ? _graphics.value : null;
 		
-		var width = drawingOptions ? drawingOptions[0][3] : 0;
-		var height = drawingOptions ? drawingOptions[0][4] : 0;
+		var width = _graphics ? _graphics[0][3] : 0;
+		var height = _graphics ? _graphics[0][4] : 0;
 		
 		return {
 			width : width,
@@ -191,5 +152,36 @@
 		};
 	};
 	
+	p.createIcon = function(connector, data, options) {
+		var self = this;
+
+		var iconInfo = self.getIconInfo({
+			group : 'ground'
+		}, options);
+		
+		options.iconController.add(connector, iconInfo);
+	};
+
+	p.updateIcon = function(connector, data, options) {
+		var self = this;
+		var position = self.getPosition({}, options);
+		var key = self.getKeyData().getUniqueId();
+
+		var onlineManager = options.mainController.getOnlineManager();
+		if(onlineManager.isOnline && !self.wasRewrited) {
+			self.remove(connector, data, options);
+			return;
+		}
+		
+		if(!options.iconController.hasKey(key)) {
+			self.createIcon(connector, data, options);
+		}
+
+		if(data.groupKeys) {
+			data.groupKeys.push(key);
+		}
+	};
+
+
 	o.Ground = Ground;
 }());

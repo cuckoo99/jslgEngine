@@ -36,11 +36,10 @@
 	 **/
 	p.initialize = function(data) {
 		var self = this;
-        var worldKey = 'w1';
 		var workersPath = data.workersPath||jslgEngine.workSpace+jslgEngine.config.workersURL;
 		self._worldRegion = new jslgEngine.model.area.WorldRegion({
-            key : worldKey
-        }, {
+		    key : self.defWorldRegionKey
+		}, {
 			mainController : self
 		});
 		self._webworkers = [];
@@ -53,7 +52,6 @@
 	        	url : jslgEngine.config.logicWorkerURL
 	        });
 		self.finder = new jslgEngine.model.common.JSlgElementFinder();
-		self.logic = new jslgEngine.model.logic.Logic();
 		self.connector = new jslgEngine.model.network.ConnectorOnline();
 		self.ticker = new jslgEngine.controller.Ticker();
 		self.backGroundWorker = null;
@@ -66,8 +64,19 @@
 		}
 		self.users = [];
 		self._elementBinder = new jslgEngine.controller.ElementBinder();
-        self.bindElement(self._worldRegion, null);
+		self._onlineManager = new jslgEngine.controller.OnlineManager();
+        	self.bindElement(self._worldRegion, null);
 	};
+
+	/**
+	 * WorldRegion key
+	 *
+	 * @name defWorldRegionKey
+	 * @property
+	 * @type jslgEngine.model.area.WorldRegion
+	 * @memberOf jslgEngine.controller.MainController#
+	 **/
+	p.defWorldRegionKey = 'w1';
 
 	/**
 	 * WorldRegion
@@ -89,16 +98,6 @@
 	 * @memberOf jslgEngine.controller.MainController#
 	 **/
 	p.finder = null;
-
-	/**
-	 * ロジック・オブジェクト
-	 *
-	 * @name logic
-	 * @property
-	 * @type jslgEngine.model.logic.Logic
-	 * @memberOf jslgEngine.controller.MainController#
-	 **/
-	p.logic = null;
 
 	/**
 	 * Web Workers
@@ -179,6 +178,16 @@
 	 * @memberOf jslgEngine.controller.MainController#
 	 **/
 	p._elementBinder = null;
+
+	/**
+	 * Online manager.
+	 *
+	 * @name _onlineManager
+	 * @property
+	 * @type jslgEngine.controller.ElementBinder
+	 * @memberOf jslgEngine.controller.MainController#
+	 **/
+	p._onlineManager = null;
 	
 	/**
 	 * unique Id count
@@ -189,7 +198,35 @@
 	 * @memberOf jslgEngine.controller.MainController#
 	 **/
 	p._idCount = 1;
+
+	p.isOnline = function() {
+		return this._onlineManager.isOnline;
+	};
 	
+	p.getOnlineManager = function() {
+		return this._onlineManager;
+	};
+
+	p.reset = function(options) {
+		var self = this;
+		
+		// clear all elements
+		self._elementBinder.reset();
+		
+		self._worldRegion.dispose();
+		self._worldRegion = new jslgEngine.model.area.WorldRegion({
+			key : self.defWorldRegionKey
+		}, options);
+		// clear all icon elements
+		options.iconController.removeAll(options);
+
+		for(var i = 0; i < self._fileControllers.length; i++) {
+			var fileController = self._fileControllers[i];
+			
+			fileController.removeAll();
+		}
+	};
+
 	/**
 	 * call onClick Command in Element.
 	 *
@@ -203,18 +240,24 @@
 		var self = this;
 		var pendingCommand = self.pendingCommand;
 		
-		//新規に追加
+		// create process.
 		var connector = new jslgEngine.model.network.ConnectorOnline();
 		
+		if(self.isOnline()) {
+			self._onlineManager.run(connector, {
+				id : data.key,
+			}, options);
+			return;
+		}
+
 		self.findElements(connector, {
-			key : data.key,
-			className : data.className
+			id : data.key,
 		}, options);
 		connector.connects(function(connector_s, result) {
 			if(result.length > 0) {
 				var element = result[0];
 				
-				jslgEngine.log('found out kicked Element:'+data.key);
+				jslgEngine.log('found out runnable element:'+data.key);
 				
 				if(pendingCommand && !pendingCommand.wasResolved()) {
 					pendingCommand.resolve(connector, element, {}, options);
@@ -233,7 +276,7 @@
 							command = command.getRunnableCommand({}, options);
 							command.run(connector_ss, {}, options);
 							connector_ss.pipe(function(connector_sss) {
-								jslgEngine.dispose(command);
+								command.dispose();
 								delete command;
 								
 								if(data.callback) {
@@ -383,65 +426,25 @@
 	 * <li>{Object} position 入力座標</li>
 	 * </ul>
 	 **/
-	p.sortSecondDimension = function(w, h, callback) {
-		var list = [];
+	p.sortBySecondDimension = function(list, w, h) {
 
-		for ( var i = 0; i < w; i++) {
-			for ( var j = 0; j < h; j++) {
-				var pt = ((w - i) + j) * (w + h) + j;
-				//var pt = (w - i) + j;
-				list.push([ pt, { x : i, y : j, z : 0} ]);
-			}
+		for(var i = 0, len = list.length; i < len; i++) {
+			var element = list[i];
+			
+			var loc = element.getGlobalLocation();
 		}
 
 		list.sort(function(a, b) {
-			return a[0] - b[0];
+			var aLoc = a.getGlobalLocation();
+			var bLoc = b.getGlobalLocation();
+			
+			var aPt = ((w - aLoc.x) + aLoc.y) * (w + h) + aLoc.y;
+			var bPt = ((w - bLoc.x) + bLoc.y) * (w + h) + bLoc.y;
+
+			return aPt - bPt;
 		});
 
-		for ( var i = 0; i < list.length; i++) {
-			callback(list[i][0], list[i][1]);
-		}
-	};
-		
-	/**
-	 * add user.
-	 *
-	 * @name addUser
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.controller.MainController#
-	 **/
-	p.addUser = function(user) {
-		var self = this;
-		
-		for(var i = 0; i < self.users.length; i++) {
-			var target = self.users[i];
-			if(target.key === user.getKey()) {
-				return false;
-			}
-		}
-		self.users.push(user);
-	};
-	
-	/**
-	 * activate user.
-	 *
-	 * @name activateUser
-	 * @method
-	 * @function
-	 * @memberOf jslgEngine.controller.MainController#
-	 **/
-	p.activateUser = function(connector, key, options) {
-		var self = this;
-		
-		for(var i = 0; i < self.users.length; i++) {
-			var user = self.users[i];
-			if(user.key === key) {
-				user.beActive(connector, options);
-				return true;
-			}
-		}
-		return false;
+		return list;
 	};
 	
 	/**
@@ -455,10 +458,11 @@
 	p.bindElement = function(key_element, element, data) {
 		var self = this;
         
-        var key = self._elementBinder.getUniqueId(key_element);
+		var key = self._elementBinder.getUniqueId(key_element);
 		self._elementBinder.set(key, key_element, {
-            mainController : self
-        });
+			mainController : self
+		});
+		
 		self._elementBinder.attachParent(key, element);
 	};
 	
@@ -517,5 +521,52 @@
 		return (self._idCount++);
 	};
 	
+	/**
+	 * update all icons.
+	 *
+	 * @name updateAllIcons
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.MainController#
+	 **/
+	p.updateIconsAll = function(connector, data, options) {
+		var self = this;
+
+		var list = [];
+		var region = self.getWorldRegion();
+
+		connector.pipe(function(connector_s) {
+			data.animationKeys = [];
+			data.groupKeys = [];
+			
+			region.updateIcon(connector_s, data, options);
+
+			var list = options.iconController.getNegationList(data.groupKeys);
+			
+			// remove icons unlinked.
+			for(var i = 0, len = list.length; i < len; i++) {
+				options.iconController.remove({
+					key : list[i]
+				});
+			}
+			
+			if(data.animationKeys.length > 0) {
+				options.mainController.ticker.addAnimationGroup({
+					key : 'update',
+					groupKeys : [data.animationKeys],
+					callback : function() {
+						jslgEngine.log('finished update');
+						connector_s.resolve();
+					}
+				}, options);
+			} else {
+				jslgEngine.log('finished update');
+				connector_s.resolve();
+			}
+
+			self.ticker.unlockAnimation(options);
+		});
+	};
+
 	o.MainController = MainController;
 }());

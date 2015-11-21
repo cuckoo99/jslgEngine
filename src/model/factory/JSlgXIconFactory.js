@@ -297,7 +297,7 @@ o = (o.factory = o.factory||{});
 						// command = new jslgEngine.model.command.Command({});
 						// command.addChild({
 							// obj : new jslgEngine.model.action.ActionJSlgScroll({
-								// arguments : [[x,y,0]]
+								// parameters : [[x,y,0]]
 							// })
 						// });
 						// connector.pipe(function(connector_s) {
@@ -727,7 +727,7 @@ o = (o.factory = o.factory||{});
 	 **/
 	p._getIconData = function(data, options, callback) {
 		//第１引数、モデルの情報
-		var iconModelArgugemnts = data.drawingOptions[2];
+		var iconModelArgugemnts = data._graphics[2];
 		var modelKey = iconModelArgugemnts[0];
 		var textureKey = iconModelArgugemnts[1];
 		

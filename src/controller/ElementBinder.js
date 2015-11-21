@@ -95,6 +95,28 @@
 	};
 
 	/**
+	 * reset relationship
+	 *
+	 * @name set
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.ElementBinder#
+	 **/
+	p.reset = function() {
+		var self = this;
+		var list = [self._contents, self._parents, self._categorizedContents, self._elementsWithClassName, self._elementsWithLocation, self._elementsWithKey];
+
+		for(var i = 0, len = list.length; i < len; i++) {
+			var content = list[i];
+			for(var c in content) {
+				content[c] = null;
+			}
+		}
+		
+		self.initialize();
+	};
+	
+	/**
 	 * Set elements relationship
 	 *
 	 * @name set

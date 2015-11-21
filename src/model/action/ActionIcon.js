@@ -113,20 +113,20 @@
 	 */
 	p.isCorrectArguments = function(data, options) {
 		var self = this;
-		var arguments = data.arguments;
+		var parameters = data.parameters;
 		var matcher = data.matcher;
 		var success = data.success||true;
 
-		if(arguments.length !== matcher.length) return false;
+		if(parameters.length !== matcher.length) return false;
 
-		var length = arguments.length;
+		var length = parameters.length;
 		for(var i = 0; i < length; i++) {
-			var argument = arguments[i];
+			var argument = parameters[i];
 			var match = matcher[i];
 			
 			if(typeof(argument) == typeof(match)) {
 				var result = self.isCorrectArguments({
-					arguments : argument,
+					parameters : argument,
 					matcher : match,
 					success : success
 				}, options);
@@ -205,7 +205,7 @@
         
         if(target === null || key === null ||
             imageKey === null) {
-            jslgEngine.log(self.className + ' has no enough arguments.');
+            jslgEngine.log(self.className + ' has no enough parameters.');
             return;
         }
 

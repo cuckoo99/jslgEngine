@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	<meta name='keywords' content='programming,computer graphics,physical computing' />
+	<meta name='description' content='This website provides some contents like computer programming, webservice, web design, 3DCG, Arduino, and any others.' />
+<title>JSlgEngine QUnit Test</title>
+
+	<link href="./favicon.ico" type="image/x-icon" rel="icon" />
+	<link href="./favicon.ico" type="image/x-icon" rel="shortcut icon" />
+	<link rel="stylesheet" type="text/css" href="./qunit.css" />
+
+	<script type="text/javascript" src="../lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../lib/easeljs/build/output/easeljs-0.7.1.min.js"></script>
+
+	<script type="text/javascript" src="./qunit.js"></script>
+	
+	<script type="text/javascript" src="../src/JSlgEngine.js"></script>
+	<script type="text/javascript">
+        	jslgEngine.workSpace = '../src/';
+		jslgEngine.loadJs([
+			// "../src/controller/MainController.js",
+			// "../src/controller/IconControllerBase.js",
+			// "../src/controller/IconController.js",
+			"../src/controller/file/ImageFileController.js",
+			 "../src/model/factory/JSlgIconFactory.js",
+			 "../src/model/factory/JSlgCommandFactory.js",
+			 "../src/controller/Ticker.js",
+		]);
+	</script>
+	
+	<script type="text/javascript" src="./Test.js"></script>
+	
+	<script type="text/javascript" src="./stub/JSlgIconFactory.js"></script>
+	<script type="text/javascript" src="./stub/ImageFileController.js"></script>
+	<script type="text/javascript" src="./stub/IconController.js"></script>
+	<script type="text/javascript" src="./stub/MainController.js"></script>
+	<script type="text/javascript" src="./stub/OnlineManager.js"></script>
+	<script type="text/javascript" src="./stub/BackGroundWorker.js"></script>
+	<script type="text/javascript" src="./stub/Command.js"></script>
+	<script type="text/javascript" src="./stub/Action.js"></script>
+	<script type="text/javascript" src="./stub/ActionRequireArea.js"></script>
+	<script type="text/javascript" src="./stub/ActionPending.js"></script>
+	<script type="text/javascript" src="./stub/Issue.js"></script>
+	<script type="text/javascript" src="./stub/Ajax.js"></script>
+	<script type="text/javascript" src="./stub/Command.js"></script>
+	<script type="text/javascript" src="./stub/CommandBlockBase.js"></script>
+	<script type="text/javascript" src="./stub/Connector.js"></script>
+	<script type="text/javascript" src="./stub/Ticker.js"></script>
+	
+	<script type="text/javascript" src="./stub/TestXmlData.js"></script>
+	<script type="text/javascript" src="./stub/TestJsonData.js"></script>
+
+	<script type="text/javascript" src="./unit/TestOnlineManager.js"></script>
+	<script type="text/javascript" src="./unit/TestElementBinder.js"></script>
+	<script type="text/javascript" src="./unit/TestConnector.js"></script>
+	<script type="text/javascript" src="./unit/TestTicker.js"></script>
+</head>
+
+
+<body>
+
+  <h1 id="qunit-header">QUnit example</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+  <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>

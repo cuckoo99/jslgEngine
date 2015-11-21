@@ -73,17 +73,49 @@
 		};
         
         // other settings.
-		self._icons = new jslgEngine.model.common.JSlgElement({
-			key : '_',
-			keyPathCodes : [jslgEngine.model.stage.keys.ROOT],
-			keyCode : jslgEngine.model.stage.keys.ROOT
-		}, options);
+		self._icons = [];
 		self._mainController = options ? options.mainController : null;
 		self.iconFactory = options ? options.iconFactory : null;
 		self.commandFactory = options ? options.commandFactory : null;
 		self.stageViewOffset = options ? options.stageViewOffset : {x:0,y:0,z:0};
 		
 		self.converter = new jslgEngine.model.logic.Converter({});
+	};
+
+	/**
+	 * waiting for input text.
+	 * it depends on jquery UI.
+	 *
+	 * @name requireInputText
+	 * @method
+	 * @function
+	 * @memberOf jslgEngine.controller.IconController#
+	 * @param {Object} options
+	 **/
+	p.requireInputText$ = function(connector, data, options) {
+		var self = this;
+		var id = 'dialog';
+		
+		$('#'+id).dialog({
+			autoOpen : true,
+			title : data.title,
+			closeOnEscape : false,
+			modal : true,
+			open : function(e) {
+				$(this).find('.message').text(data.message);
+			},
+			buttons : {
+				'OK' : function() {
+					var text = $(this).find('input').val();
+					$(this).dialog('close');
+					connector.resolve(text);
+				},
+				'Cancell' : function() {
+					$(this).dialog('close');
+					connector.resolve(null);
+				}
+			}
+		});
 	};
 
 	/**
@@ -101,22 +133,12 @@
 		var sprite = data.sprite;
 		var group = data.group;
 		
-		//TODO: 要素と１：１にすべきか
-		var icon = self._icons.getChild({
-			key : key
-		});
+		var icon = self._icons[key];
         
 		if(!icon) {
-			icon = new jslgEngine.model.stage.Icon({
-				key : key,
-				keyPathCodes : [jslgEngine.model.stage.keys.ROOT],
-				keyCode : jslgEngine.model.stage.keys.ROOT
-			}, options);
-			icon.setStatus('sprite', sprite);
-			icon.setStatus('group', group);
-			self._icons.addChild({
-				obj : icon
-			});
+			self._icons[key] = {
+				group : group
+			};
 		} else {
 			jslgEngine.log('already exists its information.');
 		}
@@ -157,7 +179,44 @@
 			sprite.onMouseMove(e, options);
 		};
 	};
-	
+
+	p.removeAll = function(options) {
+		var self = this;
+		jslgEngine.dispose(self._icons);
+		self._icons = [];
+		self._graphicResource.removeAllChildren();
+		self._graphicResource.update();
+	};
+
+	p.getNegationList = function(list) {
+		var self = this;
+		var result = [];
+
+		var children = self._graphicResource.children;
+		
+		for(var i = 0, len = children.length; i < len; i++) {
+			var child = children[i];
+
+			var exists = false;
+			for(var j = 0, len2 = list.length; j < len2; j++) {
+				var key = list[j];
+
+				if(child.name === key) {
+					exists = true;
+					break;
+				}
+			}
+
+			if(exists) {
+				continue;
+			}
+
+			result.push(child.name);
+		}
+
+		return result;
+	}
+
 	/**
 	 * add icon.
 	 *
@@ -289,7 +348,7 @@
 		
 		if(!self.existsInCanvas(position)) {
 			//Z座標がないと非表示にされるので注意。
-			jslgEngine.log(key+'is invisible.');
+			//jslgEngine.log(key+'is invisible.');
 			self.changeVisibility(key, false);
 		}
 		
@@ -469,15 +528,13 @@
 	p.getKeysByGroup = function(group) {
 		var self = this;
 		
-		var icons = self._icons;
 		var keys = [];
 		
-		var children = icons.getChildren({});
-		for(var i = 0; i < children.length; i++) {
-			var child = children[i];
+		for(var key in self._icons) {
+			var child = self._icons[key];
 			
-			if(child.getStatus('group').value == group) {
-				keys.push(child.getKey());
+			if(child.group == group) {
+				keys.push(key);
 			}
 		}
 		return keys;

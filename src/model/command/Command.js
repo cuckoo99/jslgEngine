@@ -100,7 +100,25 @@
 			return false;
 		}
 	};
-	
+
+	p.dispose = function() {
+		var self = this;
+
+		if(!self._children) return;
+
+		var length = self._children.length;
+		for(var i = 0; i < length; i++) {
+			var child = self._children[i];
+
+			child.dispose();
+			child = null;
+			delete child;
+		}
+		self._children = null;
+
+		jslgEngine.dispose(self);
+	};
+
 	/**
 	 * 参照するオブジェクトを抽出する
 	 *
@@ -155,14 +173,14 @@
 	
 				return connector_s;
 			});
-			connector.pipe(function(connector_s) {
-				connector_s.resolve();
-				
-				options.mainController.finder.readElements({
-					elements : options.result,
-					connector : connector_s
-				});
-			});
+			// connector.pipe(function(connector_s) {
+			// 	connector_s.resolve();
+			// 	
+			// 	options.mainController.finder.readElements({
+			// 		elements : options.result,
+			// 		connector : connector_s
+			// 	});
+			// });
 			connector.pipe(function(connector_s) {
 				jslgEngine.log('found out');
 				connector_s.resolve();
@@ -304,56 +322,50 @@
 	 * <li>{jslgEngine.controller.mainController} mainController</li>
 	 * </ul>
 	 */
-	p.test = function(connector, data, options) {
+	p.test = function(connector, data, out, options) {
 		var self = this;
-		
+
 		if(self._children.length == 0) return false;
 
 		if(!self.isAvailable(data)) return false;
-		
-        //現在のイベント・テストのインデックスを作成
-        var testIndex = data.testIndex != null ? data.testIndex : 0;
-        
-        var setOptions = function() {
-        	//インデックスの設定
-        	data.testIndex = testIndex+1;
-            //イベントのキーの参照の追加する。
-            data.commandKeyData = self.getKeyData();
-            //テストである情報を付与。
-            data.isTest = true;
-        };
-        setOptions();
-		
+
+		//現在のイベント・テストのインデックスを作成
+		var testIndex = data.testIndex != null ? data.testIndex : 0;
+
+		var setOptions = function() {
+			//インデックスの設定
+			data.testIndex = testIndex+1;
+			//イベントのキーの参照の追加する。
+			data.commandKeyData = self.getKeyData();
+			//テストである情報を付与。
+			data.isTest = true;
+		};
+		setOptions();
+
 		self.run(connector, data, options);
 		connector.pipe(function(connector_ss) {
-            var pendingStack = data[jslgEngine.model.command.keys.PENDING_STACK+data.testIndex];
-            //実行手順を格納するオブジェクト
-            var commandDrivers = connector.getProperty(jslgEngine.model.command.keys.EVENT_DRIVERS);
-            if(!commandDrivers) {
-                commandDrivers = [];
-                connector.setProperty(jslgEngine.model.command.keys.EVENT_DRIVERS, commandDrivers);
-            }
-            var commandDriver, stackCopy;
-            if(pendingStack) {
-                //実行を再現するために、最終的な実行手順を格納していく。
-                stackCopy = pendingStack.slice(0,pendingStack.length);
-            }
-            commandDriver = new jslgEngine.model.command.CommandDriver({
-                commandKeyData : self.getKeyData(),
-                pendingCommands : stackCopy
-            });
-            commandDrivers.push(commandDriver);
-            connector_ss.resolve();
-        }).pipe(function(connector_ss) {
-            if(data.innerFunc) {
-                //実行完了後に続けて処理を繋ぐ
-                data.innerFunc(connector_ss.resolve(), data, options);
-            } else {
-                connector_ss.resolve();
-            }
-        }).pipe(function(connector_ss) {
-            //オプションの再設定
-            setOptions();
+			var pendingStack = data[jslgEngine.model.command.keys.PENDING_STACK+data.testIndex];
+			var stackCopy;
+			if(pendingStack) {
+				//実行を再現するために、最終的な実行手順を格納していく。
+				stackCopy = pendingStack.slice(0,pendingStack.length);
+			}
+			commandDriver = new jslgEngine.model.command.CommandDriver({
+				commandKeyData : self.getKeyData(),
+				pendingCommands : stackCopy
+			});
+			out.push(commandDriver);
+			connector_ss.resolve();
+		}).pipe(function(connector_ss) {
+			if(data.innerFunc) {
+				//実行完了後に続けて処理を繋ぐ
+				data.innerFunc(connector_ss.resolve(), data, options);
+			} else {
+				connector_ss.resolve();
+			}
+		}).pipe(function(connector_ss) {
+			//オプションの再設定
+			setOptions();
 
 			self.restore(connector_ss.resolve(), data, options);			
 		});
@@ -463,7 +475,7 @@
 	 * @memberOf jslgEngine.model.command.Command#
 	 * @param {jslgEngine.model.common.JSlgElementBase} element キー書き換え元要素
 	 */
-	p._resetKey = function(element) {
+	p._resetKey = function(element, options) {
 		var self = this;
 		
 		if(self._isFloat) {
@@ -576,8 +588,8 @@
 		data.localElements = data.localElements||{};
 		data.localElements[jslgEngine.model.logic.keys.SELF] = self;
 		data.localElements[jslgEngine.model.logic.keys.SENDER] = data.sender;
-		for(var key in data.arguments) {
-			data.localElements[key] = data.arguments[key];
+		for(var key in data.parameters) {
+			data.localElements[key] = data.parameters[key];
 		}
 		data.runningCount = data.runningCount != null ? (data.runningCount++) : 0;
 	};
@@ -610,6 +622,9 @@
         clone.getKeyData().resetUniqueId(options);
 		return clone;
 	};
-    
+
+	p.updateIcon = function(connector, data, options) {
+	}
+
 	o.Command = Command;
 }());

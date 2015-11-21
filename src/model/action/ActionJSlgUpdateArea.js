@@ -64,7 +64,7 @@
 			var locations = result_s[0];
 			
 			if(locations === null) {
-				jslgEngine.log(self.className + ' has no enough arguments.');
+				jslgEngine.log(self.className + ' has no enough parameters.');
 				return;
 			}
 	

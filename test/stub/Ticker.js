@@ -11,9 +11,12 @@
 	};
 	var p = Ticker.prototype;
 	
-	for(var n in jslgEngine.controller.Ticker.prototype) {
-		p[n] = jslgEngine.controller.Ticker.prototype[n];
+	for(prop in jslgEngine.controller.Ticker.prototype) {
+		p[prop] = jslgEngine.controller.Ticker.prototype[prop];
 	}
+	
+	//p.initialize = function() {
+	//}
 	
 	p.addAnimation = function(data, options) {
 		var self = this;
@@ -94,5 +97,6 @@
 			}
 		}
 	};
+
 	o.Ticker = Ticker;
 }());

@@ -80,12 +80,12 @@
 //		 * コード
 //		 *
 //		 * @private
-//		 * @name _arguments
+//		 * @name _parameters
 //		 * @property
 //		 * @type Object
 //		 * @memberOf jslgEngine.model.mind.MindFrame#
 //		 **/
-//		self._arguments = {
+//		self._parameters = {
 //			/**
 //			 * ステータス
 //			 *
@@ -93,7 +93,7 @@
 //			 * @name status
 //			 * @property
 //			 * @type Object
-//			 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//			 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //			 **/
 //			status : {
 //				/**
@@ -103,7 +103,7 @@
 //				 * @name decreasedKeys
 //				 * @property
 //				 * @type String[]
-//				 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//				 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //				 **/
 //				decreasedKeys : [],
 //				/**
@@ -113,7 +113,7 @@
 //				 * @name increasedKeys
 //				 * @property
 //				 * @type String[]
-//				 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//				 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //				 **/
 //				increasedKeys : [],
 //				/**
@@ -123,7 +123,7 @@
 //				 * @name memberKey
 //				 * @property
 //				 * @type String
-//				 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//				 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //				 **/
 //				member : {
 //					/**
@@ -133,7 +133,7 @@
 //					 * @name key
 //					 * @property
 //					 * @type String
-//					 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//					 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //					 **/
 //					key : null,
 //					/**
@@ -143,7 +143,7 @@
 //					 * @name familyMemberNames
 //					 * @property
 //					 * @type String[]
-//					 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//					 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //					 **/
 //					familyMemberNames : [],
 //					/**
@@ -153,7 +153,7 @@
 //					 * @name enemyMemberNames
 //					 * @property
 //					 * @type String[]
-//					 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//					 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //					 **/
 //					enemyMemberNames : []
 //				},
@@ -164,7 +164,7 @@
 //				 * @name command
 //				 * @property
 //				 * @type String
-//				 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//				 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //				 **/
 //				command : {
 //					/**
@@ -174,7 +174,7 @@
 //					 * @name key
 //					 * @property
 //					 * @type String
-//					 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//					 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //					 **/
 //					key : null,
 //					/**
@@ -184,7 +184,7 @@
 //					 * @name value
 //					 * @property
 //					 * @type String
-//					 * @memberOf jslgEngine.model.mind.MindFrame._arguments#
+//					 * @memberOf jslgEngine.model.mind.MindFrame._parameters#
 //					 **/
 //					value : null
 //				}
@@ -285,7 +285,7 @@
 			if(tgt instanceof Array) {
 				var stk = [];
 				for(var i = 0; i < tgt.length; i++) {
-                    var prp = arguments.callee(cnt+1, tgt[i], name);
+                    var prp = parameters.callee(cnt+1, tgt[i], name);
                     if(tgt[i] instanceof Array) {
 					   prp = [getIncrement(inc+cnt+1, true),prp,getIncrement(inc+cnt, true)].join('');
                     }
@@ -300,8 +300,8 @@
 		};
 		
 		var memberKey = '', increacedKeys = '', decreacedKeys = '', familyMemberNames = '', enemyMemberNames = '';
-		if(self._arguments) {
-            memberKey = '<memberKey>'+self._arguments.status.member.key+'</memberKey>';
+		if(self._parameters) {
+            memberKey = '<memberKey>'+self._parameters.status.member.key+'</memberKey>';
             
 			increacedKeys = (mindArguments.increasedKeys instanceof Array) ?
 						['<increasedKeys>',getIncrement(inc+1, true),getNestedProperties(1, mindArguments.increasedKeys, 'argument'),getIncrement(inc, true),'</increasedKeys>'].join('') : '<increasedKeys></increasedKeys>';
